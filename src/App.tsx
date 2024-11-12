@@ -13,9 +13,9 @@ function App() {
         // console.log(data.status)
         // console.log(data.data)
         const weather: string = data.data.current.condition.text
-        setCurrentWeather(weather)
         const iconData: string = data.data.current.condition.icon
         const iconURL: string = iconData.split("").slice(2,).join("")
+        setCurrentWeather(weather)
         setCurrentWeatherIcon(`https://${iconURL}`)
       })
       .catch((err) => {
