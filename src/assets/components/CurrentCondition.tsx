@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import '../../styles/currentConditions.css'
 
-import { weatherData } from '../../weatherData'
+import { weatherData } from '../../types/weatherData'
 
 export default function CurrentCondition({ weatherData }: { weatherData: weatherData | null }): JSX.Element {
     const [condition, setCondition] = useState<string>('')
