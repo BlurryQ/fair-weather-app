@@ -1,32 +1,38 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios'
-import Header from './assets/components/header'
-import Sunrise from './assets/components/Sunrise'
-import Sunset from './assets/components/Sunset'
+
+// react components
+import Header from './assets/components/Header'
+import SunInfo from './assets/components/SunInfo'
 import CurrentCondition from './assets/components/CurrentCondition'
 
+// types
+import { sunInfo } from './types/sunInfo'
+import { weatherData } from './weatherData'
 
-export type weatherData = {
-  text: string,
-  icon: string,
-}
 
 function App() {
-  const [sunriseTime, setSunriseTime] = useState<string>('loading')
-  const [sunsetTime, setSunsetTime] = useState<string>('loading')
-  const [weatherData, setWeatherData] = useState<weatherData | object>({})
+  const [sunriseTime, setSunriseTime] = useState<sunInfo | null>(null)
+  const [sunsetTime, setSunsetTime] = useState<sunInfo | null>(null)
+  const [weatherData, setWeatherData] = useState<weatherData | null>(null)
 
   useEffect(() => {
     const api_key: string = import.meta.env.VITE_API_KEY;
     axios.get(`https://api.weatherapi.com/v1/forecast.json?key=${api_key}&q=BH119FS&days=3&aqi=no&alerts=yes`)
       .then((data) => {
         // console.log(data.data)
-        const sunrise: string = data.data.forecast.forecastday[0].astro.sunrise
-        const sunset: string = data.data.forecast.forecastday[0].astro.sunset
+        const sunrise: sunInfo = {
+          time: data.data.forecast.forecastday[0].astro.sunrise,
+          type: 'rise',
+        }
+        const sunset: sunInfo = {
+          time: data.data.forecast.forecastday[0].astro.sunset,
+          type: 'set',
+        }
         setSunriseTime(sunrise)
         setSunsetTime(sunset)
-        setWeatherData(data.data.current.condition)
+        setWeatherData(data.data.current)
       })
       .catch((err) => {
         console.log('Code:', err.response.data.error.code)
@@ -37,9 +43,16 @@ function App() {
   return (
     <>
       <Header />
-      <Sunrise time={sunriseTime} />
-      <CurrentCondition weatherData={weatherData} />
-      <Sunset time={sunsetTime} />
+      <div className="current-overview">
+        {!weatherData || !sunriseTime || !sunsetTime
+          ? <h2>LOADING...</h2> :
+          <>
+            <SunInfo data={sunriseTime} />
+            <CurrentCondition weatherData={weatherData} />
+            <SunInfo data={sunsetTime} />
+          </>
+        }
+      </div>
     </>
   )
 }
