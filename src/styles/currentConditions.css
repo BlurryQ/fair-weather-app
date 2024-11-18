@@ -1,0 +1,25 @@
+.current-conditions {
+    background-color: lightblue;
+    border-radius: 0.7rem;
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.current-conditions img {
+    max-width: fit-content;
+    align-self: center;
+}
+
+.current-conditions ul {
+    margin: 0;
+    padding: 0;
+}
+
+.current-conditions li {
+    list-style: none;
+    line-height: 2.3ch;
+    font-size: 0.8rem;
+}

@@ -1,0 +1,14 @@
+#location {
+    border-radius: 0.2rem;
+    border: 2px solid grey;
+    width: 60%;
+}
+
+.location {
+    margin-top: -1rem;
+    margin-left: 55%;
+}
+
+.location input {
+    text-indent: 1ch;
+}
