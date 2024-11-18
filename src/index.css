@@ -1,3 +1,7 @@
 :root {
     font-size: 2rem;
 }
+
+html {
+    margin: 0 5%;
+}
