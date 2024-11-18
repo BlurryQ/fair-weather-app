@@ -9,7 +9,7 @@ import CurrentCondition from './assets/components/CurrentCondition'
 
 // types
 import { sunInfo } from './types/sunInfo'
-import { weatherData } from './weatherData'
+import { weatherData } from './types/weatherData'
 
 
 function App() {
