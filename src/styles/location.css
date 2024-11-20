@@ -5,10 +5,23 @@
 }
 
 .location {
-    margin-top: -1rem;
+    margin-top: -0.4rem;
     margin-left: 55%;
 }
 
 .location input {
-    text-indent: 1ch;
+    text-indent: 3ch;
+}
+
+.location-button {
+    position: fixed;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-style: none;
+    background-color: inherit;
+    margin-top: 0.1rem;
+}
+
+.location img {
+    justify-self: center;
 }
