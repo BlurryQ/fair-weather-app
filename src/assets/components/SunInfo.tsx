@@ -1,10 +1,10 @@
 import '../../styles/sunInfo.css'
 
-import { sunInfo } from '../../types/sunInfo'
+import { SunInfoProp } from '../../types/SunInfoProp'
 
-export default function Sunrise({ data }: { data: sunInfo }): JSX.Element {
-    return <div className={`sun${data.type}`}>
-        <p>{`Sun${data.type}`}:</p>
-        <p>{data.time}</p>
+export default function Sunrise({ sunData }: { sunData: SunInfoProp }): JSX.Element {
+    return <div className={`sun${sunData.type}`}>
+        <p>{`Sun${sunData.type}`}:</p>
+        <p>{sunData.time}</p>
     </div>
 }
