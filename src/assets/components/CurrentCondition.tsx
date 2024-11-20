@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import '../../styles/currentConditions.css'
 
-import { weatherData } from '../../types/weatherData'
+import { WeatherDataProp } from '../../types/WeatherDataProp'
 
-export default function CurrentCondition({ weatherData }: { weatherData: weatherData | null }): JSX.Element {
+export default function CurrentCondition({ weatherData }: { weatherData: WeatherDataProp | null }): JSX.Element {
     const [condition, setCondition] = useState<string>('')
     const [conditionIcon, setConditionIcon] = useState<string>('')
     const [temperature, setTemperature] = useState<number>(0)
@@ -13,16 +13,16 @@ export default function CurrentCondition({ weatherData }: { weatherData: weather
     const [uvIndex, setUvIndex] = useState<number>(0)
     const [visability, setVisability] = useState<number>(0)
 
-    const getWeatherData = (weatherData: weatherData) => {
-        const weather: string = weatherData.condition.text
-        const iconData: string = weatherData.condition.icon
+    const setWeatherData = (weatherData: WeatherDataProp) => {
+        const weather: string = weatherData.current.condition.text
+        const iconData: string = weatherData.current.condition.icon
         const iconURL: string = iconData.substring(2)
-        const temp: number = weatherData.temp_c
-        const tempLike: number = weatherData.feelslike_c
-        const wind: number = weatherData.wind_mph
-        const gust: number = weatherData.gust_mph
-        const uv: number = weatherData.uv
-        const visability: number = weatherData.vis_miles
+        const temp: number = weatherData.current.temp_c
+        const tempLike: number = weatherData.current.feelslike_c
+        const wind: number = weatherData.current.wind_mph
+        const gust: number = weatherData.current.gust_mph
+        const uv: number = weatherData.current.uv
+        const visability: number = weatherData.current.vis_miles
         setCondition(weather)
         setConditionIcon(`https://${iconURL}`)
         setTemperature(temp)
@@ -35,7 +35,7 @@ export default function CurrentCondition({ weatherData }: { weatherData: weather
 
     useEffect(() => {
         if (!weatherData) return
-        getWeatherData(weatherData)
+        setWeatherData(weatherData)
     }, [weatherData])
 
     const today = new Date()
