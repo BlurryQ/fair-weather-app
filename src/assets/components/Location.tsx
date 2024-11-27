@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import '../../styles/location.css'
 import axios from 'axios'
 
-import { WeatherDataProp } from '../../types/WeatherDataProp'
+import { WeatherDataProp } from '../../types/WeatherDataProp';
 
 // types
 import { GeoLocationData } from '../../types/GeoLocationData';
@@ -18,7 +18,6 @@ export default function Location({ setWeatherData }: { setWeatherData: React.Dis
         const url: string = `https://api.weatherapi.com/v1/forecast.json?key=${api_key}&q=${latitude},${longitude}&days=3`
         axios.get(url)
             .then((data) => {
-                // console.log(data.data)
                 setWeatherData(data.data)
                 const townAndRegion: string = data.data.location.name + ', ' + data.data.location.region
                 setlocation(townAndRegion)
