@@ -6,32 +6,14 @@ import { WeatherDataProp } from '../../types/WeatherDataProp'
 export default function CurrentCondition({ weatherData }: { weatherData: WeatherDataProp | null }): JSX.Element {
     const [condition, setCondition] = useState<string>('')
     const [conditionIcon, setConditionIcon] = useState<string>('')
-    const [temperature, setTemperature] = useState<number>(0)
-    const [feelsLike, setFeelsLike] = useState<number>(0)
-    const [windSpeed, setWindSpeed] = useState<number>(0)
-    const [gustSpeed, setgustSpeed] = useState<number>(0)
+    const [rain, setRain] = useState<number>(0)
+    const [rainChance, setRainChance] = useState<number>(0)
+    const [minTemperature, setMinTemperature] = useState<number>(0)
+    const [maxTemperature, setMaxTemperature] = useState<number>(0)
+    const [avgTemperature, setAvgTemperature] = useState<number>(0)
+    const [maxWindSpeed, setMaxWindSpeed] = useState<number>(0)
     const [uvIndex, setUvIndex] = useState<number>(0)
-    const [visability, setVisability] = useState<number>(0)
-
-    const setWeatherData = (weatherData: WeatherDataProp) => {
-        const weather: string = weatherData.current.condition.text
-        const iconData: string = weatherData.current.condition.icon
-        const iconURL: string = iconData.substring(2)
-        const temp: number = weatherData.current.temp_c
-        const tempLike: number = weatherData.current.feelslike_c
-        const wind: number = weatherData.current.wind_mph
-        const gust: number = weatherData.current.gust_mph
-        const uv: number = weatherData.current.uv
-        const visability: number = weatherData.current.vis_miles
-        setCondition(weather)
-        setConditionIcon(`https://${iconURL}`)
-        setTemperature(temp)
-        setFeelsLike(tempLike)
-        setWindSpeed(wind)
-        setgustSpeed(gust)
-        setUvIndex(uv)
-        setVisability(visability)
-    }
+    const [avgVisability, setAvgVisability] = useState<number>(0)
 
     useEffect(() => {
         if (!weatherData) return
@@ -42,15 +24,42 @@ export default function CurrentCondition({ weatherData }: { weatherData: Weather
     const todaysHours = today.getHours()
     const todaysMinutes = today.getMinutes() < 9 ? "0" + today.getMinutes() : today.getMinutes()
 
+    const setWeatherData = (weatherData: WeatherDataProp) => {
+        const weatherObj = weatherData.forecast.forecastday[0].day
+        const weather: string = weatherObj.condition.text
+        const iconData: string = weatherObj.condition.icon
+        const iconURL: string = iconData.substring(2)
+        const avgTemp: number = weatherObj.avgtemp_c
+        const tempMin: number = weatherObj.mintemp_c
+        const tempMax: number = weatherObj.maxtemp_c
+        const maxWind: number = weatherObj.maxwind_mph
+        const rainChance: number = weatherObj.daily_chance_of_rain
+        const rain: number = weatherObj.daily_will_it_rain
+        const uv: number = weatherObj.uv
+        const avgVisability: number = weatherObj.avgvis_miles
+        setCondition(weather)
+        setConditionIcon(`https://${iconURL}`)
+        setRain(rain)
+        setRainChance(rainChance)
+        setMinTemperature(tempMin)
+        setMaxTemperature(tempMax)
+        setAvgTemperature(avgTemp)
+        setMaxWindSpeed(maxWind)
+        setUvIndex(uv)
+        setAvgVisability(avgVisability)
+    }
+
     return <div className="current-conditions">
-        <p>{todaysHours}:{todaysMinutes}</p>
-        {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}
         <ul>
-            <li>{condition}</li>
+            <li className='time'>{todaysHours}:{todaysMinutes}</li>
             <li>UV: {uvIndex}</li>
-            <li>Temp: {temperature}°C ({feelsLike}°C)</li>
-            <li>Wind: {windSpeed}mph ({gustSpeed}mph)</li>
-            <li>Visability: {visability} miles</li>
+            {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}
+            <li>{condition}</li>
+            <li>Rain: {rain ? "Yes" : "No"} ({rainChance}%)</li>
+            <li>Avg. Temp: {avgTemperature}°C</li>
+            <li>Temp Range: {minTemperature}°C - {maxTemperature}°C</li>
+            <li>Max Wind: {maxWindSpeed}mph</li>
+            <li>Avg. Visability: {avgVisability} miles</li>
         </ul>
     </div>
 }
