@@ -14,14 +14,10 @@
 }
 
 .location-button {
-    position: fixed;
+    position: absolute;
     width: 1.5rem;
     height: 1.5rem;
     border-style: none;
     background-color: inherit;
-    margin-top: 0.1rem;
-}
-
-.location img {
-    justify-self: center;
+    margin-top: 0.2rem;
 }
