@@ -1,5 +1,5 @@
 .current-conditions {
-    background-color: lightblue;
+    background-color: cornflowerblue;
     border-radius: 0.7rem;
     padding: 1rem;
     text-align: center;
@@ -8,7 +8,7 @@
     margin-top: 2rem;
 }
 
-.current-conditions img {
+.current-conditions li img {
     max-width: fit-content;
     align-self: center;
 }
@@ -22,4 +22,9 @@
     list-style: none;
     line-height: 2.3ch;
     font-size: 0.8rem;
+}
+
+.current-conditions .time {
+    font-weight: bold;
+    font-size: 1.2rem;
 }
