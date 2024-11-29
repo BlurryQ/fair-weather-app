@@ -2,12 +2,12 @@ import { HourProp } from "../../types/HourProp";
 
 export default function getImages(weather: HourProp) {
     const images = []
-    if (weather.uv > 3) images.push("./images/suncream.png")
+    if (weather.uv > 3) images.push("./images/burn.png")
 
     if (weather.will_it_rain || weather.chance_of_rain >= 60) images.push("./images/rain.png")
 
     if (weather.temp_c > 20) images.push("./images/sunny.png")
-    else if (weather.temp_c < 5) images.push("./images/thermals.png")
+    else if (weather.temp_c < 5) images.push("./images/cold.png")
     else images.push("./images/jacket.png")
 
     if (weather.wind_mph >= 35) images.push("./images/hurricane.png")
