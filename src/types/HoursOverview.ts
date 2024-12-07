@@ -1,27 +1,3 @@
 import { HourProp } from "./HourProp"
 
-export type HoursOverview = [
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-    HourProp,
-]
+export type HoursOverview = HourProp[]
