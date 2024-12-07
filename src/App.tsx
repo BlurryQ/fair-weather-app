@@ -6,13 +6,15 @@ import Header from './assets/components/Header'
 import SunInfo from './assets/components/SunInfo'
 import CurrentCondition from './assets/components/CurrentCondition'
 
+// utils
+import removeUnwantedHours from "./assets/utils/removeUnwantedHours"
+
 // types
 import { SunInfoProp } from './types/SunInfoProp'
 import { WeatherDataProp } from './types/WeatherDataProp'
 import Location from './assets/components/Location'
-import Forecast from './assets/components/Forecast'
-import { HourProp } from './types/HourProp'
 import { HoursOverview } from './types/HoursOverview'
+import TodaysWeather from './assets/components/TodaysWeather'
 
 function App() {
   const [sunriseTime, setSunriseTime] = useState<SunInfoProp | null>(null)
@@ -33,7 +35,8 @@ function App() {
     setSunriseTime(sunrise)
     setSunsetTime(sunset)
     const todaysHours: HoursOverview | null = weatherData.forecast.forecastday[0].hour
-    setTodaysHours(todaysHours)
+    const relevantHours: HoursOverview = removeUnwantedHours(todaysHours)
+    setTodaysHours(relevantHours)
   }, [weatherData])
 
   return (
@@ -50,17 +53,9 @@ function App() {
           </>
         }
       </div>
-      <div className="todays-weather">
-        {
-          Array.isArray(todaysHours)
-            ? todaysHours.map((hour: HourProp) => {
-              return <div key={hour.time_epoch}>
-                <Forecast hour={hour} />
-              </div>
-            })
-            : null
-        }
-      </div>
+      {Array.isArray(todaysHours) 
+      ? <TodaysWeather todaysHours={todaysHours} />
+      : null}
     </>
   )
 }
