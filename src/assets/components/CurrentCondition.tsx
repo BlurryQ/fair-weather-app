@@ -20,9 +20,9 @@ export default function CurrentCondition({ weatherData }: { weatherData: Weather
         setWeatherData(weatherData)
     }, [weatherData])
 
-    const today = new Date()
-    const todaysHours = today.getHours()
-    const todaysMinutes = today.getMinutes() < 9 ? "0" + today.getMinutes() : today.getMinutes()
+    const today: Date = new Date()
+    const todaysHours: number = today.getHours()
+    const todaysMinutes: number | string = today.getMinutes() < 9 ? "0" + today.getMinutes() : today.getMinutes()
 
     const setWeatherData = (weatherData: WeatherDataProp) => {
         const weatherObj = weatherData.forecast.forecastday[0].day
