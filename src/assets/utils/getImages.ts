@@ -1,6 +1,6 @@
 import { HourProp } from "../../types/HourProp";
 
-export default function getImages(weather: HourProp) {
+export default function getImages(weather: HourProp): string[] {
     const images = []
     if (weather.uv > 3) images.push("./images/burn.png")
 
