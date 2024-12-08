@@ -20,9 +20,7 @@ export default function LocationInput({
   setLocation,
 }: LocationInputProps): JSX.Element {
   const [typedLocation, setTypedLocation] = useState<string>("");
-  const [autocomplete, setAutocomplete] = useState<
-    Autocomplete | Autocomplete[] | null
-  >(null);
+  const [autocomplete, setAutocomplete] = useState<Autocomplete[] | null>(null);
 
   // Once location is typed and is 4 or more chars
   useEffect(() => {
@@ -45,6 +43,11 @@ export default function LocationInput({
     setAutocomplete(null);
   };
 
+  const clearAutocomplete = () => {
+    setAutocomplete(null);
+    setLocation("");
+  };
+
   return (
     <>
       <input
@@ -52,6 +55,7 @@ export default function LocationInput({
         placeholder="@location"
         onChange={searchLocations}
         value={location}
+        onBlur={clearAutocomplete}
       ></input>
       <ul className="locations">
         {autocomplete ? (
