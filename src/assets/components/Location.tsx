@@ -56,10 +56,10 @@ export default function Location({
         <img alt="location icon" src="./icons/location.svg" />
       </button>
       <LocationInput
-        setLongitude={setLongitude}
-        setLatitude={setLatitude}
         location={location}
+        setLatitude={setLatitude}
         setLocation={setLocation}
+        setLongitude={setLongitude}
       />
     </div>
   );
