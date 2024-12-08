@@ -21,3 +21,40 @@
     background-color: inherit;
     margin-top: 0.2rem;
 }
+
+@media only screen and (max-width: 1400px) {
+    #location {
+        width: 80%;
+    }
+
+    .location {
+        margin-left: 45%;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    #location {
+        width: 85%;
+    }
+
+    .location {
+        margin-left: 30%;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .location {
+        margin-left: 10%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    #location {
+        width: 95%;
+        font-size: 0.9rem;
+    }
+
+    .location {
+        margin-left: 5%;
+    }
+}

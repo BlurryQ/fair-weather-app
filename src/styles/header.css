@@ -1,8 +1,26 @@
 .header {
     text-align: center;
     background-color: lightgray;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 1rem;
     border-radius: 0.7rem;
     margin-top: 2rem;
     border: 2px solid grey;
+}
+
+@media only screen and (max-width: 650px) {
+    .header {
+        font-size: 1.6rem;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .header {
+        font-size: 1.4rem;
+    }
+}
+
+@media only screen and (max-width: 380px) {
+    .header {
+        font-size: 1.2rem;
+    }
 }

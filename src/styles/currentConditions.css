@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 2rem;
+    min-width: 300px;
 }
 
 .current-conditions li img {

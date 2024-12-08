@@ -1,7 +1,7 @@
 .todays-weather {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, 25vw);
+    grid-template-columns: repeat(3, 25vw);
 }
 
 .forecast {
@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 2rem;
-    width: 25VW;
+    min-width: 300px;
 }
 
 .forecast img {
@@ -47,4 +47,34 @@
 .forecast .time {
     font-weight: bold;
     font-size: 1.2rem;
+}
+
+
+@media only screen and (max-width: 1200px) {
+    .todays-weather {
+        grid-template-columns: repeat(2, 40vw);
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .todays-weather {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .location {
+        margin-left: 10%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    #location {
+        width: 95%;
+        font-size: 0.9rem;
+    }
+
+    .location {
+        margin-left: 5%;
+    }
 }
