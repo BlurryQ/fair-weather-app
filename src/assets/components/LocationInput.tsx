@@ -55,7 +55,8 @@ export default function LocationInput({
         placeholder="@location"
         onChange={searchLocations}
         value={location}
-        onBlur={clearAutocomplete}
+        // TODO: checkout when focus removed when clicking li
+        // onBlur={clearAutocomplete}
       ></input>
       <ul className="locations">
         {autocomplete ? (
