@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import "../../styles/location.css";
 import axios from "axios";
 
+import LocationList from "./LocationList";
+
 // types
 import { Autocomplete } from "../../types/Autocomplete";
 type LocationInputProps = {
-  setLongitude: React.Dispatch<React.SetStateAction<number>>;
-  setLatitude: React.Dispatch<React.SetStateAction<number>>;
   location: string;
+  setLatitude: React.Dispatch<React.SetStateAction<number>>;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
+  setLongitude: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export default function LocationInput({
@@ -40,17 +42,7 @@ export default function LocationInput({
     const entry: string = e.target.value;
     setTypedLocation(entry);
     setLocation(entry);
-  };
-
-  // on list element clicked get geolocation details and search
-  const selectLocation = (e: any) => {
-    const location: string = e.target.textContent;
-    const latLon: string = e.target.attributes.value.value;
-    const [lat, lon]: string[] = latLon.split(" ");
     setAutocomplete(null);
-    setLongitude(Number(lon));
-    setLatitude(Number(lat));
-    setLocation(location);
   };
 
   return (
@@ -62,19 +54,15 @@ export default function LocationInput({
         value={location}
       ></input>
       <ul className="locations">
-        {Array.isArray(autocomplete) && autocomplete.length > 3
-          ? autocomplete.map((location: Autocomplete) => {
-              return (
-                <li
-                  key={location.id}
-                  value={`${location.lat} ${location.lon}`}
-                  onClick={selectLocation}
-                >
-                  {location.name}, {location.region}
-                </li>
-              );
-            })
-          : null}
+        {autocomplete ? (
+          <LocationList
+            autocomplete={autocomplete}
+            setAutocomplete={setAutocomplete}
+            setLongitude={setLongitude}
+            setLatitude={setLatitude}
+            setLocation={setLocation}
+          />
+        ) : null}
       </ul>
     </>
   );
