@@ -43,10 +43,10 @@ export default function LocationInput({
     setAutocomplete(null);
   };
 
-  const clearAutocomplete = () => {
-    setAutocomplete(null);
-    setLocation("");
-  };
+  // const clearAutocomplete = () => {
+  //   setAutocomplete(null);
+  //   setLocation("");
+  // };
 
   return (
     <>
