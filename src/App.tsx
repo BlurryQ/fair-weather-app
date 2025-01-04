@@ -14,7 +14,7 @@ import { SunInfoProp } from './types/SunInfoProp'
 import { WeatherDataProp } from './types/WeatherDataProp'
 import Location from './assets/components/Location'
 import { HoursOverview } from './types/HoursOverview'
-import TodaysWeather from './assets/components/TodaysWeather'
+import HourlyWeather from './assets/components/HourlyWeather'
 
 function App() {
   const [sunriseTime, setSunriseTime] = useState<SunInfoProp | null>(null)
@@ -63,15 +63,15 @@ function App() {
       </div>
 
       {Array.isArray(todaysHours) 
-      ? <TodaysWeather hours={todaysHours} />
+      ? <HourlyWeather hours={todaysHours} />
       : null}
 
       {Array.isArray(tomorrowsHours) 
-      ? <TodaysWeather hours={tomorrowsHours} />
+      ? <HourlyWeather hours={tomorrowsHours} />
       : null}
 
       {Array.isArray(dayAftersHours) 
-      ? <TodaysWeather hours={dayAftersHours} />
+      ? <HourlyWeather hours={dayAftersHours} />
       : null}
       
     </>
