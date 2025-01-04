@@ -21,6 +21,8 @@ function App() {
   const [sunsetTime, setSunsetTime] = useState<SunInfoProp | null>(null)
   const [weatherData, setWeatherData] = useState<WeatherDataProp | null>(null)
   const [todaysHours, setTodaysHours] = useState<HoursOverview | null>(null)
+  const [tomorrowsHours, setTomorrowsHours] = useState<HoursOverview | null>(null)
+  const [dayAftersHours, setDayAftersHours] = useState<HoursOverview | null>(null)
 
   useEffect(() => {
     if (!weatherData) return
@@ -34,15 +36,21 @@ function App() {
     }
     setSunriseTime(sunrise)
     setSunsetTime(sunset)
+
     const todaysHours: HoursOverview | null = weatherData.forecast.forecastday[0].hour
-    const relevantHours: HoursOverview = removeUnwantedHours(todaysHours)
-    setTodaysHours(relevantHours)
+    const tomorrowsHours: HoursOverview | null = weatherData.forecast.forecastday[1].hour
+    const dayAftersHours: HoursOverview | null = weatherData.forecast.forecastday[1].hour
+    setTodaysHours(removeUnwantedHours(todaysHours))
+    setTomorrowsHours(removeUnwantedHours(tomorrowsHours))
+    setDayAftersHours(removeUnwantedHours(dayAftersHours))
+
   }, [weatherData])
 
   return (
     <>
       <Header />
       <Location setWeatherData={setWeatherData} />
+
       <div className="current-overview">
         {!weatherData || !sunriseTime || !sunsetTime
           ? <h2>Please enter your location...</h2> :
@@ -53,9 +61,19 @@ function App() {
           </>
         }
       </div>
+
       {Array.isArray(todaysHours) 
-      ? <TodaysWeather todaysHours={todaysHours} />
+      ? <TodaysWeather hours={todaysHours} />
       : null}
+
+      {Array.isArray(tomorrowsHours) 
+      ? <TodaysWeather hours={tomorrowsHours} />
+      : null}
+
+      {Array.isArray(dayAftersHours) 
+      ? <TodaysWeather hours={dayAftersHours} />
+      : null}
+      
     </>
   )
 }
