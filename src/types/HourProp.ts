@@ -8,6 +8,7 @@ export type HourProp = {
     wind_mph: number,
     gust_mph: number,
     temp_c: number,
+    time: string,
     time_epoch: number,
     uv: number,
     vis_miles: number,
