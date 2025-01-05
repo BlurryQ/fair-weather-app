@@ -4,7 +4,15 @@ import '../../styles/forecast.css'
 import { HourProp } from '../../types/HourProp'
 import getImages from '../utils/getImages'
 
-export default function Forecast({ hour }: { hour: HourProp | null }): JSX.Element {
+type Forecast = {
+    hour: HourProp | null;
+    tommorowBG: boolean;
+  };
+
+export default function Forecast({
+    hour,
+    tommorowBG
+}: Forecast): JSX.Element {
     if (!hour) return <></>
     const [condition, setCondition] = useState<string>('')
     const [conditionIcon, setConditionIcon] = useState<string>('')
@@ -51,7 +59,7 @@ export default function Forecast({ hour }: { hour: HourProp | null }): JSX.Eleme
     const images: string[] = getImages(hour)
 
 
-    return <ul className='forecast'>
+    return <ul className={`forecast ${tommorowBG ? "tommorowBG" : ""}`}>
         <li className='time'>{todaysHours}:00</li>
         <li>UV: {uvIndex}</li>
         {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}
