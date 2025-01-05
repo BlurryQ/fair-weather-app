@@ -20,9 +20,8 @@ function App() {
   const [sunriseTime, setSunriseTime] = useState<SunInfoProp | null>(null)
   const [sunsetTime, setSunsetTime] = useState<SunInfoProp | null>(null)
   const [weatherData, setWeatherData] = useState<WeatherDataProp | null>(null)
-  const [todaysHours, setTodaysHours] = useState<HoursOverview | null>(null)
-  const [tomorrowsHours, setTomorrowsHours] = useState<HoursOverview | null>(null)
-  const [dayAftersHours, setDayAftersHours] = useState<HoursOverview | null>(null)
+
+  const [threeDayWeather, setThreeDayWeather] = useState<HoursOverview[] | null>(null)
 
   useEffect(() => {
     if (!weatherData) return
@@ -37,12 +36,15 @@ function App() {
     setSunriseTime(sunrise)
     setSunsetTime(sunset)
 
+    // tripled
     const todaysHours: HoursOverview | null = weatherData.forecast.forecastday[0].hour
     const tomorrowsHours: HoursOverview | null = weatherData.forecast.forecastday[1].hour
-    const dayAftersHours: HoursOverview | null = weatherData.forecast.forecastday[1].hour
-    setTodaysHours(removeUnwantedHours(todaysHours))
-    setTomorrowsHours(removeUnwantedHours(tomorrowsHours))
-    setDayAftersHours(removeUnwantedHours(dayAftersHours))
+    const dayAftersHours: HoursOverview | null = weatherData.forecast.forecastday[2].hour
+
+    const forecast: HoursOverview[] = [todaysHours, tomorrowsHours, dayAftersHours].map(removeUnwantedHours)
+    console.log(forecast)
+    console.table(forecast)
+    setThreeDayWeather(forecast)
 
   }, [weatherData])
 
@@ -61,18 +63,15 @@ function App() {
           </>
         }
       </div>
+  
 
-      {Array.isArray(todaysHours) 
-      ? <HourlyWeather hours={todaysHours} />
-      : null}
-
-      {Array.isArray(tomorrowsHours) 
-      ? <HourlyWeather hours={tomorrowsHours} />
-      : null}
-
-      {Array.isArray(dayAftersHours) 
-      ? <HourlyWeather hours={dayAftersHours} />
-      : null}
+      {threeDayWeather 
+      ? threeDayWeather.map((day: HoursOverview, i: number) => (
+        // TODO fix why it's unhappy
+          <HourlyWeather hours={day} key={day[i].time} /* {i === 2 ? greyBG=true: boolean : null} *//>
+  ))
+  : null
+}
       
     </>
   )
