@@ -67,8 +67,7 @@ function App() {
 
       {threeDayWeather 
       ? threeDayWeather.map((day: HoursOverview, i: number) => (
-        // TODO fix why it's unhappy
-          <HourlyWeather hours={day} key={day[i].time} /* {i === 2 ? greyBG=true: boolean : null} *//>
+          <HourlyWeather key={day[i].time} hours={day} tommorowBG={i === 1 ? true : false}/>
   ))
   : null
 }
