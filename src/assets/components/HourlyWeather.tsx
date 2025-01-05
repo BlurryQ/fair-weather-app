@@ -2,16 +2,23 @@ import Forecast from "./Forecast"
 import { HourProp } from "../../types/HourProp"
 import { HoursOverview } from "../../types/HoursOverview"
 
-export default function HourlyWeather({ hours }: { hours: HoursOverview}, {greyBG} : {greyBG: boolean}): JSX.Element {
+type HourlyWeatherProps = {
+    hours: HoursOverview;
+    tommorowBG: boolean;
+  };
+  
+  export default function HourlyWeather({
+    hours,
+    tommorowBG,
+  }: HourlyWeatherProps): JSX.Element {
 
-    // TODO add greyBG to CSS and enabked beneath
     return <>
             <div className="divide"></div>
-            <div className="weather ">
+            <div className="weather">
                 {
                     hours.map((hour: HourProp) => {
                         return <div key={hour.time_epoch}>
-                            <Forecast hour={hour} />
+                            <Forecast hour={hour} tommorowBG={tommorowBG}/>
                         </div>
                         })
                 }
