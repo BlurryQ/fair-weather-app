@@ -1,4 +1,4 @@
-.todays-weather {
+.weather {
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(3, 25vw);
@@ -47,7 +47,6 @@
     font-weight: bold;
     font-size: 1.2rem;
 }
-
 
 @media only screen and (max-width: 1200px) {
     .todays-weather {
