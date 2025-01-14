@@ -21,12 +21,7 @@
     align-self: center;
 }
 
-.forecast ul {
-    margin: 0;
-    padding: 0;
-}
-
-.forecast li {
+.forecast tr {
     list-style: none;
     line-height: 2.3ch;
     font-size: 0.8rem;
@@ -52,31 +47,100 @@
     background-color: darkseagreen;
 }
 
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+#weather-details-mobile {
+    display: block;
+    grid-column: span 3;
+    margin: auto;
+}
+
+.show-weather-details {
+    display: none;
+}
+
+.up,
+.down {
+    width: 30px;
+    height: 30px;
+}
+
+
+.up {
+    background: url(./icons/up.svg) no-repeat;
+}
+
+.down {
+    background: url(./icons/down.svg) no-repeat;
+}
+
 @media only screen and (max-width: 1200px) {
     .weather {
         grid-template-columns: repeat(2, 40vw);
     }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 768px) {
+    #weather-details-desktop {
+        display: none;
+    }
+
+    .time {
+        display: block;
+    }
+
+    .forecast {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 100px 1fr 50px;
+        grid-template-rows: 190px;
+    }
+
     .weather {
+        gap: 0.3rem;
         grid-template-columns: 1fr;
     }
-}
 
-@media only screen and (max-width: 650px) {
-    .location {
-        margin-left: 10%;
+    .weather-images {
+        margin: 0.2rem;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    thead {
+        columns: span 2;
+    }
+
+    .show-weather-details {
+        display: block;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: inherit;
+        border: 1px solid;
+        margin: 0;
+        padding: 0;
     }
 }
 
-@media only screen and (max-width: 500px) {
-    #location {
-        width: 95%;
-        font-size: 0.9rem;
-    }
 
-    .location {
-        margin-left: 5%;
+@media only screen and (max-width: 550px) {
+    .weather-images {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+
+@media only screen and (max-width: 430px) {
+    .weather-images {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
