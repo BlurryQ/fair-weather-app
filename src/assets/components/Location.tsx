@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "../../styles/location.css";
-import axios from "axios";
 import LocationInput from "./LocationInput";
 
 import { WeatherDataProp } from "../../types/WeatherDataProp";
 
 // types
 import { GeoLocationData } from "../../types/GeoLocationData";
+import { getLatandLongWeather } from "../models/weatherModel";
 
 export default function Location({
   setWeatherData,
@@ -20,16 +20,7 @@ export default function Location({
   // Once longitude is updated get geolocation data
   useEffect(() => {
     if (longitude === 0 && latitude === 0) return;
-    const api_key: string = import.meta.env.VITE_API_KEY;
-    const url: string = `https://api.weatherapi.com/v1/forecast.json?key=${api_key}&q=${latitude},${longitude}&days=3`;
-    axios
-      .get(url)
-      .then((data) => {
-        setWeatherData(data.data);
-        const townAndRegion: string = `${data.data.location.name}, ${data.data.location.region}`;
-        setLocation(townAndRegion);
-      })
-      .catch((err) => console.error(err));
+    getLatandLongWeather(latitude, longitude, setWeatherData, setLocation)
   }, [longitude]);
 
   // ask user for permission, or if browser unable to alert user
