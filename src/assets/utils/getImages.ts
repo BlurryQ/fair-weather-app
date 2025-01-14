@@ -1,4 +1,4 @@
-import { HourProp } from "../../types/HourProp";
+import { HourProp } from "../types/HourProp";
 
 export default function getImages(weather: HourProp): string[] {
     const images = []

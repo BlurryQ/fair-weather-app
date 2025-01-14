@@ -1,6 +1,6 @@
 import Forecast from "./Forecast"
-import { HourProp } from "../../types/HourProp"
-import { HoursOverview } from "../../types/HoursOverview"
+import { HourProp } from "../types/HourProp"
+import { HoursOverview } from "../types/HoursOverview"
 
 type HourlyWeatherProps = {
     hours: HoursOverview;

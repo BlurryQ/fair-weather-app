@@ -7,6 +7,12 @@
     border: 2px solid grey;
 }
 
+@media only screen and (max-width: 768px) {
+    .header {
+        margin-top: 1rem;
+    }
+}
+
 @media only screen and (max-width: 650px) {
     .header {
         font-size: 1.6rem;
@@ -16,6 +22,8 @@
 @media only screen and (max-width: 550px) {
     .header {
         font-size: 1.4rem;
+        padding: 1rem 0;
+        margin-top: 0.5rem;
     }
 }
 

@@ -1,5 +1,5 @@
-import { HoursOverview } from "../../types/HoursOverview";
-import { HourProp } from "../../types/HourProp";
+import { HoursOverview } from "../types/HoursOverview";
+import { HourProp } from "../types/HourProp";
 import { format } from "date-fns"
 
 export default function removeUnwantedHours(hours: HoursOverview): HoursOverview {

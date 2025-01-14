@@ -61,6 +61,7 @@
 @media only screen and (max-width: 500px) {
     #location {
         font-size: 0.9rem;
+        width: 95%;
     }
 
     .location li {
