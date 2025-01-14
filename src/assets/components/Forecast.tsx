@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import '../../styles/forecast.css'
 
-import { HourProp } from '../../types/HourProp'
+import { HourProp } from '../types/HourProp'
 import getImages from '../utils/getImages'
 
 type Forecast = {
@@ -54,27 +54,77 @@ export default function Forecast({
         setWeatherData(hour)
     }, [hour])
 
+    const showWeatherDetails = (e: React.MouseEvent<HTMLDivElement>) => {
+        const target = e.target as HTMLDivElement;
+        const hourID: string = target.dataset.hourId 
+            ?? (target.parentNode as HTMLElement | null)?.dataset?.hourId 
+            ?? "";
+        const weatherCard = document.querySelector(`[data-hour-id="${hourID}"`) as HTMLFormElement
+
+        const tableData: HTMLElement | null = weatherCard.querySelector("#weather-details-desktop")
+        const displayLocation: any = weatherCard.querySelector("#weather-details-mobile")
+        const carrat: HTMLElement | null = weatherCard.querySelector("#carrat")
+        if (!tableData || !displayLocation || !carrat) return
+
+
+        if (displayLocation.innerHTML) {
+            carrat.classList.remove("up")
+            carrat.classList.add("down")
+            displayLocation.innerHTML = ""
+        } else {
+            carrat.classList.remove("down")
+            carrat.classList.add("up")
+            displayLocation.innerHTML = tableData.innerHTML
+        }
+    }
+
     const today: Date = new Date(hour.time_epoch * 1000)
     const todaysHours: number = today.getHours()
     const images: string[] = getImages(hour)
 
 
-    return <ul className={`forecast ${tommorowBG ? "tommorowBG" : ""}`}>
-        <li className='time'>{todaysHours}:00</li>
-        <li>UV: {uvIndex}</li>
-        {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}
-        <li>{condition}</li>
-        <li>Rain: {rain ? "Yes" : "No"} ({rainChance}%)</li>
-        <li>Temp: {temperature}°C ({feelsLike}°C)</li>
-        <li>Wind: {windSpeed}mph ({gustSpeed}mph)</li>
-        <li>Visability: {visability} miles</li>
-        <div className='weather-images'>
+    return <div data-hour-id={hour.time_epoch} onClick={showWeatherDetails} className={`forecast ${tommorowBG ? "tommorowBG" : ""}`}>
+        <span data-hour-id={hour.time_epoch}>
+            <p className='time'>{todaysHours}:00</p>
+            {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}
+        </span>
+        <table id='weather-details-desktop'>
+                <thead>
+                    <tr>
+                        <th colSpan={2}>{condition}</th>
+                    </tr>
+                </thead>
+            <tbody>
+            <tr>
+                <th>Rain:</th>
+                <td> {rain ? "Yes" : "No"} ({rainChance}%)</td>
+            </tr>
+            <tr>
+                <th>Temp:</th>
+                <td>{temperature}°C ({feelsLike}°C)</td>
+            </tr>
+            <tr>
+                <th>Wind:</th>
+                <td>{windSpeed}mph ({gustSpeed}mph)</td>
+            </tr>
+            <tr>
+                <th>Visability:</th>
+                <td>{visability} miles</td>
+            </tr>
+            <tr>
+                <th>UV:</th>
+                <td>{uvIndex}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div data-hour-id={hour.time_epoch} className='weather-images'>
             {images.map(image => {
                 const alt = image.split('/')[2]
                 return <img key={image} className="dog" src={image} alt={alt} />
             })}
         </div>
-
-    </ul>
+        <span id="carrat" className='down'></span>
+        <table id='weather-details-mobile'></table>
+    </div>
 }
 
