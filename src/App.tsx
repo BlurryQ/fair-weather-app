@@ -10,10 +10,10 @@ import CurrentCondition from './assets/components/CurrentCondition'
 import removeUnwantedHours from "./assets/utils/removeUnwantedHours"
 
 // types
-import { SunInfoProp } from './types/SunInfoProp'
-import { WeatherDataProp } from './types/WeatherDataProp'
+import { SunInfoProp } from './assets/types/SunInfoProp'
+import { WeatherDataProp } from './assets/types/WeatherDataProp'
 import Location from './assets/components/Location'
-import { HoursOverview } from './types/HoursOverview'
+import { HoursOverview } from './assets/types/HoursOverview'
 import HourlyWeather from './assets/components/HourlyWeather'
 
 function App() {
@@ -42,8 +42,8 @@ function App() {
     const dayAftersHours: HoursOverview | null = weatherData.forecast.forecastday[2].hour
 
     const forecast: HoursOverview[] = [todaysHours, tomorrowsHours, dayAftersHours].map(removeUnwantedHours)
-    console.log(forecast)
-    console.table(forecast)
+    // console.log(forecast)
+    // console.table(forecast)
     setThreeDayWeather(forecast)
 
   }, [weatherData])
@@ -55,7 +55,7 @@ function App() {
 
       <div className="current-overview">
         {!weatherData || !sunriseTime || !sunsetTime
-          ? <h2>Please enter your location...</h2> :
+          ? <h2>Click the pin or enter your location...</h2> :
           <>
             <SunInfo sunData={sunriseTime} />
             <CurrentCondition weatherData={weatherData} />
