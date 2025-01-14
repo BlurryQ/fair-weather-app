@@ -108,7 +108,7 @@ export default function Forecast({
                 <td>{windSpeed}mph ({gustSpeed}mph)</td>
             </tr>
             <tr>
-                <th>Visability:</th>
+                <th>View:</th>
                 <td>{visability} miles</td>
             </tr>
             <tr>
