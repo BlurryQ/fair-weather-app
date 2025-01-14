@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Autocomplete } from "../../types/Autocomplete";
-import { WeatherDataProp } from "../../types/WeatherDataProp";
+import { Autocomplete } from "../types/Autocomplete";
+import { WeatherDataProp } from "../types/WeatherDataProp";
 
 export function getAutocompleteWeather(setData: React.Dispatch<React.SetStateAction<Autocomplete[] | null>>, query: string) {
 

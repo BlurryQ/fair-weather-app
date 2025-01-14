@@ -3,7 +3,7 @@ import "../../styles/location.css";
 import LocationList from "./LocationList";
 
 // types
-import { Autocomplete } from "../../types/Autocomplete";
+import { Autocomplete } from "../types/Autocomplete";
 import {getAutocompleteWeather} from "../models/weatherModel";
 type LocationInputProps = {
   location: string;

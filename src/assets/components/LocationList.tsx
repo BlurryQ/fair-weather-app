@@ -1,7 +1,7 @@
 import "../../styles/location.css";
 
 // types
-import { Autocomplete } from "../../types/Autocomplete";
+import { Autocomplete } from "../types/Autocomplete";
 type LocationListProps = {
   autocomplete: Autocomplete[];
   setAutocomplete: React.Dispatch<React.SetStateAction<Autocomplete[] | null>>;

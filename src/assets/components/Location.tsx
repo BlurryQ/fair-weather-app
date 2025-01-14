@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import "../../styles/location.css";
 import LocationInput from "./LocationInput";
 
-import { WeatherDataProp } from "../../types/WeatherDataProp";
+import { WeatherDataProp } from "../types/WeatherDataProp";
 
 // types
-import { GeoLocationData } from "../../types/GeoLocationData";
+import { GeoLocationData } from "../types/GeoLocationData";
 import { getLatandLongWeather } from "../models/weatherModel";
 
 export default function Location({
