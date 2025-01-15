@@ -73,11 +73,11 @@
 }
 
 .up {
-    background: url(./icons/up.svg) no-repeat;
+    background: url(/icons/up.svg) no-repeat;
 }
 
 .down {
-    background: url(./icons/down.svg) no-repeat;
+    background: url(/icons/down.svg) no-repeat;
 }
 
 @media only screen and (max-width: 1200px) {
