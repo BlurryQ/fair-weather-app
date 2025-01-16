@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../styles/location.css";
 import LocationInput from "./LocationInput";
+import LocationPin from "/icons/location.svg";
 
 import { WeatherDataProp } from "../types/WeatherDataProp";
 
@@ -44,7 +45,7 @@ export default function Location({
     <div className="location">
       <label htmlFor="location"></label>
       <button className="location-button" onClick={getLocation}>
-        <img src="./icons/location.svg" alt="location pin" />
+        <img src={LocationPin} alt="location pin" />
       </button>
       <LocationInput
         location={location}
