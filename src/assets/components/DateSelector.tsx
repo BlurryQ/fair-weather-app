@@ -1,25 +1,35 @@
-import { useState } from "react";
 import "../../styles/dateSelector.css";
+import { DateSelectorProp } from "../types/DateSelectorProp";
 
 export default function DateSelector({
-  chosenIndex,
-  setChosenIndex,
+  top,
+  dateSelectorProp,
 }: {
-  chosenIndex: number;
-  setChosenIndex: React.Dispatch<React.SetStateAction<number>>;
+  top: boolean;
+  dateSelectorProp: DateSelectorProp;
 }): JSX.Element {
-  const [dateString, setDateString] = useState<string>(
-    new Date().toDateString()
-  );
-  const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
   //   ms in one dayt
   const oneDay: number = 1000 * 60 * 60 * 24;
+
+  const {
+    chosenIndex,
+    setChosenIndex,
+    dateEpoch,
+    setDateEpoch,
+    dateString,
+    setDateString,
+  } = dateSelectorProp;
 
   const previousDate = () => {
     const previousDay: number = dateEpoch - oneDay;
     setChosenIndex(chosenIndex - 1);
     setDateEpoch(previousDay);
     setDateString(new Date(previousDay).toDateString());
+
+    const topSelector = document.getElementById("top-date-selector");
+    if (topSelector) {
+      topSelector.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
+    }
   };
 
   const nextDate = () => {
@@ -27,10 +37,15 @@ export default function DateSelector({
     setChosenIndex(chosenIndex + 1);
     setDateEpoch(nextDay);
     setDateString(new Date(nextDay).toDateString());
+
+    const topSelector = document.getElementById("top-date-selector");
+    if (topSelector) {
+      topSelector.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
+    }
   };
 
   return (
-    <div className="date-selector">
+    <div id={top ? "top-date-selector" : ""} className="date-selector">
       <span onClick={previousDate} className="date-scroll">
         &lt;
       </span>
