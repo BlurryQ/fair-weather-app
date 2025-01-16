@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "../../styles/location.css";
 import LocationInput from "./LocationInput";
-import locationPin from "/icons/location.svg"
 
 import { WeatherDataProp } from "../types/WeatherDataProp";
 
@@ -21,7 +20,7 @@ export default function Location({
   // Once longitude is updated get geolocation data
   useEffect(() => {
     if (longitude === 0 && latitude === 0) return;
-    getLatandLongWeather(latitude, longitude, setWeatherData, setLocation)
+    getLatandLongWeather(latitude, longitude, setWeatherData, setLocation);
   }, [longitude]);
 
   // ask user for permission, or if browser unable to alert user
@@ -44,9 +43,7 @@ export default function Location({
   return (
     <div className="location">
       <label htmlFor="location"></label>
-      <button className="location-button" onClick={getLocation}>
-        <img alt="location icon" src={locationPin} />
-      </button>
+      <button className="location-button" onClick={getLocation}></button>
       <LocationInput
         location={location}
         setLatitude={setLatitude}

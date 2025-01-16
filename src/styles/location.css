@@ -19,7 +19,8 @@
     height: 1.5rem;
     border-style: none;
     background-color: inherit;
-    margin-top: 0.2rem;
+    margin-top: 0.1rem;
+    background: url(/icons/location.svg) no-repeat center;
 }
 
 .location li {
