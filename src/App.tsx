@@ -16,12 +16,27 @@ import Location from "./assets/components/Location";
 import { HoursOverview } from "./assets/types/HoursOverview";
 import HourlyWeather from "./assets/components/HourlyWeather";
 import DateSelector from "./assets/components/DateSelector";
+import { DateSelectorProp } from "./assets/types/DateSelectorProp";
 
 function App() {
   const [sunriseTime, setSunriseTime] = useState<SunInfoProp | null>(null);
   const [sunsetTime, setSunsetTime] = useState<SunInfoProp | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherDataProp | null>(null);
+
   const [chosenIndex, setChosenIndex] = useState<number>(0);
+  const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
+  const [dateString, setDateString] = useState<string>(
+    new Date().toDateString()
+  );
+
+  const dateSelectorProp: DateSelectorProp = {
+    chosenIndex,
+    setChosenIndex,
+    dateEpoch,
+    setDateEpoch,
+    dateString,
+    setDateString,
+  };
 
   const [threeDayWeather, setThreeDayWeather] = useState<
     HoursOverview[] | null
@@ -72,18 +87,12 @@ function App() {
       </div>
       {threeDayWeather ? (
         <>
-          <DateSelector
-            chosenIndex={chosenIndex}
-            setChosenIndex={setChosenIndex}
-          />
+          <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
           <HourlyWeather
             hours={threeDayWeather[chosenIndex]}
             tommorowBG={chosenIndex === 1 ? true : false}
           />
-          <DateSelector
-            chosenIndex={chosenIndex}
-            setChosenIndex={setChosenIndex}
-          />
+          <DateSelector top={false} dateSelectorProp={dateSelectorProp} />
         </>
       ) : null}
     </>
