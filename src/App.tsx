@@ -88,10 +88,7 @@ function App() {
       {threeDayWeather ? (
         <>
           <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
-          <HourlyWeather
-            hours={threeDayWeather[chosenIndex]}
-            tommorowBG={chosenIndex === 1 ? true : false}
-          />
+          <HourlyWeather hours={threeDayWeather[chosenIndex]} />
           <DateSelector top={false} dateSelectorProp={dateSelectorProp} />
         </>
       ) : null}
