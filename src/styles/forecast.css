@@ -80,6 +80,10 @@
     background: url(/icons/down.svg) no-repeat;
 }
 
+.temp {
+    display: none;
+}
+
 @media only screen and (max-width: 1200px) {
     .weather {
         grid-template-columns: repeat(2, 40vw);
@@ -105,19 +109,32 @@
         display: block;
     }
 
+    .weather-overview {
+        display: flex;
+        flex-direction: column;
+    }
+
     .forecast {
         position: relative;
         padding: 0;
         margin: 0;
         display: grid;
         align-items: center;
-        grid-template-columns: 100px 1fr 50px;
+        grid-template-columns: 100px 1fr 25px;
         grid-template-rows: 175px;
+    }
+
+    .forecast .time {
+        font-size: 1rem;
     }
 
     .weather {
         gap: 0.3rem;
         grid-template-columns: 1fr;
+    }
+
+    .weather-icon {
+        width: 50px
     }
 
     .weather-images {
@@ -139,8 +156,13 @@
         margin: 0;
         padding: 0;
     }
-}
 
+    .temp {
+        display: block;
+        font-size: 0.65rem;
+        font-style: italic;
+    }
+}
 
 @media only screen and (max-width: 550px) {
     .weather-images {
