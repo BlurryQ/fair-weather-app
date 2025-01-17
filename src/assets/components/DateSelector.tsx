@@ -46,11 +46,17 @@ export default function DateSelector({
 
   return (
     <div id={top ? "top-date-selector" : ""} className="date-selector">
-      <span onClick={previousDate} className="date-scroll">
+      <span
+        onClick={previousDate}
+        className={`date-scroll ${chosenIndex === 0 ? "hidden" : null}`}
+      >
         &lt;
       </span>
       {dateString}
-      <span onClick={nextDate} className="date-scroll">
+      <span
+        onClick={nextDate}
+        className={`date-scroll ${chosenIndex === 2 ? "hidden" : null}`}
+      >
         &gt;
       </span>
     </div>
