@@ -2,17 +2,22 @@
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(3, 25vw);
+    justify-content: center;
 }
 
 .forecast {
     background-color: cornflowerblue;
     border-radius: 0.7rem;
     padding: 1rem;
-    text-align: center;
     display: flex;
     flex-direction: column;
     margin: 1rem 0;
     min-width: 300px;
+    box-shadow: -1px 1px 1px blue, -4px 4px 4px blue;
+}
+
+.forecast span {
+    text-align: center;
 }
 
 .forecast img {
@@ -84,6 +89,16 @@
     display: none;
 }
 
+
+.forecast tbody,
+.forecast th {
+    text-align: initial;
+}
+
+.forecast .table-header {
+    text-align: center;
+}
+
 @media only screen and (max-width: 1200px) {
     .weather {
         grid-template-columns: repeat(2, 40vw);
@@ -116,16 +131,16 @@
 
     .forecast {
         position: relative;
-        padding: 0;
+        padding: 0.5rem;
         margin: 0;
         display: grid;
         align-items: center;
-        grid-template-columns: 100px 1fr 25px;
-        grid-template-rows: 175px;
+        grid-template-columns: 70px 1fr 10px;
+        grid-template-rows: 180px;
     }
 
     .forecast .time {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .weather {
@@ -144,6 +159,15 @@
 
     thead {
         columns: span 2;
+    }
+
+    .forecast th {
+        padding-left: 1rem;
+    }
+
+
+    .forecast td {
+    padding-left: 1rem;
     }
 
     .show-weather-details {
