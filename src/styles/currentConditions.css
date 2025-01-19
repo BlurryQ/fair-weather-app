@@ -1,12 +1,13 @@
 .current-conditions {
     background-color: cornflowerblue;
     border-radius: 0.7rem;
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     margin: 2rem 0 0.5rem 0;
     min-width: 300px;
+    box-shadow: -1px 1px 1px blue, -4px 4px 4px blue;
 }
 
 .current-conditions li img {
@@ -28,4 +29,29 @@
 .current-conditions .time {
     font-weight: bold;
     font-size: 1.2rem;
+}
+
+.current-conditions table,
+.current-conditions th,
+.current-conditions td {
+    font-size: 0.8rem;
+}
+
+
+.current-conditions tbody,
+.current-conditions th {
+    text-align: initial;
+}
+
+.current-conditions .table-header {
+    text-align: center;
+}
+
+th {
+    font-weight: normal;
+}
+
+.table-header {
+    font-weight: bold;
+    text-align: center;
 }
