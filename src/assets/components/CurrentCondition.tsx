@@ -62,7 +62,43 @@ export default function CurrentCondition({
         </li>
         <li>UV: {uvIndex}</li>
         {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}
-        <li>{condition}</li>
+        <table>
+          <thead>
+            <tr>
+              <th colSpan={2} className="table-header">
+                {condition}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Rain:</th>
+              <td>
+                {rain ? "Yes" : "No"} ({rainChance}%)
+              </td>
+            </tr>
+            <tr>
+              <th>Avg. Temp:</th>
+              <td>{avgTemperature}°C</td>
+            </tr>
+            <tr>
+              <th>Temp Range:</th>
+              <td>
+                {minTemperature}°C - {maxTemperature}°C
+              </td>
+            </tr>
+            <tr>
+              <th>Rain:</th>
+              <td>{maxWindSpeed}mph</td>
+            </tr>
+            <tr>
+              <th>Avg. View:</th>
+              <td>{avgVisability} miles</td>
+            </tr>
+          </tbody>
+        </table>
+
+        {/*         <li>{condition}</li>
         <li>
           Rain: {rain ? "Yes" : "No"} ({rainChance}%)
         </li>
@@ -71,7 +107,7 @@ export default function CurrentCondition({
           Temp Range: {minTemperature}°C - {maxTemperature}°C
         </li>
         <li>Max Wind: {maxWindSpeed}mph</li>
-        <li>Avg. Visability: {avgVisability} miles</li>
+        <li>Avg. Visability: {avgVisability} miles</li> */}
       </ul>
     </div>
   );
