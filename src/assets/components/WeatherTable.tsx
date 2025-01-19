@@ -18,7 +18,7 @@ export default function WeatherTable({
   const [rainChance, setRainChance] = useState<number>(0);
   const [feelsLike, setFeelsLike] = useState<number>(0);
   const [windSpeed, setWindSpeed] = useState<number>(0);
-  const [gustSpeed, setgustSpeed] = useState<number>(0);
+  // const [gustSpeed, setgustSpeed] = useState<number>(0);
   const [uvIndex, setUvIndex] = useState<number>(0);
   const [visability, setVisability] = useState<number>(0);
 
@@ -29,7 +29,7 @@ export default function WeatherTable({
     const wind: number = hour.wind_mph;
     const rainChance: number = hour.chance_of_rain;
     const rain: number = hour.will_it_rain;
-    const gust: number = hour.gust_mph;
+    // const gust: number = hour.gust_mph;
     const uv: number = hour.uv;
     const visability: number = hour.vis_miles;
     setCondition(weather);
@@ -38,7 +38,7 @@ export default function WeatherTable({
     setTemperature(temp);
     setFeelsLike(tempLike);
     setWindSpeed(wind);
-    setgustSpeed(gust);
+    // setgustSpeed(gust);
     setUvIndex(uv);
     setVisability(visability);
   };
@@ -52,7 +52,9 @@ export default function WeatherTable({
     <table id="weather-details-desktop">
       <thead>
         <tr>
-          <th colSpan={2}>{condition}</th>
+          <th colSpan={2} className="table-header">
+            {condition}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -72,7 +74,7 @@ export default function WeatherTable({
         <tr>
           <th>Wind:</th>
           <td>
-            {windSpeed}mph ({gustSpeed}mph)
+            {windSpeed}mph {/* ({gustSpeed}mph) */}
           </td>
         </tr>
         <tr>
