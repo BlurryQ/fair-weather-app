@@ -7,7 +7,7 @@
     flex-direction: column;
     margin: 2rem 0 0.5rem 0;
     min-width: 300px;
-    box-shadow: -1px 1px 1px blue, -4px 4px 4px blue;
+    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
 }
 
 .current-conditions li img {

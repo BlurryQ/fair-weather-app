@@ -7,6 +7,7 @@
     text-align: center;
     height: min-content;
     align-self: center;
+    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
 }
 
 @media only screen and (max-width: 850px) {

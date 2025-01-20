@@ -1,4 +1,6 @@
 :root {
+    --shadow-colour: rgb(50, 50, 50);
+
     font-size: 2rem;
 }
 
