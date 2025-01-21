@@ -4,6 +4,12 @@
     margin: 0.5rem 0;
 }
 
+.date-selector button {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
 .hidden {
     visibility: hidden;
 }
