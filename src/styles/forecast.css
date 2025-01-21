@@ -14,6 +14,7 @@
     margin: 1rem 0;
     min-width: 300px;
     box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    height: 645px;
 }
 
 .forecast span {
@@ -137,6 +138,7 @@
         align-items: center;
         grid-template-columns: 75px 1fr 10px;
         grid-template-rows: 180px;
+        height: fit-content;
     }
 
     .forecast .time {
