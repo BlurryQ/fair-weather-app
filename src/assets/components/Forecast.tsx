@@ -54,9 +54,17 @@ export default function Forecast({ hour }: { hour: HourProp }): JSX.Element {
       />
 
       <div data-hour-id={hour.time_epoch} className="weather-images">
-        {images.map((image) => {
-          const alt = image.split("/")[2];
-          return <img key={image} className="dog" src={image} alt={alt} />;
+        {images.map((image: string, i: number) => {
+          const alt: string = image.split("/")[3];
+          const imageClass: string = alt ? "dog" : "dog opaque";
+          return (
+            <img
+              key={`${image}-${i}`}
+              className={imageClass}
+              src={image}
+              alt={alt}
+            />
+          );
         })}
       </div>
 
