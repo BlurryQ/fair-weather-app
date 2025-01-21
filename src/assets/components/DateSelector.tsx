@@ -8,6 +8,7 @@ export default function DateSelector({
   top: boolean;
   dateSelectorProp: DateSelectorProp;
 }): JSX.Element {
+  const topSelector = document.getElementById("top-date-selector");
   //   ms in one dayt
   const oneDay: number = 1000 * 60 * 60 * 24;
 
@@ -26,9 +27,8 @@ export default function DateSelector({
     setDateEpoch(previousDay);
     setDateString(new Date(previousDay).toDateString());
 
-    const topSelector = document.getElementById("top-date-selector");
     if (topSelector) {
-      topSelector.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
+      topSelector.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -38,27 +38,26 @@ export default function DateSelector({
     setDateEpoch(nextDay);
     setDateString(new Date(nextDay).toDateString());
 
-    const topSelector = document.getElementById("top-date-selector");
     if (topSelector) {
-      topSelector.scrollIntoView({ behavior: "smooth" }); // Smooth scroll
+      topSelector.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
     <div id={top ? "top-date-selector" : ""} className="date-selector">
-      <span
+      <button
         onClick={previousDate}
         className={`date-scroll ${chosenIndex === 0 ? "hidden" : null}`}
       >
         &lt;
-      </span>
+      </button>
       {dateString}
-      <span
+      <button
         onClick={nextDate}
         className={`date-scroll ${chosenIndex === 2 ? "hidden" : null}`}
       >
         &gt;
-      </span>
+      </button>
     </div>
   );
 }
