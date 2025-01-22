@@ -5,7 +5,7 @@ export default function showWeatherDetails(e: React.MouseEvent<HTMLDivElement>):
     const hourID: string = target.dataset.hourId
         ?? (target.parentNode as HTMLElement | null)?.dataset?.hourId
         ?? "";
-    const weatherCard = document.querySelector(`[data-hour-id="${hourID}"`) as HTMLFormElement
+    const weatherCard: HTMLFormElement = document.querySelector(`[data-hour-id="${hourID}"]`) as HTMLFormElement
 
     const tableData: HTMLElement | null = weatherCard.querySelector("#weather-details-desktop")
     const displayLocation: HTMLElement | null = weatherCard.querySelector("#weather-details-mobile")
