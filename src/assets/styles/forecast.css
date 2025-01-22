@@ -14,6 +14,8 @@
     margin: 1rem 0;
     min-width: 300px;
     box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    width: 95%;
+    justify-self: center;
 }
 
 .forecast span {
@@ -47,6 +49,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.2rem;
+    justify-items: center;
 }
 
 .forecast .time {
@@ -194,15 +197,42 @@
     }
 }
 
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 630px) {
     .weather-images {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .forecast .dog {
+        width: 57%;
     }
 }
 
 
-@media only screen and (max-width: 430px) {
+@media only screen and (max-width: 550px) {
     .weather-images {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .forecast .dog {
+        width: 65%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .forecast .dog {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 460px) {
+    .forecast .dog {
+        width: 90%;
+    }
+}
+
+
+@media only screen and (max-width: 410px) {
+    .forecast .dog {
+        width: 100%;
     }
 }
