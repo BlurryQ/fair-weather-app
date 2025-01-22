@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/forecast.css';
 
 import { HourProp } from '../types/HourProp';
@@ -7,7 +7,17 @@ import WeatherTable from './WeatherTable';
 import showWeatherDetails from '../utils/showWeatherDetails';
 import DogGrid from './DogGrid';
 
-export default function Forecast({ hour }: { hour: HourProp }): JSX.Element {
+export default function Forecast({
+  hour,
+  index,
+  chosenIndex,
+  setChosenIndex,
+}: {
+  hour: HourProp;
+  index: number;
+  chosenIndex: number;
+  setChosenIndex: React.Dispatch<React.SetStateAction<number>>;
+}): JSX.Element {
   if (!hour) return <></>;
   const [condition, setCondition] = useState<string>('');
   const [conditionIcon, setConditionIcon] = useState<string>('');
@@ -25,6 +35,16 @@ export default function Forecast({ hour }: { hour: HourProp }): JSX.Element {
     if (!hour) return;
     setWeatherData(hour);
   }, [hour]);
+
+  const handleChange = (direct: string) => {
+    if (direct === 'left') {
+      setChosenIndex(chosenIndex - 1);
+    } else {
+      setTimeout(() => {
+        setChosenIndex(chosenIndex + 1);
+      }, 1000);
+    }
+  };
 
   const today: Date = new Date(hour.time_epoch * 1000);
   const todaysHours: number = today.getHours();
@@ -58,6 +78,12 @@ export default function Forecast({ hour }: { hour: HourProp }): JSX.Element {
 
       <span id="carrat" className="down"></span>
       <table id="weather-details-mobile"></table>
+      {index === 1 ? (
+        <>
+          <button onClick={() => handleChange('left')}>&lt;</button>
+          <button onClick={() => handleChange('right')}>&gt;</button>
+        </>
+      ) : null}
     </div>
   );
 }
