@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import "../../styles/currentConditions.css";
+import { useEffect, useState } from 'react';
+import '../styles/currentConditions.css';
 
-import { WeatherDataProp } from "../types/WeatherDataProp";
+import { WeatherDataProp } from '../types/WeatherDataProp';
 
 export default function CurrentCondition({
   weatherData,
 }: {
   weatherData: WeatherDataProp | null;
 }): JSX.Element {
-  const [condition, setCondition] = useState<string>("");
-  const [conditionIcon, setConditionIcon] = useState<string>("");
+  const [condition, setCondition] = useState<string>('');
+  const [conditionIcon, setConditionIcon] = useState<string>('');
   const [rain, setRain] = useState<number>(0);
   const [rainChance, setRainChance] = useState<number>(0);
   const [minTemperature, setMinTemperature] = useState<number>(0);
@@ -27,7 +27,7 @@ export default function CurrentCondition({
   const today: Date = new Date();
   const todaysHours: number = today.getHours();
   const todaysMinutes: number | string =
-    today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes();
+    today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes();
 
   const setWeatherData = (weatherData: WeatherDataProp) => {
     const weatherObj = weatherData.forecast.forecastday[0].day;
@@ -74,7 +74,7 @@ export default function CurrentCondition({
             <tr>
               <th>Rain:</th>
               <td>
-                {rain ? "Yes" : "No"} ({rainChance}%)
+                {rain ? 'Yes' : 'No'} ({rainChance}%)
               </td>
             </tr>
             <tr>

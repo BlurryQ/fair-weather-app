@@ -1,5 +1,5 @@
-import "../../styles/dateSelector.css";
-import { DateSelectorProp } from "../types/DateSelectorProp";
+import '../styles/dateSelector.css';
+import { DateSelectorProp } from '../types/DateSelectorProp';
 
 export default function DateSelector({
   top,
@@ -8,7 +8,7 @@ export default function DateSelector({
   top: boolean;
   dateSelectorProp: DateSelectorProp;
 }): JSX.Element {
-  const topSelector = document.getElementById("top-date-selector");
+  const topSelector = document.getElementById('top-date-selector');
   //   ms in one dayt
   const oneDay: number = 1000 * 60 * 60 * 24;
 
@@ -28,7 +28,7 @@ export default function DateSelector({
     setDateString(new Date(previousDay).toDateString());
 
     if (topSelector) {
-      topSelector.scrollIntoView({ behavior: "smooth" });
+      topSelector.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -39,22 +39,22 @@ export default function DateSelector({
     setDateString(new Date(nextDay).toDateString());
 
     if (topSelector) {
-      topSelector.scrollIntoView({ behavior: "smooth" });
+      topSelector.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <div id={top ? "top-date-selector" : ""} className="date-selector">
+    <div id={top ? 'top-date-selector' : ''} className="date-selector">
       <button
         onClick={previousDate}
-        className={`date-scroll ${chosenIndex === 0 ? "hidden" : null}`}
+        className={`date-scroll ${chosenIndex === 0 ? 'hidden' : null}`}
       >
         &lt;
       </button>
       {dateString}
       <button
         onClick={nextDate}
-        className={`date-scroll ${chosenIndex === 2 ? "hidden" : null}`}
+        className={`date-scroll ${chosenIndex === 2 ? 'hidden' : null}`}
       >
         &gt;
       </button>

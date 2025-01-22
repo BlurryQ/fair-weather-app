@@ -1,7 +1,7 @@
-import "../../styles/location.css";
+import '../styles/location.css';
 
 // types
-import { Autocomplete } from "../types/Autocomplete";
+import { Autocomplete } from '../types/Autocomplete';
 type LocationListProps = {
   autocomplete: Autocomplete[];
   setAutocomplete: React.Dispatch<React.SetStateAction<Autocomplete[] | null>>;
@@ -21,7 +21,7 @@ export default function LocationList({
   const selectLocation = (e: any) => {
     const location: string = e.target.textContent;
     const latLon: string = e.target.attributes.value.value;
-    const [lat, lon]: string[] = latLon.split(" ");
+    const [lat, lon]: string[] = latLon.split(' ');
     setAutocomplete(null);
     setLongitude(Number(lon));
     setLatitude(Number(lat));
