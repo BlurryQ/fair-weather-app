@@ -24,7 +24,11 @@ export default function LocationInput({
   // Once location is typed and is 4 or more chars
   useEffect(() => {
     if (typedLocation.length < 4) return;
-    getAutocompleteWeather(setAutocomplete, typedLocation);
+    getAutocompleteWeather(typedLocation)
+      .then((data) => {
+        setAutocomplete(data.data);
+      })
+      .catch((err) => console.error(err));
   }, [typedLocation]);
 
   // on input change update input and run useEffect
