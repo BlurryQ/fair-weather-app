@@ -6,10 +6,13 @@
     margin-top: 2rem;
     border: 2px solid grey;
     box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    width: 80%;
+    justify-self: center;
 }
 
 @media only screen and (max-width: 768px) {
     .header {
+        width: 95%;
         margin-top: 1rem;
     }
 }

@@ -8,6 +8,7 @@
     margin: 2rem 0 0.5rem 0;
     min-width: 300px;
     box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    max-width: 95%
 }
 
 .current-conditions li img {

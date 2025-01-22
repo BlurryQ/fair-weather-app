@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import "../../styles/forecast.css";
+import { useEffect, useState } from 'react';
+import '../styles/forecast.css';
 
-import { HourProp } from "../types/HourProp";
-import getImages from "../utils/getImages";
-import WeatherTable from "./WeatherTable";
-import showWeatherDetails from "../utils/showWeatherDetails";
+import { HourProp } from '../types/HourProp';
+import getImages from '../utils/getImages';
+import WeatherTable from './WeatherTable';
+import showWeatherDetails from '../utils/showWeatherDetails';
 
 export default function Forecast({ hour }: { hour: HourProp }): JSX.Element {
   if (!hour) return <></>;
-  const [condition, setCondition] = useState<string>("");
-  const [conditionIcon, setConditionIcon] = useState<string>("");
+  const [condition, setCondition] = useState<string>('');
+  const [conditionIcon, setConditionIcon] = useState<string>('');
   const [temperature, setTemperature] = useState<number>(0);
 
   const setWeatherData = (hour: HourProp) => {
@@ -55,8 +55,8 @@ export default function Forecast({ hour }: { hour: HourProp }): JSX.Element {
 
       <div data-hour-id={hour.time_epoch} className="weather-images">
         {images.map((image: string, i: number) => {
-          const alt: string = image.split("/")[3];
-          const imageClass: string = alt ? "dog" : "dog opaque";
+          const alt: string = image.split('/')[3];
+          const imageClass: string = alt ? 'dog' : 'dog opaque';
           return (
             <img
               key={`${image}-${i}`}
