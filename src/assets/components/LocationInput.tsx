@@ -10,6 +10,7 @@ type LocationInputProps = {
   setLatitude: React.Dispatch<React.SetStateAction<number>>;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
   setLongitude: React.Dispatch<React.SetStateAction<number>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function LocationInput({
@@ -17,6 +18,7 @@ export default function LocationInput({
   setLatitude,
   location,
   setLocation,
+  setLoading,
 }: LocationInputProps): JSX.Element {
   const [typedLocation, setTypedLocation] = useState<string>('');
   const [autocomplete, setAutocomplete] = useState<Autocomplete[] | null>(null);
@@ -24,7 +26,8 @@ export default function LocationInput({
   // Once location is typed and is 4 or more chars
   useEffect(() => {
     if (typedLocation.length < 4) return;
-    getAutocompleteWeather(setAutocomplete, typedLocation);
+    setLoading(true);
+    getAutocompleteWeather(setAutocomplete, typedLocation, setLoading);
   }, [typedLocation]);
 
   // on input change update input and run useEffect
