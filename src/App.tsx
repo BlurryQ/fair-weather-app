@@ -1,28 +1,28 @@
-import { useEffect, useState } from "react";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import './App.css';
 
 // react components
-import Header from "./assets/components/Header";
-import SunInfo from "./assets/components/SunInfo";
-import CurrentCondition from "./assets/components/CurrentCondition";
+import Header from './assets/components/Header';
+import SunInfo from './assets/components/SunInfo';
+import CurrentCondition from './assets/components/CurrentCondition';
 
 // utils
-import removeUnwantedHours from "./assets/utils/removeUnwantedHours";
+import removeUnwantedHours from './assets/utils/removeUnwantedHours';
 
 // types
-import { SunInfoProp } from "./assets/types/SunInfoProp";
-import { WeatherDataProp } from "./assets/types/WeatherDataProp";
-import Location from "./assets/components/Location";
-import { HoursOverview } from "./assets/types/HoursOverview";
-import HourlyWeather from "./assets/components/HourlyWeather";
-import DateSelector from "./assets/components/DateSelector";
-import { DateSelectorProp } from "./assets/types/DateSelectorProp";
+import { SunInfoProp } from './assets/types/SunInfoProp';
+import { WeatherDataProp } from './assets/types/WeatherDataProp';
+import Location from './assets/components/Location';
+import { HoursOverview } from './assets/types/HoursOverview';
+import HourlyWeather from './assets/components/HourlyWeather';
+import DateSelector from './assets/components/DateSelector';
+import { DateSelectorProp } from './assets/types/DateSelectorProp';
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [sunriseTime, setSunriseTime] = useState<SunInfoProp | null>(null);
   const [sunsetTime, setSunsetTime] = useState<SunInfoProp | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherDataProp | null>(null);
-
   const [chosenIndex, setChosenIndex] = useState<number>(0);
   const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
   const [dateString, setDateString] = useState<string>(
@@ -46,11 +46,11 @@ function App() {
     if (!weatherData) return;
     const sunrise: SunInfoProp = {
       time: weatherData.forecast.forecastday[0].astro.sunrise,
-      type: "rise",
+      type: 'rise',
     };
     const sunset: SunInfoProp = {
       time: weatherData.forecast.forecastday[0].astro.sunset,
-      type: "set",
+      type: 'set',
     };
     setSunriseTime(sunrise);
     setSunsetTime(sunset);
@@ -73,10 +73,14 @@ function App() {
   return (
     <>
       <Header />
-      <Location setWeatherData={setWeatherData} />
+      <Location setWeatherData={setWeatherData} setLoading={setLoading} />
       <div className="current-overview">
         {!weatherData || !sunriseTime || !sunsetTime ? (
-          <h2>Click the pin or enter your location...</h2>
+          loading ? (
+            <h2>Loading data...</h2>
+          ) : (
+            <h2>Click the pin or enter your location...</h2>
+          )
         ) : (
           <>
             <SunInfo sunData={sunriseTime} />

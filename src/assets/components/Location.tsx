@@ -11,8 +11,10 @@ import { getLatandLongWeather } from '../models/weatherModel';
 
 export default function Location({
   setWeatherData,
+  setLoading,
 }: {
   setWeatherData: React.Dispatch<React.SetStateAction<WeatherDataProp | null>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element {
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
@@ -21,7 +23,15 @@ export default function Location({
   // Once longitude is updated get geolocation data
   useEffect(() => {
     if (longitude === 0 && latitude === 0) return;
-    getLatandLongWeather(latitude, longitude, setWeatherData, setLocation);
+    setLoading(true);
+    getLatandLongWeather(latitude, longitude)
+      .then(({ data }) => {
+        setWeatherData(data);
+        const townAndRegion: string = `${data.location.name}, ${data.location.region}`;
+        setLocation(townAndRegion);
+        setLoading(false);
+      })
+      .catch((err) => console.error(err));
   }, [longitude]);
 
   // ask user for permission, or if browser unable to alert user
