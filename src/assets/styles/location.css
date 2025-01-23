@@ -4,7 +4,7 @@
 }
 
 .location {
-    margin-top: -0.4rem;
+    margin-top: -0.45rem;
     margin-left: 55%;
 }
 
@@ -79,6 +79,7 @@
 
     .location {
         margin-left: 12%;
+        margin-top: -0.65rem;
     }
 }
 
