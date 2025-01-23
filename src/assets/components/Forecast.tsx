@@ -40,9 +40,7 @@ export default function Forecast({
     if (direct === 'left') {
       setChosenIndex(chosenIndex - 1);
     } else {
-      setTimeout(() => {
-        setChosenIndex(chosenIndex + 1);
-      }, 1000);
+      setChosenIndex(chosenIndex + 1);
     }
   };
 
@@ -50,11 +48,16 @@ export default function Forecast({
   const todaysHours: number = today.getHours();
   const images: string[] = getImages(hour);
 
+  let className: string = 'forecast';
+  if (index === 0) className += ' left';
+  else if (index === 1) className += ' center';
+  else if (index === 2) className += ' right';
+
   return (
     <div
       data-hour-id={hour.time_epoch}
       onClick={showWeatherDetails}
-      className="forecast"
+      className={className}
     >
       <span data-hour-id={hour.time_epoch} className="weather-overview">
         <p className="time">{todaysHours}:00</p>
