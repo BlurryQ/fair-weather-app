@@ -1,5 +1,5 @@
 .weather {
-    display: grid;
+    /* display: grid; */
     gap: 1rem;
     grid-template-columns: repeat(3, 25vw);
     justify-content: center;
@@ -235,4 +235,38 @@
     .forecast .dog {
         width: 100%;
     }
+}
+
+.weather {
+    position: relative;
+    height: 750px;
+    width: 80%;
+    left: 10%;
+    margin-bottom: 3rem; 
+}
+
+.left,
+.right {
+    transition: 0.5s ease-in-out;
+    scale: 85%;
+    z-index: -1;
+}
+
+.left {
+    left: calc(50% - 356px / 2 * 3);
+}
+
+.right {
+    left: calc(50% + 356px / 2);
+}
+
+.center {
+    transition: 0.5s ease-in-out;
+    left: calc(50% - 356px / 2);
+    z-index: 2;
+}
+
+.forecast {
+    position: absolute;
+    width: 356px;
 }
