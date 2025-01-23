@@ -19,11 +19,10 @@ import DateSelector from './assets/components/DateSelector';
 import { DateSelectorProp } from './assets/types/DateSelectorProp';
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(false);
   const [sunriseTime, setSunriseTime] = useState<SunInfoProp | null>(null);
   const [sunsetTime, setSunsetTime] = useState<SunInfoProp | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherDataProp | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
   const [chosenIndex, setChosenIndex] = useState<number>(0);
   const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
   const [dateString, setDateString] = useState<string>(

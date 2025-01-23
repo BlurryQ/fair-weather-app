@@ -24,13 +24,14 @@ export default function Location({
   useEffect(() => {
     if (longitude === 0 && latitude === 0) return;
     setLoading(true);
-    getLatandLongWeather(
-      latitude,
-      longitude,
-      setWeatherData,
-      setLocation,
-      setLoading
-    );
+    getLatandLongWeather(latitude, longitude)
+      .then(({ data }) => {
+        setWeatherData(data);
+        const townAndRegion: string = `${data.location.name}, ${data.location.region}`;
+        setLocation(townAndRegion);
+        setLoading(false);
+      })
+      .catch((err) => console.error(err));
   }, [longitude]);
 
   // ask user for permission, or if browser unable to alert user
