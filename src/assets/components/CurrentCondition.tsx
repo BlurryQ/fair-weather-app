@@ -88,7 +88,7 @@ export default function CurrentCondition({
               </td>
             </tr>
             <tr>
-              <th>Rain:</th>
+              <th>Wind:</th>
               <td>{maxWindSpeed}mph</td>
             </tr>
             <tr>
