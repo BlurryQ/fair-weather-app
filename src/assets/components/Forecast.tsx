@@ -7,6 +7,8 @@ import getImages from '../utils/getImages';
 import WeatherTable from './WeatherTable';
 import showWeatherDetails from '../utils/showWeatherDetails';
 import DogGrid from './DogGrid';
+import NavButtons from './NavButtons';
+import getClassName from '../utils/getClassName';
 
 export default function Forecast({
   hour,
@@ -39,24 +41,10 @@ export default function Forecast({
     setWeatherData(hour);
   }, [hour]);
 
-  const handleChange = (direct: string) => {
-    if (direct === 'left') {
-      setChosenHour(chosenHour - 1);
-    } else {
-      setChosenHour(chosenHour + 1);
-    }
-  };
-
   const today: Date = new Date(hour.time_epoch * 1000);
   const todaysHours: number = today.getHours();
   const images: string[] = getImages(hour);
-
-  let className: string = 'forecast';
-  if (index === 0) className += ' far-left';
-  if (index === 4) className += ' far-right';
-  if (index === 0 || index === 1) className += ' left';
-  else if (index === 2) className += ' center';
-  else if (index === 3 || index === 4) className += ' right';
+  const className = getClassName(index);
 
   return (
     <div
@@ -88,22 +76,11 @@ export default function Forecast({
       <table id="weather-details-mobile"></table>
 
       {index === 2 ? (
-        <>
-          {displayNavButton.left ? (
-            <button className="move-left" onClick={() => handleChange('left')}>
-              &lt;
-            </button>
-          ) : null}
-
-          {displayNavButton.right ? (
-            <button
-              className="move-right"
-              onClick={() => handleChange('right')}
-            >
-              &gt;
-            </button>
-          ) : null}
-        </>
+        <NavButtons
+          chosenHour={chosenHour}
+          setChosenHour={setChosenHour}
+          displayNavButton={displayNavButton}
+        />
       ) : null}
     </div>
   );
