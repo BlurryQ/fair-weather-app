@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../styles/forecast.css';
 
 import { HourProp } from '../types/HourProp';
+import { DisplayNavButtons } from '../types/DisplayNavButtons';
 import getImages from '../utils/getImages';
 import WeatherTable from './WeatherTable';
 import showWeatherDetails from '../utils/showWeatherDetails';
@@ -10,13 +11,15 @@ import DogGrid from './DogGrid';
 export default function Forecast({
   hour,
   index,
-  chosenIndex,
-  setChosenIndex,
+  chosenHour,
+  setChosenHour,
+  displayNavButton,
 }: {
   hour: HourProp;
   index: number;
-  chosenIndex: number;
-  setChosenIndex: React.Dispatch<React.SetStateAction<number>>;
+  chosenHour: number;
+  setChosenHour: React.Dispatch<React.SetStateAction<number>>;
+  displayNavButton: DisplayNavButtons;
 }): JSX.Element {
   if (!hour) return <></>;
   const [condition, setCondition] = useState<string>('');
@@ -38,9 +41,9 @@ export default function Forecast({
 
   const handleChange = (direct: string) => {
     if (direct === 'left') {
-      setChosenIndex(chosenIndex - 1);
+      setChosenHour(chosenHour - 1);
     } else {
-      setChosenIndex(chosenIndex + 1);
+      setChosenHour(chosenHour + 1);
     }
   };
 
@@ -49,9 +52,11 @@ export default function Forecast({
   const images: string[] = getImages(hour);
 
   let className: string = 'forecast';
-  if (index === 0) className += ' left';
-  else if (index === 1) className += ' center';
-  else if (index === 2) className += ' right';
+  if (index === 0) className += ' far-left';
+  if (index === 4) className += ' far-right';
+  if (index === 0 || index === 1) className += ' left';
+  else if (index === 2) className += ' center';
+  else if (index === 3 || index === 4) className += ' right';
 
   return (
     <div
@@ -81,10 +86,23 @@ export default function Forecast({
 
       <span id="carrat" className="down"></span>
       <table id="weather-details-mobile"></table>
-      {index === 1 ? (
+
+      {index === 2 ? (
         <>
-          <button onClick={() => handleChange('left')}>&lt;</button>
-          <button onClick={() => handleChange('right')}>&gt;</button>
+          {displayNavButton.left ? (
+            <button className="move-left" onClick={() => handleChange('left')}>
+              &lt;
+            </button>
+          ) : null}
+
+          {displayNavButton.right ? (
+            <button
+              className="move-right"
+              onClick={() => handleChange('right')}
+            >
+              &gt;
+            </button>
+          ) : null}
         </>
       ) : null}
     </div>
