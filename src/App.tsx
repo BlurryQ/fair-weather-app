@@ -13,34 +13,36 @@ import removeUnwantedHours from './assets/utils/removeUnwantedHours';
 import { SunInfoProp } from './assets/types/SunInfoProp';
 import { WeatherDataProp } from './assets/types/WeatherDataProp';
 import Location from './assets/components/Location';
-import { HoursOverview } from './assets/types/HoursOverview';
 import HourlyWeather from './assets/components/HourlyWeather';
 import DateSelector from './assets/components/DateSelector';
 import { DateSelectorProp } from './assets/types/DateSelectorProp';
+import { HourProp } from './assets/types/HourProp';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(false);
   const [sunriseTime, setSunriseTime] = useState<SunInfoProp | null>(null);
   const [sunsetTime, setSunsetTime] = useState<SunInfoProp | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherDataProp | null>(null);
-  const [chosenIndex, setChosenIndex] = useState<number>(0);
+  const [chosenDay, setChosenDay] = useState<number>(0);
+  const [chosenHour, setChosenHour] = useState<number>(1);
   const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
   const [dateString, setDateString] = useState<string>(
     new Date().toDateString()
   );
 
   const dateSelectorProp: DateSelectorProp = {
-    chosenIndex,
-    setChosenIndex,
+    chosenDay,
+    setChosenDay,
     dateEpoch,
     setDateEpoch,
     dateString,
     setDateString,
+    setChosenHour,
   };
 
-  const [threeDayWeather, setThreeDayWeather] = useState<
-    HoursOverview[] | null
-  >(null);
+  const [threeDayWeather, setThreeDayWeather] = useState<HourProp[][] | null>(
+    null
+  );
 
   useEffect(() => {
     if (!weatherData) return;
@@ -55,14 +57,14 @@ function App() {
     setSunriseTime(sunrise);
     setSunsetTime(sunset);
 
-    const todaysHours: HoursOverview | null =
+    const todaysHours: HourProp[] | null =
       weatherData.forecast.forecastday[0].hour;
-    const tomorrowsHours: HoursOverview | null =
+    const tomorrowsHours: HourProp[] | null =
       weatherData.forecast.forecastday[1].hour;
-    const dayAftersHours: HoursOverview | null =
+    const dayAftersHours: HourProp[] | null =
       weatherData.forecast.forecastday[2].hour;
 
-    const forecast: HoursOverview[] = [
+    const forecast: HourProp[][] = [
       todaysHours,
       tomorrowsHours,
       dayAftersHours,
@@ -92,7 +94,11 @@ function App() {
       {threeDayWeather ? (
         <>
           <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
-          <HourlyWeather hours={threeDayWeather[chosenIndex]} />
+          <HourlyWeather
+            hours={threeDayWeather[chosenDay]}
+            chosenHour={chosenHour}
+            setChosenHour={setChosenHour}
+          />
           <DateSelector top={false} dateSelectorProp={dateSelectorProp} />
         </>
       ) : null}

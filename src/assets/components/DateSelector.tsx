@@ -13,17 +13,19 @@ export default function DateSelector({
   const oneDay: number = 1000 * 60 * 60 * 24;
 
   const {
-    chosenIndex,
-    setChosenIndex,
+    chosenDay,
+    setChosenDay,
     dateEpoch,
     setDateEpoch,
     dateString,
     setDateString,
+    setChosenHour,
   } = dateSelectorProp;
 
   const previousDate = () => {
     const previousDay: number = dateEpoch - oneDay;
-    setChosenIndex(chosenIndex - 1);
+    setChosenHour(1);
+    setChosenDay(chosenDay - 1);
     setDateEpoch(previousDay);
     setDateString(new Date(previousDay).toDateString());
 
@@ -34,7 +36,8 @@ export default function DateSelector({
 
   const nextDate = () => {
     const nextDay: number = dateEpoch + oneDay;
-    setChosenIndex(chosenIndex + 1);
+    setChosenHour(1);
+    setChosenDay(chosenDay + 1);
     setDateEpoch(nextDay);
     setDateString(new Date(nextDay).toDateString());
 
@@ -47,14 +50,14 @@ export default function DateSelector({
     <div id={top ? 'top-date-selector' : ''} className="date-selector">
       <button
         onClick={previousDate}
-        className={`date-scroll ${chosenIndex === 0 ? 'hidden' : null}`}
+        className={`date-scroll ${chosenDay === 0 ? 'hidden' : null}`}
       >
         &lt;
       </button>
       {dateString}
       <button
         onClick={nextDate}
-        className={`date-scroll ${chosenIndex === 2 ? 'hidden' : null}`}
+        className={`date-scroll ${chosenDay === 2 ? 'hidden' : null}`}
       >
         &gt;
       </button>
