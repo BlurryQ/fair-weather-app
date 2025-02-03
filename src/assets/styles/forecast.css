@@ -1,5 +1,5 @@
 .weather {
-    /* display: grid; */
+    display: grid;
     gap: 1rem;
     grid-template-columns: repeat(3, 25vw);
     justify-content: center;
@@ -57,10 +57,6 @@
     font-size: 1.2rem;
 }
 
-.tommorowBG {
-    background-color: darkseagreen;
-}
-
 .show {
     display: block;
 }
@@ -98,7 +94,6 @@
     display: none;
 }
 
-
 .forecast tbody,
 .forecast th {
     text-align: initial;
@@ -108,13 +103,83 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 1200px) {
+
+@media only screen and (min-width: 1050px) {
+    .forecast {
+        position: absolute;
+        width: 356px;
+    }
+
     .weather {
-        grid-template-columns: repeat(2, 40vw);
+        display: block;
+        position: relative;
+        height: 700px;
+        width: 80%;
+        left: 10%;
+    }
+
+    .move-right,
+    .move-left {
+        font-size: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        position: absolute;
+        top: 48%;
+        box-shadow: -1px 1px 1px var(--shadow-colour), -2px 2px 2px var(--shadow-colour);
+    }
+
+    .move-left {
+        left: -0.5rem;
+    }
+
+    .move-right {
+        right: -0.5rem;
+    }
+
+    .left,
+    .right {
+        transition: 0.5s ease-in-out;
+        scale: 85%;
+    }
+    
+    .far-left {
+        z-index: -3;  
+    }
+    
+    .left {
+        z-index: -1;
+    }
+    
+    .right {
+        z-index: -1;
+    }
+    
+    .far-right {
+        z-index: -3;  
+    }
+    
+    .left {
+        left: calc(50% - 356px / 2 * 3);
+    }
+    
+    .right {
+        left: calc(50% + 356px / 2);
+    }
+    
+    .center {
+        transition: 0.5s ease-in-out;
+        left: calc(50% - 356px / 2);
+        z-index: 2;
     }
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 767px) {
+    .move-right,
+    .move-left {
+        display: none;
+    }
 
     .up,
     .down {
@@ -176,7 +241,7 @@
 
 
     .forecast td {
-    padding-left: 1rem;
+        padding-left: 1rem;
     }
 
     .show-weather-details {
@@ -237,36 +302,3 @@
     }
 }
 
-.weather {
-    position: relative;
-    height: 750px;
-    width: 80%;
-    left: 10%;
-    margin-bottom: 3rem; 
-}
-
-.left,
-.right {
-    transition: 0.5s ease-in-out;
-    scale: 85%;
-    z-index: -1;
-}
-
-.left {
-    left: calc(50% - 356px / 2 * 3);
-}
-
-.right {
-    left: calc(50% + 356px / 2);
-}
-
-.center {
-    transition: 0.5s ease-in-out;
-    left: calc(50% - 356px / 2);
-    z-index: 2;
-}
-
-.forecast {
-    position: absolute;
-    width: 356px;
-}
