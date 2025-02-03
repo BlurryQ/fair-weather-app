@@ -1,20 +1,44 @@
 import Forecast from './Forecast';
 import { HourProp } from '../types/HourProp';
-import { HoursOverview } from '../types/HoursOverview';
-import { useState } from 'react';
+import { DisplayNavButtons } from '../types/DisplayNavButtons';
 
 export default function HourlyWeather({
   hours,
+  chosenHour,
+  setChosenHour,
 }: {
-  hours: HoursOverview;
+  hours: HourProp[];
+  chosenHour: number;
+  setChosenHour: React.Dispatch<React.SetStateAction<number>>;
 }): JSX.Element {
-  const [chosenIndex, setChosenIndex] = useState<number>(1);
-  console.log(hours);
+  const placeholder: HourProp = {
+    chance_of_rain: 0,
+    condition: {
+      text: '',
+      icon: '',
+    },
+    feelslike_c: 0,
+    wind_mph: 0,
+    gust_mph: 0,
+    temp_c: 0,
+    time: '',
+    time_epoch: 0,
+    uv: 0,
+    vis_miles: 0,
+    will_it_rain: 0,
+  };
+
+  const displayNavButton: DisplayNavButtons = {
+    left: chosenHour > 1,
+    right: chosenHour < hours.length - 2,
+  };
 
   const arrToUse: HourProp[] = [
-    hours[chosenIndex - 1],
-    hours[chosenIndex],
-    hours[chosenIndex + 1],
+    hours[chosenHour - 2] || placeholder,
+    hours[chosenHour - 1],
+    hours[chosenHour],
+    hours[chosenHour + 1],
+    hours[chosenHour + 2] || placeholder,
   ];
 
   return (
@@ -26,8 +50,9 @@ export default function HourlyWeather({
               <Forecast
                 hour={hour}
                 index={index}
-                chosenIndex={chosenIndex}
-                setChosenIndex={setChosenIndex}
+                chosenHour={chosenHour}
+                setChosenHour={setChosenHour}
+                displayNavButton={displayNavButton}
               />
             </div>
           );
