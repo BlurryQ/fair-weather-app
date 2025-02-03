@@ -14,8 +14,8 @@ export default function HourlyWeather({
   const placeholder: HourProp = {
     chance_of_rain: 0,
     condition: {
-      text: '',
-      icon: '',
+      text: 'unknown',
+      icon: '//cdn.weatherapi.com/weather/64x64/day/119.png',
     },
     feelslike_c: 0,
     wind_mph: 0,
