@@ -29,7 +29,7 @@ export default function DateSelector({
     setDateEpoch(previousDay);
     setDateString(new Date(previousDay).toDateString());
 
-    if (topSelector) {
+    if (topSelector && !top) {
       topSelector.scrollIntoView({ behavior: 'smooth' });
     }
   };
@@ -41,7 +41,7 @@ export default function DateSelector({
     setDateEpoch(nextDay);
     setDateString(new Date(nextDay).toDateString());
 
-    if (topSelector) {
+    if (topSelector && !top) {
       topSelector.scrollIntoView({ behavior: 'smooth' });
     }
   };
