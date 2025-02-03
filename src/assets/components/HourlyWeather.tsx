@@ -1,6 +1,7 @@
 import Forecast from './Forecast';
 import { HourProp } from '../types/HourProp';
 import { DisplayNavButtons } from '../types/DisplayNavButtons';
+import { useState } from 'react';
 
 export default function HourlyWeather({
   hours,
@@ -11,6 +12,7 @@ export default function HourlyWeather({
   chosenHour: number;
   setChosenHour: React.Dispatch<React.SetStateAction<number>>;
 }): JSX.Element {
+  const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
   const placeholder: HourProp = {
     chance_of_rain: 0,
     condition: {
@@ -33,13 +35,18 @@ export default function HourlyWeather({
     right: chosenHour < hours.length - 2,
   };
 
-  const arrToUse: HourProp[] = [
-    hours[chosenHour - 2] || placeholder,
-    hours[chosenHour - 1],
-    hours[chosenHour],
-    hours[chosenHour + 1],
-    hours[chosenHour + 2] || placeholder,
-  ];
+  window.addEventListener('resize', () => setWindowSize(window.innerWidth));
+
+  const arrToUse: HourProp[] =
+    windowSize <= 767
+      ? hours
+      : [
+          hours[chosenHour - 2] || placeholder,
+          hours[chosenHour - 1],
+          hours[chosenHour],
+          hours[chosenHour + 1],
+          hours[chosenHour + 2] || placeholder,
+        ];
 
   return (
     <>
