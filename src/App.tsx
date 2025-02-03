@@ -47,11 +47,11 @@ function App() {
   useEffect(() => {
     if (!weatherData) return;
     const sunrise: SunInfoProp = {
-      time: weatherData.forecast.forecastday[0].astro.sunrise,
+      time: weatherData.forecast.forecastday[chosenDay].astro.sunrise,
       type: 'rise',
     };
     const sunset: SunInfoProp = {
-      time: weatherData.forecast.forecastday[0].astro.sunset,
+      time: weatherData.forecast.forecastday[chosenDay].astro.sunset,
       type: 'set',
     };
     setSunriseTime(sunrise);
@@ -70,7 +70,7 @@ function App() {
       dayAftersHours,
     ].map(removeUnwantedHours);
     setThreeDayWeather(forecast);
-  }, [weatherData]);
+  }, [weatherData, chosenDay]);
 
   return (
     <>
@@ -86,7 +86,7 @@ function App() {
         ) : (
           <>
             <SunInfo sunData={sunriseTime} />
-            <CurrentCondition weatherData={weatherData} />
+            <CurrentCondition weatherData={weatherData} chosenDay={chosenDay} />
             <SunInfo sunData={sunsetTime} />
           </>
         )}
