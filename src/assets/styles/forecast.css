@@ -1,3 +1,7 @@
+:root {
+    --weather-card-width: 356px;
+}
+
 .weather {
     display: grid;
     gap: 1rem;
@@ -104,10 +108,17 @@
 }
 
 
-@media only screen and (min-width: 1050px) {
+
+
+@media only screen and (min-width: 768px) {
+    :root {
+        --weather-card-width: 300px;
+    }
+
+
     .forecast {
         position: absolute;
-        width: 356px;
+        width: 300px;
     }
 
     .weather {
@@ -146,6 +157,7 @@
     
     .far-left {
         z-index: -3;  
+        box-shadow: unset;
     }
     
     .left {
@@ -158,21 +170,89 @@
     
     .far-right {
         z-index: -3;  
+        box-shadow: unset;
     }
     
     .left {
-        left: calc(50% - 356px / 2 * 3);
+        left: calc(50% - var(--weather-card-width) / 2 * 3 + 5%);
     }
     
     .right {
-        left: calc(50% + 356px / 2);
+        left: calc(50% + var(--weather-card-width) / 2 - 5%);
     }
     
     .center {
         transition: 0.5s ease-in-out;
-        left: calc(50% - 356px / 2);
+        left: calc(50% - var(--weather-card-width) / 2);
         z-index: 2;
     }
+}
+
+@media only screen and (min-width: 850px) {
+
+    :root {
+        --weather-card-width: 315px;
+    }
+
+    .left {
+        left: calc(50% - var(--weather-card-width) / 2 * 3 + 2%);
+    }
+    
+    .right {
+        left: calc(50% + var(--weather-card-width) / 2 - 2%);
+    }
+   
+}
+
+@media only screen and (min-width: 900px) {
+    :root {
+        --weather-card-width: 315px;
+    }   
+}
+
+@media only screen and (min-width: 950px) {
+    :root {
+        --weather-card-width: 330px;
+    }
+}
+
+@media only screen and (min-width: 1050px) {
+    .forecast {
+        width: var(--weather-card-width)
+    }
+
+    .left {
+        left: calc(50% - var(--weather-card-width) / 2 * 3);
+    }
+    
+    .right {
+        left: calc(50% + var(--weather-card-width) / 2);
+    }
+
+    .center {
+        left: calc(50% - var(--weather-card-width) / 2);
+    }
+   
+}
+
+
+@media only screen and (min-width: 1050px) {
+    :root {
+        --weather-card-width: 360px;
+    }
+
+    .left {
+        left: calc(50% - var(--weather-card-width) / 2 * 3 - 3%);
+    }
+    
+    .right {
+        left: calc(50% + var(--weather-card-width) / 2 + 3%);
+    }
+
+    .center {
+        left: calc(50% - var(--weather-card-width) / 2);
+    }
+   
 }
 
 @media only screen and (max-width: 767px) {
