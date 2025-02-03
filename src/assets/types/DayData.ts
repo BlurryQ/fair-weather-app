@@ -1,5 +1,5 @@
 import { DayOverview } from "./DayOverview"
-import { HoursOverview } from "./HoursOverview"
+import { HourProp } from "./HourProp"
 
 export type DayData = {
     astro: {
@@ -7,5 +7,5 @@ export type DayData = {
         sunset: string,
     },
     day: DayOverview,
-    hour: HoursOverview
+    hour: HourProp[]
 }
