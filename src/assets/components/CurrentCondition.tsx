@@ -5,8 +5,10 @@ import { WeatherDataProp } from '../types/WeatherDataProp';
 
 export default function CurrentCondition({
   weatherData,
+  chosenDay,
 }: {
   weatherData: WeatherDataProp | null;
+  chosenDay: number;
 }): JSX.Element {
   const [condition, setCondition] = useState<string>('');
   const [conditionIcon, setConditionIcon] = useState<string>('');
@@ -22,15 +24,11 @@ export default function CurrentCondition({
   useEffect(() => {
     if (!weatherData) return;
     setWeatherData(weatherData);
-  }, [weatherData]);
+  }, [weatherData, chosenDay]);
 
-  const today: Date = new Date();
-  const todaysHours: number = today.getHours();
-  const todaysMinutes: number | string =
-    today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes();
-
+  // sets all weather data from restAPI
   const setWeatherData = (weatherData: WeatherDataProp) => {
-    const weatherObj = weatherData.forecast.forecastday[0].day;
+    const weatherObj = weatherData.forecast.forecastday[chosenDay].day;
     const weather: string = weatherObj.condition.text;
     const iconData: string = weatherObj.condition.icon;
     const iconURL: string = iconData.substring(2);
@@ -58,7 +56,7 @@ export default function CurrentCondition({
     <div className="current-conditions">
       <ul>
         <li className="time">
-          {todaysHours}:{todaysMinutes}
+          {chosenDay === 0 ? 'Now' : chosenDay === 1 ? 'Tomorrow' : 'Day After'}
         </li>
         <li>UV: {uvIndex}</li>
         {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}

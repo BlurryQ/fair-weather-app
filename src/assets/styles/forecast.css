@@ -1,3 +1,7 @@
+:root {
+    --weather-card-width: 356px;
+}
+
 .weather {
     display: grid;
     gap: 1rem;
@@ -57,10 +61,6 @@
     font-size: 1.2rem;
 }
 
-.tommorowBG {
-    background-color: darkseagreen;
-}
-
 .show {
     display: block;
 }
@@ -98,7 +98,6 @@
     display: none;
 }
 
-
 .forecast tbody,
 .forecast th {
     text-align: initial;
@@ -108,13 +107,159 @@
     text-align: center;
 }
 
-@media only screen and (max-width: 1200px) {
+
+
+
+@media only screen and (min-width: 768px) {
+    :root {
+        --weather-card-width: 300px;
+    }
+
+
+    .forecast {
+        position: absolute;
+        width: 300px;
+    }
+
     .weather {
-        grid-template-columns: repeat(2, 40vw);
+        display: block;
+        position: relative;
+        height: 700px;
+        width: 80%;
+        left: 10%;
+    }
+
+    .move-right,
+    .move-left {
+        font-size: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        position: absolute;
+        top: 48%;
+        box-shadow: -1px 1px 1px var(--shadow-colour), -2px 2px 2px var(--shadow-colour);
+    }
+
+    .move-left {
+        left: -0.5rem;
+    }
+
+    .move-right {
+        right: -0.5rem;
+    }
+
+    .left,
+    .right {
+        transition: 0.5s ease-in-out;
+        scale: 85%;
+    }
+    
+    .far-left {
+        z-index: -3;  
+        box-shadow: unset;
+    }
+    
+    .left {
+        z-index: -1;
+    }
+    
+    .right {
+        z-index: -1;
+    }
+    
+    .far-right {
+        z-index: -3;  
+        box-shadow: unset;
+    }
+    
+    .left {
+        left: calc(50% - var(--weather-card-width) / 2 * 3 + 5%);
+    }
+    
+    .right {
+        left: calc(50% + var(--weather-card-width) / 2 - 5%);
+    }
+    
+    .center {
+        transition: 0.5s ease-in-out;
+        left: calc(50% - var(--weather-card-width) / 2);
+        z-index: 2;
     }
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (min-width: 850px) {
+
+    :root {
+        --weather-card-width: 315px;
+    }
+
+    .left {
+        left: calc(50% - var(--weather-card-width) / 2 * 3 + 2%);
+    }
+    
+    .right {
+        left: calc(50% + var(--weather-card-width) / 2 - 2%);
+    }
+   
+}
+
+@media only screen and (min-width: 900px) {
+    :root {
+        --weather-card-width: 315px;
+    }   
+}
+
+@media only screen and (min-width: 950px) {
+    :root {
+        --weather-card-width: 330px;
+    }
+}
+
+@media only screen and (min-width: 1050px) {
+    .forecast {
+        width: var(--weather-card-width)
+    }
+
+    .left {
+        left: calc(50% - var(--weather-card-width) / 2 * 3);
+    }
+    
+    .right {
+        left: calc(50% + var(--weather-card-width) / 2);
+    }
+
+    .center {
+        left: calc(50% - var(--weather-card-width) / 2);
+    }
+   
+}
+
+
+@media only screen and (min-width: 1050px) {
+    :root {
+        --weather-card-width: 360px;
+    }
+
+    .left {
+        left: calc(50% - var(--weather-card-width) / 2 * 3 - 3%);
+    }
+    
+    .right {
+        left: calc(50% + var(--weather-card-width) / 2 + 3%);
+    }
+
+    .center {
+        left: calc(50% - var(--weather-card-width) / 2);
+    }
+   
+}
+
+@media only screen and (max-width: 767px) {
+    .move-right,
+    .move-left {
+        display: none;
+    }
 
     .up,
     .down {
@@ -176,7 +321,7 @@
 
 
     .forecast td {
-    padding-left: 1rem;
+        padding-left: 1rem;
     }
 
     .show-weather-details {
@@ -236,3 +381,4 @@
         width: 100%;
     }
 }
+
