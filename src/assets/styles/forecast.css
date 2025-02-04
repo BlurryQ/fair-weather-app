@@ -10,6 +10,11 @@
     justify-content: center;
 }
 
+.weather-icon {
+    background-color: lightblue;
+    border-radius: 0.5rem;
+}
+
 .forecast {
     background: var(--card-color);
     border-radius: 0.7rem;

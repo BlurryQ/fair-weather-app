@@ -59,7 +59,13 @@ export default function CurrentCondition({
           {chosenDay === 0 ? 'Now' : chosenDay === 1 ? 'Tomorrow' : 'Day After'}
         </li>
         <li>UV: {uvIndex}</li>
-        {conditionIcon ? <img alt={condition} src={conditionIcon}></img> : null}
+        {conditionIcon ? (
+          <img
+            alt={condition}
+            src={conditionIcon}
+            className="weather-icon"
+          ></img>
+        ) : null}
         <table>
           <thead>
             <tr>
