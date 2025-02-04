@@ -56,7 +56,11 @@ export default function CurrentCondition({
     <div className="current-conditions">
       <ul>
         <li className="time">
-          {chosenDay === 0 ? 'Now' : chosenDay === 1 ? 'Tomorrow' : 'Day After'}
+          {chosenDay === 0
+            ? 'Today'
+            : chosenDay === 1
+            ? 'Tomorrow'
+            : 'Day After'}
         </li>
         <li>UV: {uvIndex}</li>
         {conditionIcon ? (

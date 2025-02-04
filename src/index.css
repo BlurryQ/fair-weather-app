@@ -3,8 +3,7 @@
 :root {
     --shadow-colour: rgb(50, 50, 50);
     --card-color:  radial-gradient(circle, #FFC857 30%, #FF9F68 70%);
-
-
+    
     font-family: "Chewy", serif;
     font-size: 2rem;
 }
