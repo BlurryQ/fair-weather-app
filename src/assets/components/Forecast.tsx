@@ -44,7 +44,7 @@ export default function Forecast({
   const today: Date = new Date(hour.time_epoch * 1000);
   const todaysHours: number = today.getHours();
   const images: string[] = getImages(hour);
-  const className = getClassName(index);
+  const className = getClassName(index, hour.placeholder);
 
   return (
     <div

@@ -1,9 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+
 :root {
     --shadow-colour: rgb(50, 50, 50);
+    --card-color:  radial-gradient(circle, #FFC857 30%, #FF9F68 70%);
 
+
+    font-family: "Chewy", serif;
     font-size: 2rem;
 }
 
 html {
-    margin: 0.1rem;
+    padding: 0.1rem;
+
+    background: url("/images/sky.png");
+    background-size: 100%;
 }

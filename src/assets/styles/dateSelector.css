@@ -2,6 +2,10 @@
     display: flex;
     justify-content: space-around;
     margin: 0.5rem 0;
+    background: radial-gradient(circle, rgba(227, 242, 253, 0.8) 15%, 
+    rgba(187, 222, 251, 0.6) 40%, 
+    rgba(144, 202, 249, 0.4) 80%);
+    border-radius: 0.3rem;
 }
 
 .date-selector button {
