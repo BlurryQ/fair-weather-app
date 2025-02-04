@@ -74,5 +74,8 @@ h6 {
 
 h2 {
     text-align: center;
-    margin-top: 40%;
+    margin-top: 50%;
+    font-size: 1.1rem;
+    color: white;
+    text-shadow: -3px 3px 3px var(--shadow-colour), -5px 5px 5px var(--shadow-colour);
 }
