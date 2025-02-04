@@ -1,5 +1,5 @@
 .current-conditions {
-    background-color: cornflowerblue;
+    background: var(--card-color);
     border-radius: 0.7rem;
     padding: 0.5rem;
     text-align: center;

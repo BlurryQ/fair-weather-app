@@ -1,5 +1,6 @@
 :root {
     --weather-card-width: 356px;
+    background-color: cornflowerblue;
 }
 
 .weather {
@@ -10,7 +11,7 @@
 }
 
 .forecast {
-    background-color: cornflowerblue;
+    background: var(--card-color);
     border-radius: 0.7rem;
     padding: 1rem;
     display: flex;
@@ -253,6 +254,18 @@
         left: calc(50% - var(--weather-card-width) / 2);
     }
    
+}
+
+.out-of-range * {
+    visibility: hidden;
+}
+
+.out-of-range-logo {
+    background: url("/favicon.png") center no-repeat;
+}
+
+.out-of-range-logo {
+    background-size: cover;
 }
 
 @media only screen and (max-width: 767px) {
