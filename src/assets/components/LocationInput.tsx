@@ -39,20 +39,14 @@ export default function LocationInput({
     setAutocomplete(null);
   };
 
-  // const clearAutocomplete = () => {
-  //   setAutocomplete(null);
-  //   setLocation("");
-  // };
-
   return (
     <>
       <input
+        autoFocus
         id="location"
         placeholder="@location"
         onChange={searchLocations}
         value={location}
-        // TODO: checkout when focus removed when clicking li
-        // onBlur={clearAutocomplete}
       ></input>
       <ul className="locations">
         {autocomplete ? (
