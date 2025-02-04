@@ -13,4 +13,5 @@ export type HourProp = {
     uv: number,
     vis_miles: number,
     will_it_rain: number,
+    placeholder: boolean,
 }

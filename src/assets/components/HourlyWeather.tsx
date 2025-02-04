@@ -28,6 +28,7 @@ export default function HourlyWeather({
     uv: 0,
     vis_miles: 0,
     will_it_rain: 0,
+    placeholder: true,
   };
 
   const displayNavButton: DisplayNavButtons = {
@@ -42,9 +43,9 @@ export default function HourlyWeather({
       ? hours
       : [
           hours[chosenHour - 2] || placeholder,
-          hours[chosenHour - 1],
-          hours[chosenHour],
-          hours[chosenHour + 1],
+          hours[chosenHour - 1] || placeholder,
+          hours[chosenHour] || placeholder,
+          hours[chosenHour + 1] || placeholder,
           hours[chosenHour + 2] || placeholder,
         ];
 
@@ -53,15 +54,14 @@ export default function HourlyWeather({
       <div className="weather">
         {arrToUse.map((hour: HourProp, index: number) => {
           return (
-            <div key={hour.time_epoch}>
-              <Forecast
-                hour={hour}
-                index={index}
-                chosenHour={chosenHour}
-                setChosenHour={setChosenHour}
-                displayNavButton={displayNavButton}
-              />
-            </div>
+            <Forecast
+              key={hour.time_epoch}
+              hour={hour}
+              index={index}
+              chosenHour={chosenHour}
+              setChosenHour={setChosenHour}
+              displayNavButton={displayNavButton}
+            />
           );
         })}
       </div>
