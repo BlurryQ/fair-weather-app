@@ -36,6 +36,7 @@ export default function Location({
 
   // ask user for permission, or if browser unable to alert user
   const getLocation = () => {
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
@@ -49,6 +50,7 @@ export default function Location({
     const currentLatitude: number = geolocation.coords.latitude;
     setLongitude(currentLongitude);
     setLatitude(currentLatitude);
+    setLoading(false);
   };
 
   return (
