@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import '../styles/dateSelector.css';
 import { DateSelectorProp } from '../types/DateSelectorProp';
 
@@ -27,7 +28,7 @@ export default function DateSelector({
     setChosenHour(1);
     setChosenDay(chosenDay - 1);
     setDateEpoch(previousDay);
-    setDateString(new Date(previousDay).toDateString());
+    setDateString(format(previousDay, 'EEE MMM do yyyy'));
 
     if (topSelector && !top) {
       topSelector.scrollIntoView({ behavior: 'smooth' });
@@ -39,7 +40,7 @@ export default function DateSelector({
     setChosenHour(1);
     setChosenDay(chosenDay + 1);
     setDateEpoch(nextDay);
-    setDateString(new Date(nextDay).toDateString());
+    setDateString(format(nextDay, 'EEE MMM do yyyy'));
 
     if (topSelector && !top) {
       topSelector.scrollIntoView({ behavior: 'smooth' });

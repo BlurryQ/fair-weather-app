@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import './App.css';
 
@@ -27,7 +28,7 @@ function App() {
   const [chosenHour, setChosenHour] = useState<number>(1);
   const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
   const [dateString, setDateString] = useState<string>(
-    new Date().toDateString()
+    format(Date.now(), 'EEE MMM do yyyy')
   );
 
   const dateSelectorProp: DateSelectorProp = {
@@ -74,34 +75,40 @@ function App() {
 
   return (
     <>
-      <Header />
-      <Location setWeatherData={setWeatherData} setLoading={setLoading} />
-      <div className="current-overview">
-        {!weatherData || !sunriseTime || !sunsetTime ? (
-          loading ? (
+      <header>
+        <Header />
+        <Location setWeatherData={setWeatherData} setLoading={setLoading} />
+      </header>
+
+      <main>
+        <div className="current-overview">
+          {loading ? (
             <h2>Loading data...</h2>
-          ) : (
+          ) : !weatherData || !sunriseTime || !sunsetTime ? (
             <h2>Click the pin or enter your location...</h2>
-          )
-        ) : (
+          ) : (
+            <>
+              <SunInfo sunData={sunriseTime} />
+              <CurrentCondition
+                weatherData={weatherData}
+                chosenDay={chosenDay}
+              />
+              <SunInfo sunData={sunsetTime} />
+            </>
+          )}
+        </div>
+        {threeDayWeather && !loading ? (
           <>
-            <SunInfo sunData={sunriseTime} />
-            <CurrentCondition weatherData={weatherData} chosenDay={chosenDay} />
-            <SunInfo sunData={sunsetTime} />
+            <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
+            <HourlyWeather
+              hours={threeDayWeather[chosenDay]}
+              chosenHour={chosenHour}
+              setChosenHour={setChosenHour}
+            />
+            <DateSelector top={false} dateSelectorProp={dateSelectorProp} />
           </>
-        )}
-      </div>
-      {threeDayWeather ? (
-        <>
-          <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
-          <HourlyWeather
-            hours={threeDayWeather[chosenDay]}
-            chosenHour={chosenHour}
-            setChosenHour={setChosenHour}
-          />
-          <DateSelector top={false} dateSelectorProp={dateSelectorProp} />
-        </>
-      ) : null}
+        ) : null}
+      </main>
     </>
   );
 }
