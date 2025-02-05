@@ -18,6 +18,7 @@ import HourlyWeather from './assets/components/HourlyWeather';
 import DateSelector from './assets/components/DateSelector';
 import { DateSelectorProp } from './assets/types/DateSelectorProp';
 import { HourProp } from './assets/types/HourProp';
+import { CircleLoader } from 'react-spinners';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -81,22 +82,25 @@ function App() {
       </header>
 
       <main>
-        <div className="current-overview">
-          {loading ? (
+        {loading ? (
+          <div className="loading">
             <h2>Loading data...</h2>
-          ) : !weatherData || !sunriseTime || !sunsetTime ? (
-            <h2>Click the pin or enter your location...</h2>
-          ) : (
-            <>
-              <SunInfo sunData={sunriseTime} />
-              <CurrentCondition
-                weatherData={weatherData}
-                chosenDay={chosenDay}
-              />
-              <SunInfo sunData={sunsetTime} />
-            </>
-          )}
-        </div>
+            <CircleLoader
+              color={'#005086'}
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        ) : !weatherData || !sunriseTime || !sunsetTime ? (
+          <h2 className="loading">Click the pin or enter your location...</h2>
+        ) : (
+          <div className="current-overview">
+            <SunInfo sunData={sunriseTime} />
+            <CurrentCondition weatherData={weatherData} chosenDay={chosenDay} />
+            <SunInfo sunData={sunsetTime} />
+          </div>
+        )}
         {threeDayWeather && !loading ? (
           <>
             <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
