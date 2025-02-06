@@ -1,5 +1,4 @@
-import { HourProp } from "../types/HourProp";
-
+// images
 import burntDobe from "/images/burnt.png"
 import coldDobe from "/images/cold.png"
 import foggyDobe from "/images/foggy.png"
@@ -10,6 +9,9 @@ import snowyDobe from "/images/snowy.png"
 import sunnyDobe from "/images/sunny.png"
 import windy from "/images/windy.png"
 import placeholder from "/favicon.png"
+
+// props
+import { HourProp } from "../types/HourProp";
 
 export default function getImages(weather: HourProp): string[] {
     const images = []

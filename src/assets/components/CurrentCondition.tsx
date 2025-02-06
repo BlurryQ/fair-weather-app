@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import '../styles/currentConditions.css';
+import { useEffect, useState } from 'react';
 
+// props
 import { WeatherDataProp } from '../types/WeatherDataProp';
 
 export default function CurrentCondition({

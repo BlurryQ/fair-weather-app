@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import '../styles/forecast.css';
+import React, { useEffect, useState } from 'react';
 
+// types
 import { HourProp } from '../types/HourProp';
 
 export default function WeatherTable({
@@ -11,8 +12,8 @@ export default function WeatherTable({
   hour: HourProp;
   temperature: number;
   setTemperature: React.Dispatch<React.SetStateAction<number>>;
-}): JSX.Element {
-  if (!hour) return <></>;
+}): JSX.Element | null {
+  if (!hour) return null;
   const [condition, setCondition] = useState<string>('');
   const [rain, setRain] = useState<number>(0);
   const [rainChance, setRainChance] = useState<number>(0);

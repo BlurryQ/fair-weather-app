@@ -1,5 +1,6 @@
 import '../styles/forecast.css';
 
+// types
 import { DisplayNavButtons } from '../types/DisplayNavButtons';
 
 export default function NavButtons({

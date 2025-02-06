@@ -1,29 +1,26 @@
-import React, { useEffect, useState } from 'react';
 import '../styles/forecast.css';
+import { useEffect, useState } from 'react';
 
-import { HourProp } from '../types/HourProp';
-import { DisplayNavButtons } from '../types/DisplayNavButtons';
-import getImages from '../utils/getImages';
-import WeatherTable from './WeatherTable';
-import showWeatherDetails from '../utils/showWeatherDetails';
+// components
 import DogGrid from './DogGrid';
 import NavButtons from './NavButtons';
-import getClassName from '../utils/getClassName';
+import WeatherTable from './WeatherTable';
 
-export default function Forecast({
-  hour,
-  index,
-  chosenHour,
-  setChosenHour,
-  displayNavButton,
-}: {
-  hour: HourProp;
-  index: number;
-  chosenHour: number;
-  setChosenHour: React.Dispatch<React.SetStateAction<number>>;
-  displayNavButton: DisplayNavButtons;
-}): JSX.Element {
-  if (!hour) return <></>;
+// types
+import { ForecastProp } from '../types/ForecastProp';
+import { HourProp } from '../types/HourProp';
+
+// utils
+import getClassName from '../utils/getClassName';
+import getImages from '../utils/getImages';
+import showWeatherDetails from '../utils/showWeatherDetails';
+
+export default function Forecast(
+  forecastProp: ForecastProp
+): JSX.Element | null {
+  const { hour, index, chosenHour, setChosenHour, displayNavButton } =
+    forecastProp;
+  if (!hour) return null;
   const [condition, setCondition] = useState<string>('');
   const [conditionIcon, setConditionIcon] = useState<string>('');
   const [temperature, setTemperature] = useState<number>(0);

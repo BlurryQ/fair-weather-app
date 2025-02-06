@@ -1,25 +1,23 @@
-import { useEffect, useState } from 'react';
 import '../styles/location.css';
+import { useEffect, useState } from 'react';
+
+// components
 import LocationList from './LocationList';
+
+// models
+import { getAutocompleteWeather } from '../models/weatherModel';
 
 // types
 import { Autocomplete } from '../types/Autocomplete';
-import { getAutocompleteWeather } from '../models/weatherModel';
-type LocationInputProps = {
-  location: string;
-  setLatitude: React.Dispatch<React.SetStateAction<number>>;
-  setLocation: React.Dispatch<React.SetStateAction<string>>;
-  setLongitude: React.Dispatch<React.SetStateAction<number>>;
-};
+import { LocationInputProp } from '../types/LocationInputProp';
 
-export default function LocationInput({
-  setLongitude,
-  setLatitude,
-  location,
-  setLocation,
-}: LocationInputProps): JSX.Element {
+export default function LocationInput(
+  locationInputProps: LocationInputProp
+): JSX.Element {
   const [typedLocation, setTypedLocation] = useState<string>('');
   const [autocomplete, setAutocomplete] = useState<Autocomplete[] | null>(null);
+  const { setLongitude, setLatitude, location, setLocation } =
+    locationInputProps;
 
   // Once location is typed and is 4 or more chars
   useEffect(() => {
@@ -32,7 +30,7 @@ export default function LocationInput({
   }, [typedLocation]);
 
   // on input change update input and run useEffect
-  const searchLocations = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const searchLocations = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const entry: string = e.target.value;
     setTypedLocation(entry);
     setLocation(entry);

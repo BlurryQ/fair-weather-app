@@ -2,23 +2,13 @@ import '../styles/location.css';
 
 // types
 import { Autocomplete } from '../types/Autocomplete';
-type LocationListProps = {
-  autocomplete: Autocomplete[];
-  setAutocomplete: React.Dispatch<React.SetStateAction<Autocomplete[] | null>>;
-  setLocation: React.Dispatch<React.SetStateAction<string>>;
-  setLongitude: React.Dispatch<React.SetStateAction<number>>;
-  setLatitude: React.Dispatch<React.SetStateAction<number>>;
-};
+import { LocationListProp } from '../types/LocationListProp';
 
-export default function LocationList({
-  autocomplete,
-  setAutocomplete,
-  setLocation,
-  setLongitude,
-  setLatitude,
-}: LocationListProps): JSX.Element {
+export default function LocationList(
+  locationListProps: LocationListProp
+): JSX.Element {
   // on list element clicked get geolocation details and search
-  const selectLocation = (e: any) => {
+  const selectLocation = (e: any): void => {
     const location: string = e.target.textContent;
     const latLon: string = e.target.attributes.value.value;
     const [lat, lon]: string[] = latLon.split(' ');
@@ -27,6 +17,14 @@ export default function LocationList({
     setLatitude(Number(lat));
     setLocation(location);
   };
+
+  const {
+    autocomplete,
+    setAutocomplete,
+    setLocation,
+    setLongitude,
+    setLatitude,
+  } = locationListProps;
 
   return (
     <>
