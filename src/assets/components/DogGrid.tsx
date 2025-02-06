@@ -1,3 +1,4 @@
+// types
 import { HourProp } from '../types/HourProp';
 
 export default function DogGrid({
@@ -6,7 +7,7 @@ export default function DogGrid({
 }: {
   hour: HourProp;
   images: string[];
-}) {
+}): JSX.Element {
   return (
     <div data-hour-id={hour.time_epoch} className="weather-images">
       {images.map((image: string, i: number) => {

@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
 import '../styles/location.css';
+import { useEffect, useState } from 'react';
+
+// components
 import LocationInput from './LocationInput';
+
+// images
 import LocationPin from '/icons/location.svg';
 
-import { WeatherDataProp } from '../types/WeatherDataProp';
+// models
+import { getLatandLongWeather } from '../models/weatherModel';
 
 // types
 import { GeoLocationData } from '../types/GeoLocationData';
-import { getLatandLongWeather } from '../models/weatherModel';
+import { WeatherDataProp } from '../types/WeatherDataProp';
 
 export default function Location({
   setWeatherData,
@@ -35,7 +40,7 @@ export default function Location({
   }, [longitude]);
 
   // ask user for permission, or if browser unable to alert user
-  const getLocation = () => {
+  const getLocation = (): void => {
     setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
@@ -45,7 +50,7 @@ export default function Location({
   };
 
   // update geolocation with coords
-  const showPosition = (geolocation: GeoLocationData) => {
+  const showPosition = (geolocation: GeoLocationData): void => {
     const currentLongitude: number = geolocation.coords.longitude;
     const currentLatitude: number = geolocation.coords.latitude;
     setLongitude(currentLongitude);
