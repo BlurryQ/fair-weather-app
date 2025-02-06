@@ -1,70 +1,61 @@
-import Forecast from './Forecast';
+import React, { SetStateAction, useEffect, useState } from 'react';
+
+// components
+import DateSelector from './DateSelector';
+import HourlyWeatherCard from './HourlyWeatherCard';
+
+// types
+import { DateSelectorProp } from '../types/DateSelectorProp';
 import { HourProp } from '../types/HourProp';
-import { DisplayNavButtons } from '../types/DisplayNavButtons';
-import { useState } from 'react';
+import { WeatherDataProp } from '../types/WeatherDataProp';
+
+// utils
+import removeUnwantedHours from '../utils/removeUnwantedHours';
 
 export default function HourlyWeather({
-  hours,
-  chosenHour,
-  setChosenHour,
+  weatherData,
+  chosenDay,
+  setChosenDay,
 }: {
-  hours: HourProp[];
-  chosenHour: number;
-  setChosenHour: React.Dispatch<React.SetStateAction<number>>;
-}): JSX.Element {
-  const [windowSize, setWindowSize] = useState<number>(window.innerWidth);
-  const placeholder: HourProp = {
-    chance_of_rain: 0,
-    condition: {
-      text: 'unknown',
-      icon: '//cdn.weatherapi.com/weather/64x64/day/119.png',
-    },
-    feelslike_c: 0,
-    wind_mph: 0,
-    gust_mph: 0,
-    temp_c: 0,
-    time: '',
-    time_epoch: 0,
-    uv: 0,
-    vis_miles: 0,
-    will_it_rain: 0,
-    placeholder: true,
+  weatherData: WeatherDataProp | null;
+  chosenDay: number;
+  setChosenDay: React.Dispatch<SetStateAction<number>>;
+}): JSX.Element | null {
+  const [chosenHour, setChosenHour] = useState<number>(1);
+  const [weatherArray, setWeatherArray] = useState<HourProp[]>([]);
+  // dateEpoch needed here to keep dateSelectors dates synchronised
+  const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
+
+  useEffect(() => {
+    if (!weatherData) return;
+    const chosenDaysHours: HourProp[] | null =
+      weatherData.forecast.forecastday[chosenDay].hour;
+
+    const validHours: HourProp[] = chosenDaysHours.filter(removeUnwantedHours);
+    setWeatherArray(validHours);
+  }, [weatherData, chosenDay]);
+
+  const dateSelectorProp: DateSelectorProp = {
+    chosenDay,
+    setChosenDay,
+    setChosenHour,
+    dateEpoch,
+    setDateEpoch,
   };
-
-  const displayNavButton: DisplayNavButtons = {
-    left: chosenHour > 1,
-    right: chosenHour < hours.length - 2,
-  };
-
-  window.addEventListener('resize', () => setWindowSize(window.innerWidth));
-
-  const arrToUse: HourProp[] =
-    windowSize <= 767
-      ? hours
-      : [
-          hours[chosenHour - 2] || placeholder,
-          hours[chosenHour - 1] || placeholder,
-          hours[chosenHour] || placeholder,
-          hours[chosenHour + 1] || placeholder,
-          hours[chosenHour + 2] || placeholder,
-        ];
 
   return (
     <>
-      <div className="weather">
-        {arrToUse.map((hour: HourProp, index: number) => {
-          return (
-            <Forecast
-              key={hour.time_epoch}
-              hour={hour}
-              index={index}
-              chosenHour={chosenHour}
-              setChosenHour={setChosenHour}
-              displayNavButton={displayNavButton}
-            />
-          );
-        })}
-      </div>
+      {weatherArray.length < 1 ? null : (
+        <>
+          <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
+          <HourlyWeatherCard
+            weatherArray={weatherArray}
+            chosenHour={chosenHour}
+            setChosenHour={setChosenHour}
+          />
+          <DateSelector top={false} dateSelectorProp={dateSelectorProp} />
+        </>
+      )}
     </>
   );
 }
