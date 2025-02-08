@@ -10,7 +10,7 @@ A visual representation of the weather to see if the weather is fair to help mak
 
 ## Requirements
 
-- [weatherAPI.com](weatherAPI.com) account for the API key.
+- [weatherAPI.com](https://www.weatherapi.com/) account for the API key.
 
 ## Dependencies
 
