@@ -11,8 +11,6 @@ export default function DateSelector({
   top: boolean;
   dateSelectorProp: DateSelectorProp;
 }): JSX.Element {
-  const topSelector = document.getElementById('top-date-selector');
-
   //   ms in one dayt
   const oneDay: number = 1000 * 60 * 60 * 24;
 
@@ -20,6 +18,7 @@ export default function DateSelector({
     dateSelectorProp;
 
   const previousDate = (): void => {
+    const topSelector = document.getElementById('top-date-selector');
     const previousDay: number = dateEpoch - oneDay;
     setChosenHour(1);
     setChosenDay(chosenDay - 1);
@@ -32,6 +31,7 @@ export default function DateSelector({
   };
 
   const nextDate = (): void => {
+    const topSelector = document.getElementById('top-date-selector');
     const nextDay: number = dateEpoch + oneDay;
     setChosenHour(1);
     setChosenDay(chosenDay + 1);
