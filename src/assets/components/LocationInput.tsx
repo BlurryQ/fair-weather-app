@@ -16,25 +16,37 @@ export default function LocationInput(
 ): JSX.Element {
   const [typedLocation, setTypedLocation] = useState<string>('');
   const [autocomplete, setAutocomplete] = useState<Autocomplete[] | null>(null);
-  const { setLongitude, setLatitude, location, setLocation } =
+  const { setLongitude, setLatitude, location, setLocation, setError } =
     locationInputProps;
 
   // Once location is typed and is 4 or more chars
   useEffect(() => {
     if (typedLocation.length < 4) return;
+    setError(false);
     getAutocompleteWeather(typedLocation)
       .then((data) => {
         setAutocomplete(data.data);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setError(true);
+      });
   }, [typedLocation]);
 
   // on input change update input and run useEffect
   const searchLocations = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const entry: string = e.target.value;
+    setError(false);
     setTypedLocation(entry);
     setLocation(entry);
     setAutocomplete(null);
+  };
+
+  // clears location list generted by API after 1 second of losing focus (enabling selecting location)
+  const clearLocationList = (): void => {
+    setTimeout(() => {
+      setAutocomplete(null);
+    }, 1000);
   };
 
   return (
@@ -45,6 +57,7 @@ export default function LocationInput(
         placeholder="@location"
         onChange={searchLocations}
         value={location}
+        onBlur={clearLocationList}
       ></input>
       <ul className="locations">
         {autocomplete ? (
