@@ -1,12 +1,12 @@
 # Fair Weather App
 
-<!-- image -->
+![Fair Weather APp](demo.gif)
 
 ## Summary
 
 Hosted: [Fair Weather App](https://blurryq.github.io/fair-weather-app/)
 
-A visual representation of the weather to see if the weather is fair to help make decisions on dog walking, motorcycle riding, lawn mowing, etc. This is themed with Dobermann AI generated images and contains a different experience in mobile than desktop.
+A visual representation of the weather to determine if conditions are fair for activities like dog walking, motorcycle riding, or lawn mowing. This is themed with Dobermann AI generated images and contains a different experience in mobile than desktop.
 
 ## Requirements
 
@@ -32,15 +32,15 @@ First you need to fork this repo to your GitHub account by clicking fork button 
 
 ### 2. Clone the Repository
 
-The next step is cloning this to your local device using the follwoing command, changing the "your-username" to your GitHub username:
+Next is cloning this to your local device using the follwoing command, changing the "your-username" to your GitHub username:
 
 ```
-git clone github.com/your-username/fair-weather-app
+git clone git@github.com:your-username/library.git
 ```
 
 ### 3. Install Dependencies
 
-Now this has been done install all the npm dependencies by running the following command in your terminal/ cli:
+Now this repo has been cloned you can install all the npm dependencies by running the following command in your terminal/ cli:
 
 ```
 npm install
@@ -66,11 +66,25 @@ npm run dev
 
 I have coded this for my useage, so there are currently limitations.
 
-- You will only see hours 9am - 10pm, and only if the hours have not passed. T
+- You will only see hours 9am - 10pm, and only if the hours have not passed.
+- I have limited to only displaying 4 images which the CSS reflects.
 - The images are hardcoded to certain metrics, eg temperatures below 5 degrees, visibility below 2 miles, etc.
 
 These can all be changed within the utils files, found in the utils folder
 
 ## Challenges
 
-- **Typescript**: I have never used typescript before.
+- **TypeScript**  
+  This was my first time using TypeScript, so I had to learn about type annotations, interfaces, and strict type checking while building the project.
+
+- **Responsive Design & Mobile Experience**  
+  Creating a different experience for mobile and desktop required careful CSS adjustments and media queries. I also had to ensure that the UI remained user-friendly across various screen sizes.
+
+- **State Management**  
+  Managing state between components for handling user input, API responses, and selected locations was challenging. I had to decide what should remain in local state versus being lifted to parent components.
+
+- **Optimizing Performance**  
+  To prevent unnecessary API calls, I implemented debouncing for the location search input. This helped maintain a responsive UI while reducing redundant requests.
+
+- **Deploying with Vite & GitHub Pages**  
+  Since I used Vite for this project, I had to learn how to configure it properly for deployment on GitHub Pages, ensuring the app worked correctly after being built.

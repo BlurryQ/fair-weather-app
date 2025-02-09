@@ -21,6 +21,7 @@ export default function Location({
   setWeatherData: React.Dispatch<React.SetStateAction<WeatherDataProp | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element {
+  const [error, setError] = useState<boolean>(false);
   const [longitude, setLongitude] = useState<number>(0);
   const [latitude, setLatitude] = useState<number>(0);
   const [location, setLocation] = useState<string>('');
@@ -29,6 +30,7 @@ export default function Location({
   useEffect(() => {
     if (longitude === 0 && latitude === 0) return;
     setLoading(true);
+    setError(false);
     getLatandLongWeather(latitude, longitude)
       .then(({ data }) => {
         setWeatherData(data);
@@ -36,12 +38,17 @@ export default function Location({
         setLocation(townAndRegion);
         setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+        setError(true);
+      });
   }, [longitude]);
 
   // ask user for permission, or if browser unable to alert user
   const getLocation = (): void => {
     setLoading(true);
+    setError(false);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
@@ -69,7 +76,14 @@ export default function Location({
         setLatitude={setLatitude}
         setLocation={setLocation}
         setLongitude={setLongitude}
+        setError={setError}
       />
+      {error ? (
+        <ul>
+          <li className="error">Error Loading Data</li>
+          <li className="error">Please try again</li>
+        </ul>
+      ) : null}
     </div>
   );
 }
