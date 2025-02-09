@@ -3,4 +3,5 @@ export type LocationInputProp = {
     setLatitude: React.Dispatch<React.SetStateAction<number>>;
     setLocation: React.Dispatch<React.SetStateAction<string>>;
     setLongitude: React.Dispatch<React.SetStateAction<number>>;
+    setError: React.Dispatch<React.SetStateAction<boolean>>;
   };
