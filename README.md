@@ -5,6 +5,7 @@
 ## Summary
 
 Hosted: [Fair Weather App](https://blurryq.github.io/fair-weather-app/)
+Video Demo: [Youtube](https://youtu.be/-ZKc-bWRFcQ)
 
 A visual representation of the weather to determine if conditions are fair for activities like dog walking, motorcycle riding, or lawn mowing. This is themed with Dobermann AI generated images and contains a different experience in mobile than desktop.
 
