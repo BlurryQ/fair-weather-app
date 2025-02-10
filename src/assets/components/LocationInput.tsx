@@ -49,6 +49,20 @@ export default function LocationInput(
     }, 1000);
   };
 
+  // handles key presses
+  const handleKeyDown = (e: React.KeyboardEvent): void => {
+    const keyPressed: string = e.key
+    if (keyPressed === " ")
+        console.log("spaaaaaaaaaaace")
+    if (keyPressed === "Enter")
+      console.log("come in")
+    if (keyPressed === "ArrowUp")
+      console.log("going up")
+    if (keyPressed === "ArrowDown")
+      console.log("going down")
+
+  }
+
   return (
     <>
       <input
@@ -58,6 +72,7 @@ export default function LocationInput(
         onChange={searchLocations}
         value={location}
         onBlur={clearLocationList}
+        onKeyDown={handleKeyDown}
       ></input>
       <ul className="locations">
         {autocomplete ? (
