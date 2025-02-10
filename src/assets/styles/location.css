@@ -108,14 +108,18 @@
         width: 85%;
     }
 
+    .location {
+        margin-left: 12%;
+        margin-top: -0.65rem;
+    }
+
     .location ul {
         font-size: 0.6rem;
         width: 25ch;
     }
 
-    .location {
-        margin-left: 12%;
-        margin-top: -0.65rem;
+    .location li {
+        margin-left: 2.9ch;
     }
 }
 
@@ -131,5 +135,9 @@
     .location ul {
         width: 20ch;
         margin-left: 3ch;
+    }
+
+    .location li {
+        margin-left: 0.7ch;
     }
 }
