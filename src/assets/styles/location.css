@@ -31,6 +31,7 @@
     list-style: none;
     margin-left: 3.7ch;
     font-size: 0.8rem;
+    padding: 4px;
 }
 
 .location ul {
@@ -38,6 +39,7 @@
     margin-block-end: 0px;
     padding-inline-start: 0px;
     cursor: pointer;
+    margin-top: 0.2rem;
 }
 
 .grid-row {
@@ -47,6 +49,14 @@
 .error {
     color: #ff3300;
     text-shadow: -1px 1px 1px var(--shadow-colour), -3px 3px 3px var(--shadow-colour);
+}
+
+.selected {
+    border-bottom: 2px solid #D95D39;
+    border-left: 2px solid #D95D39;
+    border-radius: 0.5rem;
+    width: fit-content;
+    background-color: #ffd79c96;
 }
 
 @media only screen and (max-width: 1500px) {
@@ -120,6 +130,7 @@
 
     .location li {
         margin-left: 2.9ch;
+        font-size: 0.65rem;
     }
 }
 
@@ -139,5 +150,6 @@
 
     .location li {
         margin-left: 0.7ch;
+        font-size: 0.55rem;
     }
 }
