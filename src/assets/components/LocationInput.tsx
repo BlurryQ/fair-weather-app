@@ -34,6 +34,13 @@ export default function LocationInput(
       });
   }, [typedLocation]);
 
+  // clears location list generted by API after 1 second of losing focus (enabling selecting location)
+  const clearLocationList = (): void => {
+    setTimeout(() => {
+      setAutocomplete([]);
+    }, 1000);
+  };
+  
   // on input change update input and run useEffect
   const searchLocations = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const entry: string = e.target.value;
@@ -42,33 +49,6 @@ export default function LocationInput(
     setLocation(entry);
     setAutocomplete([]);
   };
-
-  // clears location list generted by API after 1 second of losing focus (enabling selecting location)
-  const clearLocationList = (): void => {
-    setTimeout(() => {
-      setAutocomplete([]);
-    }, 1000);
-  };
-
-
-  // TODO: tidy the below up
-
-    // on list element clicked get geolocation details and search (copied)
-    const selectLocation = (location: Autocomplete): void => {
-      if (!location) {
-        setAutocomplete([]);
-        return setError(true);
-      }
-
-      const locationName: string = location.name;
-      const lat: number = location.lat;
-      const lon: number = location.lon;
-      setAutocomplete([]);
-      setLongitude(Number(lon));
-      setLatitude(Number(lat));
-      setLocation(locationName);
-      return
-    };
 
   // handles key presses
   const handleKeyDown = (e: React.KeyboardEvent): void => {
@@ -81,6 +61,22 @@ export default function LocationInput(
       return setError(true)
     else if (keyPressed === "Enter" && autocomplete.length > 0) 
       return selectLocation(autocomplete[highlightedIndex])
+  }
+
+  // on list element clicked get geolocation details and search (copied)
+  const selectLocation = (location: Autocomplete): void => {
+    const locationName: string = location.name;
+    const lat: number = location.lat;
+    const lon: number = location.lon;
+    displayLocationData(locationName, lat, lon)
+  };
+
+  // set relevant setters to display location data
+  const displayLocationData = (location: string, lat: number, lon: number): void => {
+    setAutocomplete([]);
+    setLongitude(lon);
+    setLatitude(lat);
+    setLocation(location);
   }
 
   return (
@@ -99,11 +95,8 @@ export default function LocationInput(
         {autocomplete ? (
           <LocationList
             autocomplete={autocomplete}
-            setAutocomplete={setAutocomplete}
-            setLongitude={setLongitude}
-            setLatitude={setLatitude}
-            setLocation={setLocation}
             highlightedIndex={highlightedIndex}
+            displayLocationData={displayLocationData}
           />
         ) : null}
       </ul>
