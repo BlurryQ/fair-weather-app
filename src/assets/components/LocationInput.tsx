@@ -15,7 +15,8 @@ export default function LocationInput(
   locationInputProps: LocationInputProp
 ): JSX.Element {
   const [typedLocation, setTypedLocation] = useState<string>('');
-  const [autocomplete, setAutocomplete] = useState<Autocomplete[] | null>(null);
+  const [autocomplete, setAutocomplete] = useState<Autocomplete[]>([]);
+  let [highlightedIndex, setHighlightedIndex] = useState<number>(0)
   const { setLongitude, setLatitude, location, setLocation, setError } =
     locationInputProps;
 
@@ -39,33 +40,53 @@ export default function LocationInput(
     setError(false);
     setTypedLocation(entry);
     setLocation(entry);
-    setAutocomplete(null);
+    setAutocomplete([]);
   };
 
   // clears location list generted by API after 1 second of losing focus (enabling selecting location)
   const clearLocationList = (): void => {
     setTimeout(() => {
-      setAutocomplete(null);
+      setAutocomplete([]);
     }, 1000);
   };
+
+
+  // TODO: tidy the below up
+
+    // on list element clicked get geolocation details and search (copied)
+    const selectLocation = (location: Autocomplete): void => {
+      if (!location) {
+        setAutocomplete([]);
+        return setError(true);
+      }
+
+      const locationName: string = location.name;
+      const lat: number = location.lat;
+      const lon: number = location.lon;
+      setAutocomplete([]);
+      setLongitude(Number(lon));
+      setLatitude(Number(lat));
+      setLocation(locationName);
+      return
+    };
 
   // handles key presses
   const handleKeyDown = (e: React.KeyboardEvent): void => {
     const keyPressed: string = e.key
-    if (keyPressed === " ")
-        console.log("spaaaaaaaaaaace")
-    if (keyPressed === "Enter")
-      console.log("come in")
-    if (keyPressed === "ArrowUp")
-      console.log("going up")
-    if (keyPressed === "ArrowDown")
-      console.log("going down")
-
+    if (keyPressed === "ArrowDown" && highlightedIndex < autocomplete.length - 1) 
+      return setHighlightedIndex(highlightedIndex + 1) 
+    else if (keyPressed === "ArrowUp" && highlightedIndex > 0)
+      return setHighlightedIndex(highlightedIndex - 1) 
+    else if (keyPressed === "Enter" && autocomplete.length === 0) 
+      return setError(true)
+    else if (keyPressed === "Enter" && autocomplete.length > 0) 
+      return selectLocation(autocomplete[highlightedIndex])
   }
 
   return (
     <>
       <input
+        autoComplete='off'
         autoFocus
         id="location"
         placeholder="@location"
@@ -82,6 +103,7 @@ export default function LocationInput(
             setLongitude={setLongitude}
             setLatitude={setLatitude}
             setLocation={setLocation}
+            highlightedIndex={highlightedIndex}
           />
         ) : null}
       </ul>
