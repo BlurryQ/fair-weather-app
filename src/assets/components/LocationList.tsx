@@ -12,19 +12,13 @@ export default function LocationList(
     const location: string = e.target.textContent;
     const latLon: string = e.target.attributes.value.value;
     const [lat, lon]: string[] = latLon.split(' ');
-    setAutocomplete([]);
-    setLongitude(Number(lon));
-    setLatitude(Number(lat));
-    setLocation(location);
+    displayLocationData(location, lat, lon)
   };
 
   const {
     autocomplete,
-    setAutocomplete,
-    setLocation,
-    setLongitude,
-    setLatitude,
-    highlightedIndex
+    highlightedIndex,
+    displayLocationData
   } = locationListProps;
   
   return <>
