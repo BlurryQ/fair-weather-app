@@ -116,6 +116,15 @@
     text-align: center;
 }
 
+.out-of-range * {
+    visibility: hidden;
+}
+
+.out-of-range {
+    background: url("/favicon.png") center no-repeat;
+    background-size: cover;
+}
+
 
 @media only screen and (min-width: 768px) {
     :root {
@@ -161,39 +170,40 @@
         transition: 0.5s ease-in-out;
         scale: 85%;
     }
-    
+
     .far-left {
-        z-index: -3;  
+        z-index: -3;
         box-shadow: unset;
     }
-    
+
     .left {
         z-index: -1;
     }
-    
+
     .right {
         z-index: -1;
     }
-    
+
     .far-right {
-        z-index: -3;  
+        z-index: -3;
         box-shadow: unset;
     }
-    
+
     .left {
         left: calc(50% - var(--weather-card-width) / 2 * 3 + 5%);
     }
-    
+
     .right {
         left: calc(50% + var(--weather-card-width) / 2 - 5%);
     }
-    
+
     .center {
         transition: 0.5s ease-in-out;
         left: calc(50% - var(--weather-card-width) / 2);
         z-index: 2;
     }
 }
+
 
 @media only screen and (min-width: 850px) {
 
@@ -204,24 +214,27 @@
     .left {
         left: calc(50% - var(--weather-card-width) / 2 * 3 + 2%);
     }
-    
+
     .right {
         left: calc(50% + var(--weather-card-width) / 2 - 2%);
     }
-   
+
 }
+
 
 @media only screen and (min-width: 900px) {
     :root {
         --weather-card-width: 315px;
-    }   
+    }
 }
+
 
 @media only screen and (min-width: 950px) {
     :root {
         --weather-card-width: 330px;
     }
 }
+
 
 @media only screen and (min-width: 1050px) {
     .forecast {
@@ -231,7 +244,7 @@
     .left {
         left: calc(50% - var(--weather-card-width) / 2 * 3);
     }
-    
+
     .right {
         left: calc(50% + var(--weather-card-width) / 2);
     }
@@ -239,7 +252,7 @@
     .center {
         left: calc(50% - var(--weather-card-width) / 2);
     }
-   
+
 }
 
 
@@ -251,7 +264,7 @@
     .left {
         left: calc(50% - var(--weather-card-width) / 2 * 3 - 3%);
     }
-    
+
     .right {
         left: calc(50% + var(--weather-card-width) / 2 + 3%);
     }
@@ -259,22 +272,12 @@
     .center {
         left: calc(50% - var(--weather-card-width) / 2);
     }
-   
+
 }
 
-.out-of-range * {
-    visibility: hidden;
-}
-
-.out-of-range-logo {
-    background: url("/favicon.png") center no-repeat;
-}
-
-.out-of-range-logo {
-    background-size: cover;
-}
 
 @media only screen and (max-width: 767px) {
+
     .move-right,
     .move-left {
         display: none;
@@ -364,6 +367,7 @@
     }
 }
 
+
 @media only screen and (max-width: 630px) {
     .weather-images {
         grid-template-columns: repeat(2, 1fr);
@@ -385,11 +389,13 @@
     }
 }
 
+
 @media only screen and (max-width: 500px) {
     .forecast .dog {
         width: 80%;
     }
 }
+
 
 @media only screen and (max-width: 460px) {
     .forecast .dog {
@@ -403,4 +409,3 @@
         width: 100%;
     }
 }
-

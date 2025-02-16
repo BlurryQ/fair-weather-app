@@ -5,7 +5,6 @@ import { HourProp } from "../types/HourProp";
 
 export default function removeUnwantedHours(hours: HourProp): boolean {
 
-// console.log(hours)
     const earliestTime: number = 9
     const latestTime: number = 22
 
