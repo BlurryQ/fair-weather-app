@@ -5,37 +5,45 @@ export default function filterHoursForScreenSize(
     chosenHour: number
 ): HourProp[] {
 
-    const placeholder: HourProp = {
-    chance_of_rain: 0,
-    condition: {
-        text: 'unknown',
-        icon: '//cdn.weatherapi.com/weather/64x64/day/119.png',
-    },
-    feelslike_c: 0,
-    wind_mph: 0,
-    gust_mph: 0,
-    temp_c: 0,
-    time: '',
-    time_epoch: 0,
-    uv: 0,
-    vis_miles: 0,
-    will_it_rain: 0,
-    placeholder: true,
-    };
-
-    let arrToUse: HourProp[] | null = null
     let windowSize: number = window.innerWidth
-
     if (windowSize <= 767)
-        arrToUse = hours
-    else
-        arrToUse = [
-            hours[chosenHour - 2] || placeholder,
-            hours[chosenHour - 1] || placeholder,
-            hours[chosenHour] || placeholder,
-            hours[chosenHour + 1] || placeholder,
-            hours[chosenHour + 2] || placeholder,
-        ];
+        return hours
 
-    return arrToUse
+    const firstHour: HourProp = hours[chosenHour - 1]
+    const selectedHour: HourProp = hours[chosenHour]
+    const nextHour: HourProp = hours[chosenHour + 1]
+
+    const createPlaceholder = (hour: HourProp, offset: number): HourProp => {
+        return { ...hour, time_epoch: hour.time_epoch + offset, placeholder: true }
+    }
+
+    if (hours.length === 1) {
+        return [
+            createPlaceholder(firstHour, 1),
+            createPlaceholder(firstHour, 2),
+            firstHour,
+            createPlaceholder(firstHour, 3),
+            createPlaceholder(firstHour, 4),
+        ];
+    }
+
+    if (hours.length === 2) {
+        return [
+            createPlaceholder(firstHour, 1),
+            createPlaceholder(firstHour, 2),
+            firstHour,
+            selectedHour,
+            createPlaceholder(selectedHour, 1),
+        ];
+    }
+
+    return [
+        hours[chosenHour - 2] || { ...firstHour, time_epoch: firstHour.time_epoch + 1 },
+        firstHour,
+        selectedHour,
+        nextHour,
+        hours[chosenHour + 2] || { ...nextHour, time_epoch: nextHour.time_epoch + 1 },
+    ]
 }
+
+
