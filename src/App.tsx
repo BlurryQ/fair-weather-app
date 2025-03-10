@@ -2,15 +2,15 @@ import { useState } from 'react';
 import './App.css';
 
 // components
-import Header from './assets/components/Header';
+import Header from './components/Header';
 
 // props
-import { WeatherDataProp } from './assets/types/WeatherDataProp';
+import { WeatherDataProp } from './types/WeatherDataProp';
 
 // types
-import HourlyWeather from './assets/components/HourlyWeather';
-import Loader from './assets/components/Loader';
-import DayOverview from './assets/components/DayOverview';
+import HourlyWeather from './components/HourlyWeather';
+import Loader from './components/Loader';
+import DayOverview from './components/DayOverview';
 
 function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
