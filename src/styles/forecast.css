@@ -96,11 +96,11 @@
 }
 
 .up {
-    background: url(../images/icons/up.svg) no-repeat;
+    background: url(../assets/images/icons/up.svg) no-repeat;
 }
 
 .down {
-    background: url(../images/icons/down.svg) no-repeat;
+    background: url(../assets/images/icons/down.svg) no-repeat;
 }
 
 .temp {

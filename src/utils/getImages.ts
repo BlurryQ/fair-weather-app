@@ -1,13 +1,13 @@
 // images
-import burntDobe from "../images/weather/burnt.png"
-import coldDobe from "../images/weather/cold.png"
-import foggyDobe from "../images/weather/foggy.png"
-import hurricane from "../images/weather/hurricane.png"
-import jacketDobe from "../images/weather/jacket.png"
-import rainyDobe from "../images/weather/rainy.png"
-import snowyDobe from "../images/weather/snowy.png"
-import sunnyDobe from "../images/weather/sunny.png"
-import windy from "../images/weather/windy.png"
+import burntDobe from "../assets/images/weather/burnt.png"
+import coldDobe from "../assets/images/weather/cold.png"
+import foggyDobe from "../assets/images/weather/foggy.png"
+import hurricane from "../assets/images/weather/hurricane.png"
+import jacketDobe from "../assets/images/weather/jacket.png"
+import rainyDobe from "../assets/images/weather/rainy.png"
+import snowyDobe from "../assets/images/weather/snowy.png"
+import sunnyDobe from "../assets/images/weather/sunny.png"
+import windy from "../assets/images/weather/windy.png"
 import placeholder from "/favicon.png"
 
 
