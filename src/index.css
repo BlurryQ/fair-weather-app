@@ -11,13 +11,13 @@
 html {
     padding: 0.1rem;
 
-    background: url("/images/sky.png");
+    background: url("./assets/images/backgrounds/sky.png");
     background-size: cover;
 }
 
 @media only screen and (max-width: 767px) {
     html {
-        background: url("/images/sky-mobile.jpg");
+        background: url("./assets/images/backgrounds/sky-mobile.jpg");
         background-size: 125%;
     }
 

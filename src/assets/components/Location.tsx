@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import LocationInput from './LocationInput';
 
 // images
-import LocationPin from '/icons/location.svg';
+import LocationPin from '../images/icons/location.svg';
 
 // models
 import { getLatandLongWeather } from '../models/weatherModel';
