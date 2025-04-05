@@ -67,6 +67,15 @@ h6 {
     isolation: isolate;
 }
 
+:root {
+    --sunrise-color: #FFD89C;
+    --morning-color: #FFC857;
+    --afternoon-color: #FFAE42;
+    --evening-color: #FF9F68;
+    --sunset-color: #FF8000;
+    --dusk-color: #D95D39;
+}
+
 .current-overview {
     display: flex;
     justify-content: space-around;
