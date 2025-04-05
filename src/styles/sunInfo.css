@@ -10,11 +10,11 @@
 }
 
 .sunrise {
-    background: linear-gradient(to top right, #FFD89C, #FFC857, #FFAE42, #FF9F68);
+    background: linear-gradient(to top right, var(--sunrise-color), var(--morning-color), var(--afternoon-color), var(--evening-color));
 }
 
 .sunset {
-    background: linear-gradient(to bottom right, #FF9F68, #FFAE42, #FF8000, #D95D39);
+    background: linear-gradient(to bottom right, var(--evening-color), var(--afternoon-color), var(--sunset-color), var(--dusk-color));
 }
 
 @media only screen and (max-width: 850px) {

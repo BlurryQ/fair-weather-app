@@ -52,8 +52,8 @@
 }
 
 .selected {
-    border-bottom: 2px solid #D95D39;
-    border-left: 2px solid #D95D39;
+    border-bottom: 2px solid var(--dusk-color);
+    border-left: 2px solid var(--dusk-color);
     border-radius: 0.5rem;
     width: fit-content;
     background-color: #ffd79c96;
