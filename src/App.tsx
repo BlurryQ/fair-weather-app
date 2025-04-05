@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
 
@@ -8,14 +9,15 @@ import Header from './components/Header';
 import { WeatherDataProp } from './types/WeatherDataProp';
 
 // types
-import HourlyWeather from './components/HourlyWeather';
+
 import Loader from './components/Loader';
-import DayOverview from './components/DayOverview';
+
+import Settings from './components/Settings';
+import WeatherPage from './components/WeatherPage';
 
 function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [weatherData, setWeatherData] = useState<WeatherDataProp | null>(null);
-  const [chosenDay, setChosenDay] = useState<number>(0);
 
   return (
     <>
@@ -25,14 +27,13 @@ function App(): JSX.Element {
         {loading ? (
           <Loader />
         ) : (
-          <>
-            <DayOverview weatherData={weatherData} chosenDay={chosenDay} />
-            <HourlyWeather
-              weatherData={weatherData}
-              chosenDay={chosenDay}
-              setChosenDay={setChosenDay}
+          <Routes>
+            <Route
+              path="/"
+              element={<WeatherPage weatherData={weatherData} />}
             />
-          </>
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
         )}
       </main>
     </>
