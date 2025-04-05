@@ -18,7 +18,11 @@ export default function Header({
     <header>
       <div className="header">
         <NavBar />
-        <h1>Fair Weather App</h1>
+        <h1>
+          <a href="/" id="title">
+            Fair Weather App
+          </a>
+        </h1>
       </div>
       <Location setWeatherData={setWeatherData} setLoading={setLoading} />
     </header>
