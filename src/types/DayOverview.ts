@@ -1,14 +1,21 @@
 export type DayOverview = {
     avgtemp_c: number,
+    avgtemp_f: number,
     avgvis_miles: number,
+    avgvis_km: number,
     condition: {
         icon: string,
         text: string,
     },
     daily_chance_of_rain: number,
     daily_will_it_rain: number,
+    daily_chance_of_snow: number,
+    daily_will_it_snow: number,
     maxtemp_c: number,
+    maxtemp_f: number,
+    mintemp_f: number,
     mintemp_c: number,
     maxwind_mph: number,
+    maxwind_kph: number,
     uv: number,
 }
