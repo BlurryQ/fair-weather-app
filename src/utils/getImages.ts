@@ -16,27 +16,31 @@ import { HourProp } from "../types/HourProp";
 
 export default function getImages(weather: HourProp): string[] {
     const rainPercentageTrigger: number = 60
+    const snowPercentageTrigger: number = 60
     const tooHotTrigger: number = 18
     const tooColdTrigger: number = 5
     const uvTrigger: number = 3
-    const highWindTrigger: number = 35
     const windTrigger: number = 20
+    const highWindTrigger: number = 35
     const visibilityTrigger: number = 2
+    const weatherTemp: number = weather.temp_c
+    const weatherWind: number = weather.wind_mph
+    const weatherVis: number = weather.vis_miles
     const images = []
     
-    if (weather.condition.text.includes("snow")) images.push(snowyDobe)
+    if (weather.will_it_snow || weather.chance_of_snow >= snowPercentageTrigger) images.push(snowyDobe)
         else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) images.push(rainyDobe)
     
-    if (weather.temp_c > tooHotTrigger) images.push(sunnyDobe)
-    else if (weather.temp_c < tooColdTrigger) images.push(coldDobe)
+    if (weatherTemp > tooHotTrigger) images.push(sunnyDobe)
+    else if (weatherTemp < tooColdTrigger) images.push(coldDobe)
     else images.push(jacketDobe)
 
     if (weather.uv > uvTrigger) images.push(burntDobe)
 
-    if (weather.wind_mph >= highWindTrigger) images.push(hurricane)
-    else if (weather.wind_mph >= windTrigger) images.push(windy)
+    if (weatherWind >= highWindTrigger) images.push(hurricane)
+    else if (weatherWind >= windTrigger) images.push(windy)
 
-    if (weather.vis_miles <= visibilityTrigger) images.push(foggyDobe)
+    if (weatherVis <= visibilityTrigger) images.push(foggyDobe)
 
     while (images.length < 4) images.push(placeholder)
 
