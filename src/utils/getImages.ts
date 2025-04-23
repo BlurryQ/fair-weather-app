@@ -1,12 +1,12 @@
 // images
-import burntDobe from "../assets/images/weather/burnt.png"
-import coldDobe from "../assets/images/weather/cold.png"
-import foggyDobe from "../assets/images/weather/foggy.png"
-import hurricane from "../assets/images/weather/hurricane.png"
-import jacketDobe from "../assets/images/weather/jacket.png"
-import rainyDobe from "../assets/images/weather/rainy.png"
-import snowyDobe from "../assets/images/weather/snowy.png"
-import sunnyDobe from "../assets/images/weather/sunny.png"
+import lowUV from "../assets/images/weather/lowUV.png"
+import cold from "../assets/images/weather/cold.png"
+import lowVisability from "../assets/images/weather/lowVisability.png"
+import highWind from "../assets/images/weather/highWind.png"
+import mild from "../assets/images/weather/mild.png"
+import rainy from "../assets/images/weather/rainy.png"
+import snowy from "../assets/images/weather/snowy.png"
+import sunny from "../assets/images/weather/sunny.png"
 import windy from "../assets/images/weather/windy.png"
 import placeholder from "/favicon.png"
 
@@ -17,7 +17,7 @@ import { HourProp } from "../types/HourProp";
 export default function getImages(weather: HourProp): string[] {
     const rainPercentageTrigger: number = 60
     const snowPercentageTrigger: number = 60
-    const tooHotTrigger: number = 18
+    const tooHotTrigger: number = 17
     const tooColdTrigger: number = 5
     const uvTrigger: number = 3
     const windTrigger: number = 20
@@ -28,19 +28,19 @@ export default function getImages(weather: HourProp): string[] {
     const weatherVis: number = weather.vis_miles
     const images = []
     
-    if (weather.will_it_snow || weather.chance_of_snow >= snowPercentageTrigger) images.push(snowyDobe)
-        else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) images.push(rainyDobe)
+    if (weather.will_it_snow || weather.chance_of_snow >= snowPercentageTrigger) images.push(snowy)
+        else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) images.push(rainy)
     
-    if (weatherTemp > tooHotTrigger) images.push(sunnyDobe)
-    else if (weatherTemp < tooColdTrigger) images.push(coldDobe)
-    else images.push(jacketDobe)
+    if (weatherTemp > tooHotTrigger) images.push(sunny)
+    else if (weatherTemp < tooColdTrigger) images.push(cold)
+    else images.push(mild)
 
-    if (weather.uv > uvTrigger) images.push(burntDobe)
+    if (weather.uv > uvTrigger) images.push(lowUV)
 
-    if (weatherWind >= highWindTrigger) images.push(hurricane)
+    if (weatherWind >= highWindTrigger) images.push(highWind)
     else if (weatherWind >= windTrigger) images.push(windy)
 
-    if (weatherVis <= visibilityTrigger) images.push(foggyDobe)
+    if (weatherVis <= visibilityTrigger) images.push(lowVisability)
 
     while (images.length < 4) images.push(placeholder)
 
