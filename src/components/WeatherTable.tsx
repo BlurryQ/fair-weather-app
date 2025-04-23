@@ -17,29 +17,49 @@ export default function WeatherTable({
   const [condition, setCondition] = useState<string>('');
   const [rain, setRain] = useState<number>(0);
   const [rainChance, setRainChance] = useState<number>(0);
+  const [snow, setSnow] = useState<number>(0);
+  const [snowChance, setSnowChance] = useState<number>(0);
   const [feelsLike, setFeelsLike] = useState<number>(0);
   const [windSpeed, setWindSpeed] = useState<number>(0);
-  // const [gustSpeed, setgustSpeed] = useState<number>(0);
   const [uvIndex, setUvIndex] = useState<number>(0);
   const [visability, setVisability] = useState<number>(0);
 
   const setWeatherData = (hour: HourProp) => {
-    const weather: string = hour.condition.text;
-    const temp: number = hour.temp_c;
-    const tempLike: number = hour.feelslike_c;
-    const wind: number = hour.wind_mph;
-    const rainChance: number = hour.chance_of_rain;
-    const rain: number = hour.will_it_rain;
-    // const gust: number = hour.gust_mph;
-    const uv: number = hour.uv;
-    const visability: number = hour.vis_miles;
-    setCondition(weather);
-    setRain(rain);
-    setRainChance(rainChance);
+    const {
+      chance_of_rain,
+      chance_of_snow,
+      condition,
+      feelslike_c,
+      feelslike_f,
+      wind_mph,
+      wind_kph,
+      temp_c,
+      temp_f,
+      time,
+      time_epoch,
+      uv,
+      vis_miles,
+      vis_km,
+      will_it_rain,
+      will_it_snow,
+    } = hour;
+
+    // TODO: if user chooses celcius/fahrenheit set appropriate values
+    const temp: number = temp_c;
+    const feelsLikeTemp: number = feelslike_c;
+
+    // TODO: if user chooses miles/kilometer set appropriate values
+    const wind: number = wind_mph;
+    const visability: number = vis_miles;
+
+    setCondition(condition.text);
+    setRain(will_it_rain);
+    setRainChance(chance_of_rain);
+    setSnow(will_it_snow);
+    setSnowChance(chance_of_snow);
     setTemperature(temp);
-    setFeelsLike(tempLike);
+    setFeelsLike(feelsLikeTemp);
     setWindSpeed(wind);
-    // setgustSpeed(gust);
     setUvIndex(uv);
     setVisability(visability);
   };
@@ -67,6 +87,13 @@ export default function WeatherTable({
           </td>
         </tr>
         <tr>
+          <th>Snow:</th>
+          <td>
+            {' '}
+            {snow ? 'Yes' : 'No'} ({snowChance}%)
+          </td>
+        </tr>
+        <tr>
           <th>Temp:</th>
           <td>
             {temperature}°C ({feelsLike}°C)
@@ -74,9 +101,7 @@ export default function WeatherTable({
         </tr>
         <tr>
           <th>Wind:</th>
-          <td>
-            {windSpeed}mph {/* ({gustSpeed}mph) */}
-          </td>
+          <td>{windSpeed} mph</td>
         </tr>
         <tr>
           <th>View:</th>
