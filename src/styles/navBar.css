@@ -27,10 +27,6 @@
 
 @media only screen and (max-width: 550px) {
 
-    .nav-bar {
-        margin-right: -0.5rem;
-    }
-
     .nav-bar a {
         font-size: 0.7rem;
     }
