@@ -15,6 +15,8 @@ export default function CurrentCondition({
   const [conditionIcon, setConditionIcon] = useState<string>('');
   const [rain, setRain] = useState<number>(0);
   const [rainChance, setRainChance] = useState<number>(0);
+  const [snow, setSnow] = useState<number>(0);
+  const [snowChance, setSnowChance] = useState<number>(0);
   const [minTemperature, setMinTemperature] = useState<number>(0);
   const [maxTemperature, setMaxTemperature] = useState<number>(0);
   const [avgTemperature, setAvgTemperature] = useState<number>(0);
@@ -29,22 +31,42 @@ export default function CurrentCondition({
 
   // sets all weather data from restAPI
   const setWeatherData = (weatherData: WeatherDataProp) => {
-    const weatherObj = weatherData.forecast.forecastday[chosenDay].day;
-    const weather: string = weatherObj.condition.text;
-    const iconData: string = weatherObj.condition.icon;
-    const iconURL: string = iconData.substring(2);
-    const avgTemp: number = weatherObj.avgtemp_c;
-    const tempMin: number = weatherObj.mintemp_c;
-    const tempMax: number = weatherObj.maxtemp_c;
-    const maxWind: number = weatherObj.maxwind_mph;
-    const rainChance: number = weatherObj.daily_chance_of_rain;
-    const rain: number = weatherObj.daily_will_it_rain;
-    const uv: number = weatherObj.uv;
-    const avgVisability: number = weatherObj.avgvis_miles;
-    setCondition(weather);
+    const {
+      condition,
+      avgtemp_c,
+      avgtemp_f,
+      mintemp_c,
+      mintemp_f,
+      maxtemp_c,
+      maxtemp_f,
+      maxwind_mph,
+      maxwind_kph,
+      daily_chance_of_rain,
+      daily_chance_of_snow,
+      daily_will_it_rain,
+      daily_will_it_snow,
+      uv,
+      avgvis_miles,
+      avgvis_km,
+    } = weatherData.forecast.forecastday[chosenDay].day;
+
+    const iconURL: string = condition.icon.substring(2);
+
+    // TODO: if user chooses celcius/fahrenheit set appropriate values
+    const tempMin: number = mintemp_c;
+    const tempMax: number = maxtemp_c;
+    const avgTemp: number = avgtemp_c;
+
+    // TODO: if user chooses miles/kilometer set appropriate values
+    const maxWind: number = maxwind_mph;
+    const avgVisability: number = avgvis_miles;
+
+    setCondition(condition.text);
     setConditionIcon(`https://${iconURL}`);
-    setRain(rain);
-    setRainChance(rainChance);
+    setRain(daily_will_it_rain);
+    setRainChance(daily_chance_of_rain);
+    setSnow(daily_will_it_snow);
+    setSnowChance(daily_chance_of_snow);
     setMinTemperature(tempMin);
     setMaxTemperature(tempMax);
     setAvgTemperature(avgTemp);
@@ -87,6 +109,12 @@ export default function CurrentCondition({
               </td>
             </tr>
             <tr>
+              <th>Snow:</th>
+              <td>
+                {snow ? 'Yes' : 'No'} ({snowChance}%)
+              </td>
+            </tr>
+            <tr>
               <th>Avg. Temp:</th>
               <td>{avgTemperature}°C</td>
             </tr>
@@ -98,7 +126,7 @@ export default function CurrentCondition({
             </tr>
             <tr>
               <th>Wind:</th>
-              <td>{maxWindSpeed}mph</td>
+              <td>{maxWindSpeed} mph</td>
             </tr>
             <tr>
               <th>Avg. View:</th>
@@ -106,17 +134,6 @@ export default function CurrentCondition({
             </tr>
           </tbody>
         </table>
-
-        {/*         <li>{condition}</li>
-        <li>
-          Rain: {rain ? "Yes" : "No"} ({rainChance}%)
-        </li>
-        <li>Avg. Temp: {avgTemperature}°C</li>
-        <li>
-          Temp Range: {minTemperature}°C - {maxTemperature}°C
-        </li>
-        <li>Max Wind: {maxWindSpeed}mph</li>
-        <li>Avg. Visability: {avgVisability} miles</li> */}
       </ul>
     </div>
   );
