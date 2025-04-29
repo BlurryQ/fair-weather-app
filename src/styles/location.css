@@ -11,7 +11,7 @@
 .location input {
     text-indent: 2.7ch;
     width: 25ch;
-    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    box-shadow: var(--card-shadow);
 }
 
 .location-button {

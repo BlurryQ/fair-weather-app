@@ -1,12 +1,12 @@
 .sunrise,
 .sunset {
     border: 2px solid grey;
-    border-radius: 0.7rem;
+    border-radius: var(--card-radius);
     padding: 1rem;
     text-align: center;
     height: min-content;
     align-self: center;
-    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    box-shadow: var(--card-shadow);
 }
 
 .sunrise {

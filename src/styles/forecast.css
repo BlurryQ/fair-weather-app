@@ -19,14 +19,14 @@
 
 .forecast {
     background: var(--card-color);
-    border-radius: 0.7rem;
+    border-radius: var(--card-radius);
     padding: 1rem;
     display: flex;
     flex-direction: column;
     margin: 1rem 0;
     min-width: 300px;
     height: 715px;
-    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    box-shadow: var(--card-shadow);
     width: 95%;
     justify-self: center;
 }

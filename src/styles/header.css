@@ -1,11 +1,11 @@
 .header {
     text-align: center;
     padding: 0.1rem 1rem 1rem 1rem;
-    border-radius: 0.7rem;
+    border-radius: var(--card-radius);
     margin: auto;
     margin-top: 2rem;
     border: 2px solid grey;
-    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    box-shadow: var(--card-shadow);
     width: 80%;
     justify-self: center;
     background: linear-gradient(to bottom, #007dd3 0%, #5cb0df 50%, #95bfd8 100%);
