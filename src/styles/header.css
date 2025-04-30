@@ -10,7 +10,7 @@
     justify-self: center;
     background: linear-gradient(to bottom, #007dd3 0%, #5cb0df 50%, #95bfd8 100%);
     color: white;
-    text-shadow: -3px 3px 3px var(--shadow-colour), -5px 5px 5px var(--shadow-colour);
+    text-shadow: -3px 3px 3px var(--shadow-color), -5px 5px 5px var(--shadow-color);
     line-height: 1.2;
 }
 

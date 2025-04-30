@@ -154,7 +154,7 @@
         cursor: pointer;
         position: absolute;
         top: 48%;
-        box-shadow: -1px 1px 1px var(--shadow-colour), -2px 2px 2px var(--shadow-colour);
+        box-shadow: -1px 1px 1px var(--shadow-color), -2px 2px 2px var(--shadow-color);
     }
 
     .move-left {

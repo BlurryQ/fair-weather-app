@@ -48,7 +48,7 @@
 
 .error {
     color: #ff3300;
-    text-shadow: -1px 1px 1px var(--shadow-colour), -3px 3px 3px var(--shadow-colour);
+    text-shadow: -1px 1px 1px var(--shadow-color), -3px 3px 3px var(--shadow-color);
 }
 
 .selected {
