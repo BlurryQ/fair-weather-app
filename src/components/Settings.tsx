@@ -5,10 +5,14 @@ export default function Settings() {
   // TODO work out where (component?) to get userdata from local storage
 
   return (
-    <div className="settings">
-      <SettingsCard />
-      <SettingsCard />
-      <SettingsCard />
-    </div>
+    <>
+      {/* TODO create drop down component which accepts value and options */}
+
+      <div className="settings">
+        <SettingsCard />
+        <SettingsCard />
+        <SettingsCard />
+      </div>
+    </>
   );
 }
