@@ -14,6 +14,8 @@ import Loader from './components/Loader';
 
 import Settings from './components/Settings';
 import WeatherPage from './components/WeatherPage';
+import SignUp from './components/SignUp';
+import Login from './components/Login';
 
 function App(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,6 +35,8 @@ function App(): JSX.Element {
               element={<WeatherPage weatherData={weatherData} />}
             />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         )}
       </main>
