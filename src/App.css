@@ -74,9 +74,9 @@ h6 {
     --evening-color: #FF9F68;
     --sunset-color: #FF8000;
     --dusk-color: #D95D39;
-    --shadow-colour: rgb(50, 50, 50);
+    --shadow-color: rgb(50, 50, 50);
     --card-color: radial-gradient(circle, #FFC857 30%, #FF9F68 70%);
-    --card-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    --card-shadow: -2px 2px 2px var(--shadow-color), -4px 4px 6px var(--shadow-color);
     --card-radius: 0.7rem;
 }
 
@@ -88,7 +88,7 @@ h6 {
 h2 {
     font-size: 1.1rem;
     color: white;
-    text-shadow: -3px 3px 3px var(--shadow-colour), -5px 5px 5px var(--shadow-colour);
+    text-shadow: -3px 3px 3px var(--shadow-color), -5px 5px 5px var(--shadow-color);
 }
 
 .loading {
