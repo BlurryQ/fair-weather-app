@@ -15,6 +15,7 @@
 .auth input,
 .auth button {
     border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
 }
 
 .auth button {
