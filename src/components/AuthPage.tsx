@@ -1,12 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import '../styles/auth.css';
 import { useState } from 'react';
-
-// TODO remove
-const url: string = import.meta.env.VITE_SUPABASE_URL;
-const publicAnon: string = import.meta.env.VITE_SUPABASE_PUBLIC_ANON;
-import { createClient } from '@supabase/supabase-js';
-const supabase = createClient(url, publicAnon);
+import { signUpUser, signInUser } from '../models/supabaseModel';
 
 export default function AuthPage() {
   const location = useLocation();
@@ -31,17 +26,13 @@ export default function AuthPage() {
     }
   };
 
-  // TODO tidy below
-  async function signUpUser(e: React.MouseEvent<HTMLButtonElement>) {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    try {
-      let { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) throw error;
-      console.log('user', data.user);
-    } catch (err: any) {
-      console.error(err.message);
-    }
-  }
+    // TODO add context to below (use ifs)
+    location.pathname === '/signup'
+      ? await signUpUser(email, password)
+      : await signInUser(email, password);
+  };
 
   return (
     <div className="auth">
@@ -67,7 +58,7 @@ export default function AuthPage() {
             value={confirmPassword}
           />
         )}
-        <button type="submit" onClick={signUpUser}>
+        <button type="submit" onClick={handleSubmit}>
           {buttonText}
         </button>
       </form>
