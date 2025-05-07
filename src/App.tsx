@@ -2,6 +2,9 @@ import { Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
 
+// context
+import { UserProvider } from './context/UserContext';
+
 // components
 import Header from './components/Header';
 
@@ -22,23 +25,25 @@ function App(): JSX.Element {
 
   return (
     <>
-      <Header setWeatherData={setWeatherData} setLoading={setLoading} />
+      <UserProvider>
+        <Header setWeatherData={setWeatherData} setLoading={setLoading} />
 
-      <main>
-        {loading ? (
-          <Loader />
-        ) : (
-          <Routes>
-            <Route
-              path="/"
-              element={<WeatherPage weatherData={weatherData} />}
-            />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/signup" element={<AuthPage />} />
-            <Route path="/login" element={<AuthPage />} />
-          </Routes>
-        )}
-      </main>
+        <main>
+          {loading ? (
+            <Loader />
+          ) : (
+            <Routes>
+              <Route
+                path="/"
+                element={<WeatherPage weatherData={weatherData} />}
+              />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/signup" element={<AuthPage />} />
+              <Route path="/login" element={<AuthPage />} />
+            </Routes>
+          )}
+        </main>
+      </UserProvider>
     </>
   );
 }
