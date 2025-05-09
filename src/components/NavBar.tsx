@@ -1,14 +1,24 @@
+import { useNavigate } from 'react-router-dom';
 import '../styles/navBar.css';
+import { useUser } from '../context/UserContext';
 
 export default function NavBar() {
-  // get current user
+  const navigate = useNavigate();
+  const userContext = useUser();
+  if (!userContext) return <></>;
+  const { user, logout } = userContext;
 
-  // TODO - get user from context
-  const user: boolean = true;
+  // Timeout is needed to prevent "Log Out" changing to "Log In"
+  const logoutUser = async () => {
+    setTimeout(() => {
+      logout();
+    }, 0);
+    navigate('/');
+  };
 
   return (
     <ul className="nav-bar">
-      {user ? (
+      {user.id ? (
         <>
           <li>
             <a href="/settings" className="settings-link">
@@ -16,7 +26,7 @@ export default function NavBar() {
             </a>
           </li>
           <li>
-            <a href="/logout" className="settings-link">
+            <a href="/" className="settings-link" onClick={logoutUser}>
               Logout
             </a>
           </li>
