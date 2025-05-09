@@ -1,10 +1,12 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/auth.css';
 import { useState } from 'react';
 import { signUpUser, signInUser } from '../models/supabaseModel';
+import { useUser } from '../context/UserContext';
 
 export default function AuthPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const heading = location.pathname === '/signup' ? 'Sign Up' : 'Log In';
   const buttonText = location.pathname === '/signup' ? 'Sign Up' : 'Log In';
   const [email, setEmail] = useState('');
@@ -12,6 +14,9 @@ export default function AuthPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const userContext = useUser();
+  if (!userContext) return <></>;
+  const { login } = userContext;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { placeholder, value } = e.target;
@@ -28,10 +33,15 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // TODO add context to below (use ifs)
-    location.pathname === '/signup'
-      ? await signUpUser(email, password)
-      : await signInUser(email, password);
+    if (location.pathname === '/login') {
+      await signInUser(email, password, login);
+      navigate('/');
+    } else if (location.pathname === '/signup') {
+      await signUpUser(email, password);
+      navigate('/login');
+    }
+
+    navigate('/');
   };
 
   return (
