@@ -1,5 +1,4 @@
 import '../styles/toggle.css';
-import React from 'react';
 
 export default function Toggle({
   state,
@@ -12,7 +11,7 @@ export default function Toggle({
 }) {
   return (
     <label htmlFor={label}>
-      {label}:
+      {label.includes('card') ? '' : label + ':'}
       <input
         className="switch"
         id={label}
