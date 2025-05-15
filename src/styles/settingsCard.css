@@ -25,3 +25,18 @@
     color: transparent;
     margin-left: 40%;
 }
+
+.settings-card label {
+    align-self: centre;
+    margin-left: -3rem;
+}
+
+.settings-card.disabled {
+    background: #ccc;
+    opacity: 0.9;
+}
+
+
+.settings-card.disabled img {
+    opacity: 0.5;
+}
