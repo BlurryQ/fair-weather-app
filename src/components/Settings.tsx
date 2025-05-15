@@ -14,7 +14,7 @@ export default function Settings() {
   if (!userContext) return;
   const { user } = userContext;
 
-  const arr: any[] = Array.from({ length: 3 }).fill(<SettingsCard />);
+  const arr: any[] = Array.from({ length: 3 }).fill(1);
 
   return (
     <>
@@ -46,12 +46,12 @@ export default function Settings() {
           />
         </div>
 
-        {/* <label htmlFor="is-celsius">
+        <label htmlFor="is-celsius">
           Temperature:
           <input
             className="switch"
             id="is-celsius"
-            type="checkbox"
+            type="radio"
             onChange={() => setIsCelsius(!isCelsius)}
             checked={isCelsius}
           />
@@ -63,21 +63,25 @@ export default function Settings() {
           <input
             className="switch"
             id="is-miles"
-            type="checkbox"
+            type="radio"
             onChange={() => setIsMiles(!isMiles)}
             checked={isMiles}
           />
           <span className="slider"></span>
-        </label> */}
+        </label>
 
-        <Toggle state={isCelsius} setState={setIsCelsius} label="Temperature" />
+        {/* <Toggle state={isCelsius} setState={setIsCelsius} label="Temperature" /> */}
 
-        <Toggle state={isMiles} setState={setIsMiles} label="Distance" />
+        {/* <Toggle state={isMiles} setState={setIsMiles} label="Distance" /> */}
       </div>
 
       <div className="settings">
         {arr.map((setting, i) => {
-          return <div key={i}>{setting}</div>;
+          return (
+            <div key={i}>
+              <SettingsCard index={i} />
+            </div>
+          );
         })}
       </div>
     </>
