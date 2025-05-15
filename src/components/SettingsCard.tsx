@@ -3,6 +3,7 @@ import { useState, ChangeEvent } from 'react';
 
 // remove image default?
 import defaultImage from '../assets/images/weather/sunny.png';
+import Toggle from './Toggle';
 
 export default function SettingsCard() {
   const [value, setValue] = useState<number>(9);
@@ -21,15 +22,9 @@ export default function SettingsCard() {
     setValue(Number(e.target.value));
   };
 
-  const toggleSetting = () => {
-    setIsSettingOn((prev) => !prev);
-  };
-
   return (
     <div className="settings-card">
-      <div className="settings-toggle" onClick={toggleSetting}>
-        {isSettingOn ? <span>☀️</span> : <span>🌙</span>}
-      </div>
+      <Toggle state={isSettingOn} setState={setIsSettingOn} label="card" />
 
       <img src={image} alt="Uploaded" />
 
