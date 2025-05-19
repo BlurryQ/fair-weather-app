@@ -17,7 +17,7 @@ export default function Settings() {
   const arr: any[] = Array.from({ length: 3 }).fill(1);
 
   return (
-    <>
+    <form>
       {/* TODO create drop down component which accepts value and options */}
       <div className="core-settings">
         {/* <h1>{user.email}</h1> */}
@@ -46,29 +46,38 @@ export default function Settings() {
           />
         </div>
 
-        <label htmlFor="is-celsius">
-          Temperature:
+        <div className="setting-group">
+          <legend>Temperature:</legend>
+          <label htmlFor="is-celsius">Celsius:</label>
           <input
-            className="switch"
+            className="radio"
             id="is-celsius"
+            name="is-celsius"
             type="radio"
-            onChange={() => setIsCelsius(!isCelsius)}
-            checked={isCelsius}
+            defaultChecked
           />
-          <span className="slider"></span>
-        </label>
-
-        <label htmlFor="is-miles">
-          Distance:
+          <label htmlFor="is-celsius">Fahrenheit:</label>
           <input
-            className="switch"
-            id="is-miles"
+            className="radio"
+            id="is-celsius"
+            name="is-celsius"
             type="radio"
-            onChange={() => setIsMiles(!isMiles)}
-            checked={isMiles}
           />
-          <span className="slider"></span>
-        </label>
+        </div>
+
+        <div className="setting-group">
+          <legend>Distance:</legend>
+          <label htmlFor="is-miles">Miles:</label>
+          <input
+            className="radio"
+            id="is-miles"
+            name="is-miles"
+            type="radio"
+            defaultChecked
+          />
+          <label htmlFor="is-miles">Kilometers:</label>
+          <input className="radio" id="is-miles" name="is-miles" type="radio" />
+        </div>
 
         {/* <Toggle state={isCelsius} setState={setIsCelsius} label="Temperature" /> */}
 
@@ -84,6 +93,6 @@ export default function Settings() {
           );
         })}
       </div>
-    </>
+    </form>
   );
 }
