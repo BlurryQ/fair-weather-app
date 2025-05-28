@@ -104,3 +104,8 @@ h2 {
 ul {
     list-style: none;
 }
+
+button.save {
+    border-radius: var(--card-radius);
+    background-color: white;
+}
