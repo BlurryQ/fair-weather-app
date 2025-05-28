@@ -59,7 +59,7 @@ export default function SettingsCard({ index }: { index: number }) {
         onChange={handleImageUpload}
         className="file-input"
       />
-      <button className="">Save</button>
+      <button className="save">Save</button>
     </div>
   );
 }
