@@ -16,6 +16,9 @@ export default function Settings() {
 
   const arr: any[] = Array.from({ length: 3 }).fill(1);
 
+  // TODO: When tabbed settings and images have 1 save button for settings and multiple for images
+  // TODO: Error handling for hours
+
   return (
     <form>
       {/* TODO create drop down component which accepts value and options */}
@@ -79,9 +82,7 @@ export default function Settings() {
           <input className="radio" id="is-miles" name="is-miles" type="radio" />
         </div>
 
-        {/* <Toggle state={isCelsius} setState={setIsCelsius} label="Temperature" /> */}
-
-        {/* <Toggle state={isMiles} setState={setIsMiles} label="Distance" /> */}
+        <button className="save">Save</button>
       </div>
 
       <div className="settings">
