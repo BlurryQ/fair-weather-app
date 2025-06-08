@@ -15,7 +15,7 @@ import { WeatherDataProp } from './types/WeatherDataProp';
 
 import Loader from './components/Loader';
 
-import Settings from './components/Settings';
+import Settings from './components/settings/Settings';
 import WeatherPage from './components/WeatherPage';
 import AuthPage from './components/AuthPage';
 
