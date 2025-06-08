@@ -8,7 +8,7 @@ import LocationInput from './LocationInput';
 import LocationPin from '../assets/images/icons/location.svg';
 
 // models
-import { getLatandLongWeather } from '../models/weatherModel';
+import { getLatandLongWeather } from '../models/weatherAPI/weatherModel';
 
 // types
 import { GeoLocationData } from '../types/GeoLocationData';
