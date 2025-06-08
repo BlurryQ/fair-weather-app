@@ -41,42 +41,6 @@
     opacity: 0.5;
 }
 
-/* Maybe a component */
-input[type='radio']:after {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 100%;
-    position: relative;
-    top: -1px;
-    left: 1px;
-    background-color: #d1d3d1;
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid white;
-    box-shadow: var(--card-shadow);
-}
-
-input[type='radio']:checked:after {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 100%;
-    position: relative;
-    top: -1px;
-    left: 1px;
-    background-color: var(--evening-color);
-    content: '';
-    display: inline-block;
-    visibility: visible;
-    border: 2px solid white;
-    box-shadow: var(--card-shadow);
-}
-
-.radio {
-    width: 1rem;
-    height: 1rem;
-}
-
 .setting-group * {
     padding: 0 1rem;
 }

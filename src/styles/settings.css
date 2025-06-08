@@ -11,3 +11,40 @@
     justify-items: center;
     gap: 0.5rem;
 }
+
+.settings-menu button {
+    gap: 2rem;
+    font-size: 1.5rem;
+    color: var(--sunrise-color);
+    text-shadow: -2px 2px 2px var(--shadow-color), -4px 4px 4px var(--shadow-color);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.settings-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 1rem;
+}
+
+.settings-menu .selected {
+  color: var(--dusk-color);
+  text-decoration: wavy underline;
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 0.5rem;
+
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px 40px;
+  border-radius: 50% 40% 50% 40% / 40% 50% 40% 50%; /* Cloud-like shape */
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 
+              0 0 60px rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(2px);
+}
+
+.settings-menu button:hover {
+  color: var(--evening-color);
+  text-decoration: wavy underline;
+}
