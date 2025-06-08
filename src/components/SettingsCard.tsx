@@ -12,10 +12,8 @@ export default function SettingsCard({ index }: { index: number }) {
 
   const changeCardColor = (isSettingOn: boolean) => {
     const card = document.querySelectorAll('.settings-card');
-    console.dir(card[index]);
     if (card) {
       if (card[index].classList[1] === 'disabled') {
-        console.log('removed');
         card[index].classList.remove('disabled');
       } else {
         card[index].classList.add('disabled');
