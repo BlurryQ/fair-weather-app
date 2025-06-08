@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/auth.css';
 import { useState } from 'react';
-import { signUpUser, signInUser } from '../models/supabaseModel';
+import { signUpUser, signInUser } from '../models/supabase/auth/auth';
 import { useUser } from '../context/UserContext';
 
 export default function AuthPage() {
