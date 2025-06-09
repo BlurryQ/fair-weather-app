@@ -16,7 +16,7 @@ import validateSettings from '../../utils/validateSettings';
 import getAllSettings from '../../models/supabase/tables/getAllSettings';
 
 export default function Settings() {
-  const [allSettings, setAllSettings] = useState<AllSettings | {}>(false);
+  const [allSettings, setAllSettings] = useState<AllSettings | {}>({});
   const [displaySettingsPage, setDisplaySettingsPage] =
     useState<string>('images');
 
@@ -48,6 +48,7 @@ export default function Settings() {
     return <div className="loading">Loading...</div>;
   }
 
+  // TODO cards state (active) correctly dispays
   return (
     <form>
       <>
