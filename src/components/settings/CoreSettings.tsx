@@ -53,6 +53,7 @@ export default function CoreSettings({
         />
       </div>
 
+      {/* TODO make these radio buttons components? */}
       <div className="setting-group">
         <legend>Temperature:</legend>
         <label htmlFor="temperature">Celsius:</label>
