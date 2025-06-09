@@ -9,6 +9,7 @@
     box-shadow: var(--card-shadow);
     padding: 0.5rem;
     gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .settings-card * {
