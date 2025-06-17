@@ -48,7 +48,6 @@ export default function Settings() {
     return <div className="loading">Loading...</div>;
   }
 
-  // TODO cards state (active) correctly dispays
   return (
     <form>
       <>
