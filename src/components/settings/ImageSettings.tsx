@@ -1,8 +1,4 @@
-import { useEffect, useState } from 'react';
 import '../../styles/settings.css';
-
-// context
-import { useUser } from '../../context/UserContext';
 
 // components
 import SettingsCard from '../SettingsCard';
