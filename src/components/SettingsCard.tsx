@@ -7,6 +7,7 @@ import Toggle from './Toggle';
 
 // types
 import { SettingdCardData } from '../types/settings/SettingsCardData';
+import capitalisedEachWord from '../utils/capitalisedEachWord';
 
 export default function SettingsCard({
   index,
@@ -54,9 +55,14 @@ export default function SettingsCard({
 
       <img src={image} alt="Uploaded" />
 
-      <div>{setting.name}</div>
+      <div>{capitalisedEachWord(setting.name)}</div>
 
-      <input type="number" value={value} onChange={handleValueChange} />
+      <input
+        type="number"
+        value={value}
+        onChange={handleValueChange}
+        className={setting.name === 'good_day' ? 'invisible' : ''}
+      />
 
       <input
         type="file"
