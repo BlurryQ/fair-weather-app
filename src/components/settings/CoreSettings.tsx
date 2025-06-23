@@ -56,7 +56,7 @@ export default function CoreSettings({
       {/* TODO make these radio buttons components? */}
       <div className="setting-group">
         <legend>Temperature:</legend>
-        <label htmlFor="temperature">Celsius:</label>
+        <label htmlFor="celsius">Celsius:</label>
         <input
           className="radio"
           id="celsius"
@@ -65,7 +65,7 @@ export default function CoreSettings({
           defaultChecked={allSettings.coreSettings.is_celsius === true}
           onChange={handleChange}
         />
-        <label htmlFor="temperature">Fahrenheit:</label>
+        <label htmlFor="fahrenheit">Fahrenheit:</label>
         <input
           className="radio"
           id="fahrenheit"
@@ -78,7 +78,7 @@ export default function CoreSettings({
 
       <div className="setting-group">
         <legend>Distance:</legend>
-        <label htmlFor="distance">Miles:</label>
+        <label htmlFor="miles">Miles:</label>
         <input
           className="radio"
           id="miles"
@@ -87,7 +87,7 @@ export default function CoreSettings({
           defaultChecked={allSettings.coreSettings.is_miles === true}
           onChange={handleChange}
         />
-        <label htmlFor="distance">Kilometers:</label>
+        <label htmlFor="kilometers">Kilometers:</label>
         <input
           className="radio"
           id="kilometers"
