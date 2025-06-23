@@ -58,6 +58,7 @@ export default function SettingsCard({
       <div>{capitalisedEachWord(setting.name)}</div>
 
       <input
+        id={setting.name + '_value'}
         type="number"
         value={value}
         onChange={handleValueChange}
