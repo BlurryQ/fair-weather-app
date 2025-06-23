@@ -20,8 +20,7 @@ export default function ImageSettings({
 }) {
   const imageSettings: ImageSettingsType = allSettings.imageSettings;
 
-  // might need to be in a useEffect
-  const tester = (imageSettings: ImageSettingsType): any[] => {
+  const getSettingsArray = (imageSettings: ImageSettingsType): any[] => {
     const settings: string[] = Object.keys(imageSettings);
     const validSettings: string[] = settings.filter((setting) =>
       setting.includes('_on')
@@ -37,11 +36,11 @@ export default function ImageSettings({
       }
     );
 
-    console.log(validSettingsWithValues);
+    // console.log(validSettingsWithValues);
     return validSettingsWithValues;
   };
 
-  const settings: SettingdCardData[] = tester(imageSettings);
+  const settings: SettingdCardData[] = getSettingsArray(imageSettings);
 
   return (
     <div className="settings">
