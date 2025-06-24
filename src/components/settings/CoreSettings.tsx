@@ -1,5 +1,9 @@
+// context
+import { useUser } from '../../context/UserContext';
+
 // types
 import { AllSettings } from '../../types/settings/AllSettings';
+import { CoreSettings as CoreSettingsType } from '../../types/settings/CoreSettings';
 
 export default function CoreSettings({
   allSettings,
@@ -9,6 +13,11 @@ export default function CoreSettings({
   setAllSettings: React.Dispatch<React.SetStateAction<AllSettings>>;
 }) {
   // TODO: Error handling for hours
+  const userContext = useUser();
+  if (!userContext) return;
+  const { updateUserSettings } = userContext;
+  // TODO return error/ redirect
+  const coreSettings: CoreSettingsType = allSettings.coreSettings;
 
   const handleChange = (e: any) => {
     const tempSettings: boolean =
@@ -16,15 +25,20 @@ export default function CoreSettings({
     const distanceSettings: boolean =
       e.target.id === 'miles' || e.target.id === 'kilometers';
     if (tempSettings) {
-      allSettings.coreSettings.is_celsius = e.target.id === 'celsius';
+      coreSettings.is_celsius = e.target.id === 'celsius';
     } else if (distanceSettings) {
-      allSettings.coreSettings.is_miles = e.target.id === 'miles';
+      coreSettings.is_miles = e.target.id === 'miles';
     } else if (e.target.id === 'first-hour') {
-      allSettings.coreSettings.first_hour = Number(e.target.value);
+      coreSettings.first_hour = Number(e.target.value);
     } else if (e.target.id === 'last-hour') {
-      allSettings.coreSettings.last_hour = Number(e.target.value);
+      coreSettings.last_hour = Number(e.target.value);
     }
     setAllSettings(allSettings);
+  };
+
+  const handleSave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    updateUserSettings('core', coreSettings);
   };
 
   return (
@@ -36,7 +50,7 @@ export default function CoreSettings({
           type="number"
           min={0}
           max={23}
-          defaultValue={allSettings.coreSettings.first_hour}
+          defaultValue={coreSettings.first_hour}
           onChange={handleChange}
         />
       </div>
@@ -48,7 +62,7 @@ export default function CoreSettings({
           type="number"
           min={0}
           max={23}
-          defaultValue={allSettings.coreSettings.last_hour}
+          defaultValue={coreSettings.last_hour}
           onChange={handleChange}
         />
       </div>
@@ -62,7 +76,7 @@ export default function CoreSettings({
           id="celsius"
           name="temperature"
           type="radio"
-          defaultChecked={allSettings.coreSettings.is_celsius === true}
+          defaultChecked={coreSettings.is_celsius === true}
           onChange={handleChange}
         />
         <label htmlFor="fahrenheit">Fahrenheit:</label>
@@ -71,7 +85,7 @@ export default function CoreSettings({
           id="fahrenheit"
           name="temperature"
           type="radio"
-          defaultChecked={allSettings.coreSettings.is_celsius === false}
+          defaultChecked={coreSettings.is_celsius === false}
           onChange={handleChange}
         />
       </div>
@@ -84,7 +98,7 @@ export default function CoreSettings({
           id="miles"
           name="distance"
           type="radio"
-          defaultChecked={allSettings.coreSettings.is_miles === true}
+          defaultChecked={coreSettings.is_miles === true}
           onChange={handleChange}
         />
         <label htmlFor="kilometers">Kilometers:</label>
@@ -93,12 +107,14 @@ export default function CoreSettings({
           id="kilometers"
           name="distance"
           type="radio"
-          defaultChecked={allSettings.coreSettings.is_miles === false}
+          defaultChecked={coreSettings.is_miles === false}
           onChange={handleChange}
         />
       </div>
 
-      <button className="save">Save</button>
+      <button className="save" onClick={handleSave}>
+        Save
+      </button>
     </div>
   );
 }
