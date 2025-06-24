@@ -13,25 +13,21 @@ import { AllSettings } from '../../types/settings/AllSettings';
 
 // utils
 import validateSettings from '../../utils/validateSettings';
-import getAllSettings from '../../models/supabase/tables/getAllSettings';
 
 export default function Settings() {
-  const [allSettings, setAllSettings] = useState<AllSettings | {}>({});
-  const [displaySettingsPage, setDisplaySettingsPage] =
-    useState<string>('images');
-
   const userContext = useUser();
   if (!userContext) return;
   const { user } = userContext;
+  const [allSettings, setAllSettings] = useState<AllSettings | any>(
+    user.settings
+  );
+  const [displaySettingsPage, setDisplaySettingsPage] =
+    useState<string>('images');
 
   useEffect(() => {
-    const getSettings = async () => {
-      if (validateSettings(allSettings)) return;
-      const settings: AllSettings = await getAllSettings();
-      setAllSettings(settings);
-    };
-
-    getSettings();
+    if (user && validateSettings(user.settings)) {
+      setAllSettings(user.settings);
+    }
   }, [user, allSettings]);
 
   const changeSettingsPage = (e: React.MouseEvent<HTMLButtonElement>) => {
