@@ -71,10 +71,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-  const updateUserSettings = (
+  const updateUserSettings = async (
     settingsType: string,
     settings: AllSettings | CoreSettings | ImageSettings
-  ): void => {
+  ) => {
     setUser((prevUser: any) => {
       let updatedUser = { ...prevUser, settings: { ...settings } };
       if (settingsType === 'images')
@@ -82,13 +82,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       else if (settingsType === 'all')
         updatedUser.settings = settings as AllSettings;
       else if (settingsType === 'core') {
-        updateCoreSettings(settings as CoreSettings).then((response) => {
-          if (response) {
-            updatedUser.settings.coreSettings = settings as CoreSettings;
-          } else {
-            console.error('Failed to update core settings');
-          }
-        });
+        updatedUser.settings.coreSettings = settings as CoreSettings;
       }
 
       localStorage.setItem('user', JSON.stringify(updatedUser));
