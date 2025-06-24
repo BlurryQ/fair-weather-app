@@ -1,6 +1,9 @@
 // context
 import { useUser } from '../../context/UserContext';
 
+// models
+import { updateCoreSettings } from '../../models/supabase/tables/coreSettings';
+
 // types
 import { AllSettings } from '../../types/settings/AllSettings';
 import { CoreSettings as CoreSettingsType } from '../../types/settings/CoreSettings';
@@ -38,7 +41,8 @@ export default function CoreSettings({
 
   const handleSave = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    updateUserSettings('core', coreSettings);
+    updateCoreSettings(coreSettings); // Update the core settings in the database
+    updateUserSettings('core', coreSettings); // Update the user context with the new core settings
   };
 
   return (
