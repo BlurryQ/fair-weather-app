@@ -2,11 +2,11 @@ import { format } from "date-fns"
 
 // props
 import { HourProp } from "../types/HourProp";
+import { CoreSettings } from "../types/settings/CoreSettings";
 
-export default function removeUnwantedHours(hours: HourProp): boolean {
-
-    const earliestTime: number = 9
-    const latestTime: number = 22
+export default function removeUnwantedHours(hours: HourProp, coreSettings: CoreSettings | number): boolean {
+    const earliestTime: number = typeof coreSettings === "number" ? 0 : coreSettings.first_hour
+    const latestTime: number = typeof coreSettings === "number" ? 23 : coreSettings.last_hour
 
     const [hoursDate]: string[] = hours.time.split(" ")
 
