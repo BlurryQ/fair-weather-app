@@ -23,7 +23,6 @@ export default function Forecast(
   if (!hour) return null;
   const [condition, setCondition] = useState<string>('');
   const [conditionIcon, setConditionIcon] = useState<string>('');
-  const [temperature, setTemperature] = useState<number>(0);
 
   const setWeatherData = (hour: HourProp) => {
     const weather: string = hour.condition.text;
@@ -61,11 +60,7 @@ export default function Forecast(
         <p className="temp">{hour.temp_c}°C </p>
       </span>
 
-      <WeatherTable
-        hour={hour}
-        temperature={temperature}
-        setTemperature={setTemperature}
-      />
+      <WeatherTable hour={hour} />
 
       <DogGrid hour={hour} images={images} />
 
