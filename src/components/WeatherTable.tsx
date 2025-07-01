@@ -56,48 +56,50 @@ export default function WeatherTable({
   }, [hour]);
 
   return (
-    <table id="weather-details-desktop">
-      <thead>
-        <tr>
-          <th colSpan={2} className="table-header">
-            {weatherData.condition.text}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>Rain:</th>
-          <td>
-            {' '}
-            {weatherData.will_it_rain ? 'Yes' : 'No'} (
-            {weatherData.chance_of_rain}%)
-          </td>
-        </tr>
-        <tr>
-          <th>Snow:</th>
-          <td>
-            {' '}
-            {weatherData.will_it_snow ? 'Yes' : 'No'} (
-            {weatherData.chance_of_snow}%)
-          </td>
-        </tr>
-        <tr>
-          <th>Temp:</th>
-          <td>{weatherData.temperature}</td>
-        </tr>
-        <tr>
-          <th>Wind:</th>
-          <td>{weatherData.windSpeed}</td>
-        </tr>
-        <tr>
-          <th>View:</th>
-          <td>{weatherData.visability}</td>
-        </tr>
-        <tr>
-          <th>UV:</th>
-          <td>{weatherData.uv}</td>
-        </tr>
-      </tbody>
-    </table>
+    weatherData.hasOwnProperty('condition') && (
+      <table id="weather-details-desktop">
+        <thead>
+          <tr>
+            <th colSpan={2} className="table-header">
+              {weatherData.condition.text}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Rain:</th>
+            <td>
+              {' '}
+              {weatherData.will_it_rain ? 'Yes' : 'No'} (
+              {weatherData.chance_of_rain}%)
+            </td>
+          </tr>
+          <tr>
+            <th>Snow:</th>
+            <td>
+              {' '}
+              {weatherData.will_it_snow ? 'Yes' : 'No'} (
+              {weatherData.chance_of_snow}%)
+            </td>
+          </tr>
+          <tr>
+            <th>Temp:</th>
+            <td>{weatherData.temperature}</td>
+          </tr>
+          <tr>
+            <th>Wind:</th>
+            <td>{weatherData.windSpeed}</td>
+          </tr>
+          <tr>
+            <th>View:</th>
+            <td>{weatherData.visability}</td>
+          </tr>
+          <tr>
+            <th>UV:</th>
+            <td>{weatherData.uv}</td>
+          </tr>
+        </tbody>
+      </table>
+    )
   );
 }
