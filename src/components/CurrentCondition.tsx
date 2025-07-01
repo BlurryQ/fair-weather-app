@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 // props
 import { WeatherDataProp } from '../types/WeatherDataProp';
+import { useUser } from '../context/UserContext';
 
 export default function CurrentCondition({
   weatherData,
@@ -23,6 +24,17 @@ export default function CurrentCondition({
   const [maxWindSpeed, setMaxWindSpeed] = useState<number>(0);
   const [uvIndex, setUvIndex] = useState<number>(0);
   const [avgVisability, setAvgVisability] = useState<number>(0);
+
+  // const [weatherData, setWeatherData] = useState<{}>({});
+  //   const userContext = useUser();
+  //   if (!userContext) return <></>
+  //   const { user } = userContext;
+  //   let useCelcius: boolean = true;
+  //   let useMiles: boolean = true;
+  //   if (user.hasOwnProperty('settings')) {
+  //     useCelcius = user.settings?.coreSettings?.is_celsius ?? true;
+  //     useMiles = user.settings?.coreSettings?.is_miles ?? true;
+  //   }
 
   useEffect(() => {
     if (!weatherData) return;
