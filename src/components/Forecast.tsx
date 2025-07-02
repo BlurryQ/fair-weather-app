@@ -37,8 +37,8 @@ export default function Forecast(
     setWeatherData(hour);
   }, [hour]);
 
-  const today: Date = new Date(hour.time_epoch * 1000);
-  const todaysHours: number = today.getHours();
+  const timeStamp: string = hour.time;
+  const [_, hourString]: string[] = timeStamp.split(' ');
   const images: string[] = getImages(hour);
   const className = getClassName(index, hour.placeholder);
 
@@ -49,7 +49,7 @@ export default function Forecast(
       className={className}
     >
       <span data-hour-id={hour.time_epoch} className="weather-overview">
-        <p className="time">{todaysHours}:00</p>
+        <p className="time">{hourString}</p>
         {conditionIcon ? (
           <img
             alt={condition}
