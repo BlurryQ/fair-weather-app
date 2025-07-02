@@ -52,15 +52,6 @@ export default function CurrentCondition({
       ? chosenDaysWeather.avgvis_miles + ' miles'
       : chosenDaysWeather.avgvis_km + ' kilometers';
 
-    console.log({
-      ...chosenDaysWeather,
-      iconURL,
-      avgTemp,
-      tempRange,
-      wind,
-      visability,
-    });
-
     setOverviewData({
       ...chosenDaysWeather,
       iconURL,
