@@ -6,6 +6,7 @@ import Location from './Location';
 // types
 import { WeatherDataProp } from '../types/WeatherDataProp';
 import NavBar from './NavBar';
+import { Link } from 'react-router-dom';
 
 export default function Header({
   setWeatherData,
@@ -19,9 +20,9 @@ export default function Header({
       <div className="header">
         <NavBar />
         <h1>
-          <a href="/" id="title">
+          <Link to="/" id="title">
             Fair Weather App
-          </a>
+          </Link>
         </h1>
       </div>
       <Location setWeatherData={setWeatherData} setLoading={setLoading} />

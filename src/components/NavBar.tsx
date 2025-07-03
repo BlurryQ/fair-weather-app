@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/navBar.css';
 import { useUser } from '../context/UserContext';
 
@@ -21,27 +21,27 @@ export default function NavBar() {
       {user.id ? (
         <>
           <li>
-            <a href="/settings" className="settings-link">
+            <Link to="/settings" className="settings-link">
               Settings
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/" className="settings-link" onClick={logoutUser}>
+            <Link to="/" className="settings-link" onClick={logoutUser}>
               Logout
-            </a>
+            </Link>
           </li>
         </>
       ) : (
         <>
           <li>
-            <a href="/signup" className="settings-link">
+            <Link to="/signup" className="settings-link">
               Sign Up
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/login" className="settings-link">
+            <Link to="/login" className="settings-link">
               Log In
-            </a>
+            </Link>
           </li>
         </>
       )}
