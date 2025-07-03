@@ -48,3 +48,24 @@
   color: var(--evening-color);
   text-decoration: wavy underline;
 }
+
+.login {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    font-size: 1.5rem;
+    color: var(--sunrise-color);
+    text-shadow: -2px 2px 2px var(--shadow-color), -4px 4px 4px var(--shadow-color);
+}
+
+.login a {
+  color: var(--evening-color);
+  text-decoration: none;
+}
+
+.login a:hover {
+  color: var(--evening-color);
+  text-decoration: wavy underline;
+}
