@@ -29,20 +29,21 @@ export default function getImages(weather: HourProp): string[] {
     const images = []
     
     if (weather.will_it_snow || weather.chance_of_snow >= snowPercentageTrigger) images.push(snowy)
-        else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) images.push(rainy)
+    else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) images.push(rainy)
     
     if (weatherTemp > tooHotTrigger) images.push(sunny)
     else if (weatherTemp < tooColdTrigger) images.push(cold)
     else images.push(mild)
 
-    if (weather.uv > uvTrigger) images.push(lowUV)
-
     if (weatherWind >= highWindTrigger) images.push(highWind)
     else if (weatherWind >= windTrigger) images.push(windy)
+
+    if (weather.uv > uvTrigger) images.push(lowUV)
 
     if (weatherVis <= visibilityTrigger) images.push(lowVisability)
 
     while (images.length < 4) images.push(placeholder)
+    while (images.length > 4) images.pop()
 
     return images
 }
