@@ -8,7 +8,6 @@ import React, {
 
 // models
 import getAllSettings from '../models/supabase/tables/getAllSettings';
-import { updateCoreSettings } from '../models/supabase/tables/coreSettings';
 
 // types
 import { AllSettings } from '../types/settings/AllSettings';
@@ -73,16 +72,17 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateUserSettings = async (
     settingsType: string,
-    settings: AllSettings | CoreSettings | ImageSettings
+    settings: CoreSettings | ImageSettings | AllSettings
   ) => {
     setUser((prevUser: any) => {
-      let updatedUser = { ...prevUser, settings: { ...settings } };
-      if (settingsType === 'images')
+      let updatedUser = { ...prevUser };
+
+      if (settingsType === 'images') {
         updatedUser.settings.imageSettings = settings as ImageSettings;
-      else if (settingsType === 'all')
-        updatedUser.settings = settings as AllSettings;
-      else if (settingsType === 'core') {
+      } else if (settingsType === 'core') {
         updatedUser.settings.coreSettings = settings as CoreSettings;
+      } else if (settingsType === 'all') {
+        updatedUser.settings = settings as AllSettings;
       }
 
       localStorage.setItem('user', JSON.stringify(updatedUser));
