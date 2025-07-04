@@ -1,12 +1,14 @@
 import supabase from "../client";
 
-  export async function signUpUser(email: string, password: string) {
+  export async function signUpUser(email: string, password: string): Promise<boolean> {
     try {
       let { data, error } = await supabase.auth.signUp({ email, password });
       if (error) throw error;
       console.log('user', data.user);
+      return true
     } catch (err: any) {
       console.error(err.message);
+      return false
     }
   }
 
@@ -19,8 +21,10 @@ import supabase from "../client";
       if (error) throw error;
       console.log('>> user', data.user);
       login(data.user)
+      return true
     } catch (err: any) {
       console.error(err.message);
+      return false
     }
   }
 
