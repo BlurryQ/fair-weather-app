@@ -1,12 +1,12 @@
+import { useState } from 'react';
+
 // context
 import { useUser } from '../../context/UserContext';
-
-// models
-import { updateCoreSettings } from '../../models/supabase/tables/coreSettings';
 
 // types
 import { AllSettings } from '../../types/settings/AllSettings';
 import { CoreSettings as CoreSettingsType } from '../../types/settings/CoreSettings';
+import updateUser from '../../utils/updateUser';
 
 export default function CoreSettings({
   allSettings,
@@ -19,8 +19,10 @@ export default function CoreSettings({
   const userContext = useUser();
   if (!userContext) return;
   const { updateUserSettings } = userContext;
+
   // TODO return error/ redirect
   const coreSettings: CoreSettingsType = allSettings.coreSettings;
+  const [saving, setSaving] = useState<boolean>(false);
 
   const handleChange = (e: any) => {
     const tempSettings: boolean =
@@ -39,11 +41,16 @@ export default function CoreSettings({
     setAllSettings(allSettings);
   };
 
-  const handleSave = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    updateCoreSettings(coreSettings); // Update the core settings in the database
-    updateUserSettings('core', coreSettings); // Update the user context with the new core settings
+    setSaving(true);
+    await updateUser('core', coreSettings, setSaving, updateUserSettings);
   };
+
+  // TODO style me
+  if (saving) {
+    return <div className="saving">saving...</div>;
+  }
 
   return (
     <div className="core-settings">
