@@ -33,20 +33,38 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setLoading(true);
     if (location.pathname === '/login') {
-      await signInUser(email, password, login);
+      const isSuccessful: boolean = await signInUser(email, password, login);
+      if (!isSuccessful) {
+        setError('Login failed. Please check your credentials.');
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
       navigate('/');
     } else if (location.pathname === '/signup') {
-      await signUpUser(email, password);
+      const isSuccessful: boolean = await signUpUser(email, password);
+      if (!isSuccessful) {
+        setError('Sign up failed. Please check your credentials.');
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
       navigate('/login');
     }
 
     navigate('/');
   };
 
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
   return (
     <div className="auth">
       <h1>{heading}</h1>
+      {error && <div className="error">{error}</div>}
       <form className="auth">
         <input
           type="email"
