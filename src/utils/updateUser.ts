@@ -8,24 +8,28 @@ import { ImageSettings } from '../types/settings/ImageSettings';
 export default async function updateUser (
   location: string,
   settings: CoreSettings | ImageSettings,
-  loadingData: React.Dispatch<React.SetStateAction<boolean>>,
+  saveState: React.Dispatch<React.SetStateAction<string>>,
   updateUserSettings: (settingType: string, userUpdates: CoreSettings | ImageSettings) => void
   ) {
     try {
       if (location === 'image') {
+        // TODO: Update image settings in the database
       await updateUserSettings(location, settings); // Update the user context with the new core settings
       // await updateImageSettings(settings); // Update the core settings in the database
-      loadingData(false);
+      saveState("saved");
       return true;
     } else if (location === 'core') {
+      const coreSettings = await updateCoreSettings(settings); // Update the core settings in the database
+      if (!coreSettings) {
+        throw new Error("Failed to update core settings in the database");
+      }
       await updateUserSettings(location, settings); // Update the user context with the new core settings
-      await updateCoreSettings(settings); // Update the core settings in the database
-      loadingData(false);
+      saveState("saved");
       return true;
     }
     } catch (error) {
       console.error('Error updating user settings:', error);
-      loadingData(false);
+      saveState("error");
       return false;
     }
   return false
