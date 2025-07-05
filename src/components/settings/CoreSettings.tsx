@@ -22,7 +22,7 @@ export default function CoreSettings({
 
   // TODO return error/ redirect
   const coreSettings: CoreSettingsType = allSettings.coreSettings;
-  const [saving, setSaving] = useState<boolean>(false);
+  const [saveState, setSaveState] = useState<string>('save');
 
   const handleChange = (e: any) => {
     const tempSettings: boolean =
@@ -43,14 +43,12 @@ export default function CoreSettings({
 
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setSaving(true);
-    await updateUser('core', coreSettings, setSaving, updateUserSettings);
+    setSaveState('saving');
+    await updateUser('core', coreSettings, setSaveState, updateUserSettings);
+    setTimeout(() => {
+      setSaveState('save');
+    }, 2000);
   };
-
-  // TODO style me
-  if (saving) {
-    return <div className="saving">saving...</div>;
-  }
 
   return (
     <div className="core-settings">
@@ -123,8 +121,8 @@ export default function CoreSettings({
         />
       </div>
 
-      <button className="save" onClick={handleSave}>
-        Save
+      <button className={saveState} onClick={handleSave}>
+        {saveState}
       </button>
     </div>
   );
