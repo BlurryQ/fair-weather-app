@@ -105,11 +105,26 @@ ul {
     list-style: none;
 }
 
-button.save {
+button.save, 
+button.saving, 
+button.saved,
+button.error {
     border-radius: var(--card-radius);
     background-color: white;
 }
 
 .invisible {
     visibility: hidden;
+}
+
+button.saving {
+    color: var(--evening-color)
+}
+
+button.saved {
+    color: green
+}
+
+button.error {
+    color: red
 }
