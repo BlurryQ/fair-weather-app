@@ -77,7 +77,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setUser((prevUser: any) => {
       let updatedUser = { ...prevUser };
 
-      if (settingsType === 'images') {
+      if (settingsType === 'image') {
         updatedUser.settings.imageSettings = settings as ImageSettings;
       } else if (settingsType === 'core') {
         updatedUser.settings.coreSettings = settings as CoreSettings;
