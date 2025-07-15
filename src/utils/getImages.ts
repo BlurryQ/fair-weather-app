@@ -15,14 +15,19 @@ import placeholder from "/favicon.png"
 import { HourProp } from "../types/HourProp";
 
 export default function getImages(weather: HourProp): string[] {
-    const rainPercentageTrigger: number = 60
-    const snowPercentageTrigger: number = 60
-    const tooHotTrigger: number = 17
-    const tooColdTrigger: number = 5
-    const uvTrigger: number = 3
-    const windTrigger: number = 20
-    const highWindTrigger: number = 35
-    const visibilityTrigger: number = 2
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const imageSettings = user.settings?.imageSettings || {};
+    
+    const rainPercentageTrigger: number = imageSettings.rain_chance || 60
+    const snowPercentageTrigger: number = imageSettings.snow_chance || 60
+    const tooHotTrigger: number = imageSettings.high_temp || 17
+    const tooColdTrigger: number = imageSettings.low_temp || 5
+    const uvTrigger: number = imageSettings.high_uv || 3
+    const lowWindTrigger: number = imageSettings.low_wind || 20
+    const highWindTrigger: number = imageSettings.high_wind|| 35
+    const visibilityTrigger: number = imageSettings.low_visability || 2
+
+    // TODO make these settings dynamic
     const weatherTemp: number = weather.temp_c
     const weatherWind: number = weather.wind_mph
     const weatherVis: number = weather.vis_miles
@@ -36,7 +41,7 @@ export default function getImages(weather: HourProp): string[] {
     else images.push(mild)
 
     if (weatherWind >= highWindTrigger) images.push(highWind)
-    else if (weatherWind >= windTrigger) images.push(windy)
+    else if (weatherWind >= lowWindTrigger) images.push(windy)
 
     if (weather.uv > uvTrigger) images.push(lowUV)
 
