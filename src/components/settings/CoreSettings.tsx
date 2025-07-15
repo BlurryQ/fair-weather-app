@@ -1,28 +1,18 @@
-import { useState } from 'react';
-
-// context
-import { useUser } from '../../context/UserContext';
+// components
+import SaveButton from '../general/SaveButton';
 
 // types
 import { AllSettings } from '../../types/settings/AllSettings';
 import { CoreSettings as CoreSettingsType } from '../../types/settings/CoreSettings';
-import updateUser from '../../utils/updateUser';
 
 export default function CoreSettings({
   allSettings,
-  setAllSettings,
 }: {
   allSettings: AllSettings;
-  setAllSettings: React.Dispatch<React.SetStateAction<AllSettings>>;
 }) {
   // TODO: Error handling for hours
-  const userContext = useUser();
-  if (!userContext) return;
-  const { updateUserSettings } = userContext;
-
   // TODO return error/ redirect
   const coreSettings: CoreSettingsType = allSettings.coreSettings;
-  const [saveState, setSaveState] = useState<string>('save');
 
   const handleChange = (e: any) => {
     const tempSettings: boolean =
@@ -38,16 +28,6 @@ export default function CoreSettings({
     } else if (e.target.id === 'last-hour') {
       coreSettings.last_hour = Number(e.target.value);
     }
-    setAllSettings(allSettings);
-  };
-
-  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setSaveState('saving');
-    await updateUser('core', coreSettings, setSaveState, updateUserSettings);
-    setTimeout(() => {
-      setSaveState('save');
-    }, 2000);
   };
 
   return (
@@ -121,9 +101,7 @@ export default function CoreSettings({
         />
       </div>
 
-      <button className={saveState} onClick={handleSave}>
-        {saveState}
-      </button>
+      <SaveButton type="core" settings={coreSettings} />
     </div>
   );
 }
