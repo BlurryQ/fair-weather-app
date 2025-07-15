@@ -1,5 +1,6 @@
 // models
 import { updateCoreSettings } from '../models/supabase/tables/coreSettings';
+import { updateImageSettings } from '../models/supabase/tables/imageSettings';
 
 // types
 import { CoreSettings } from '../types/settings/CoreSettings';
@@ -15,7 +16,7 @@ export default async function updateUser (
       if (location === 'image') {
         // TODO: Update image settings in the database
       await updateUserSettings(location, settings); // Update the user context with the new core settings
-      // await updateImageSettings(settings); // Update the core settings in the database
+      await updateImageSettings(settings); // Update the core settings in the database
       saveState("saved");
       return true;
     } else if (location === 'core') {
