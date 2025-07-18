@@ -38,6 +38,9 @@
     opacity: 0.9;
 }
 
+.settings-card img {
+    max-height: 250px;
+}
 
 .settings-card.disabled img {
     opacity: 0.5;
