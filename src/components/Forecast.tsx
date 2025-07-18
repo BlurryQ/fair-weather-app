@@ -12,7 +12,6 @@ import { HourProp } from '../types/HourProp';
 
 // utils
 import getClassName from '../utils/getClassName';
-import getImages from '../utils/getImages';
 import showWeatherDetails from '../utils/showWeatherDetails';
 
 export default function Forecast(
@@ -39,7 +38,6 @@ export default function Forecast(
 
   const timeStamp: string = hour.time;
   const [_, hourString]: string[] = timeStamp.split(' ');
-  const images: string[] = getImages(hour);
   const className = getClassName(index, hour.placeholder);
 
   return (
@@ -62,7 +60,7 @@ export default function Forecast(
 
       <WeatherTable hour={hour} />
 
-      <DogGrid hour={hour} images={images} />
+      <DogGrid hour={hour} />
 
       <span id="carrat" className="down"></span>
       <table id="weather-details-mobile"></table>
