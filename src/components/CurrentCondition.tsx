@@ -110,7 +110,7 @@ export default function CurrentCondition({
               </tr>
               <tr>
                 <th>Temp Range:</th>
-                <td>{overviewData.tempRange}°C</td>
+                <td>{overviewData.tempRange}</td>
               </tr>
               <tr>
                 <th>Max Wind:</th>
