@@ -17,6 +17,8 @@ import { UserType } from '../types/UserType';
 
 // utils
 import validateSettings from '../utils/validateSettings';
+import { getAllImageUrls } from '../models/supabase/storage/imageStorage';
+import { ImageUrls } from '../types/settings/ImageUrls';
 
 const noUser: UserType = {
   id: '',
@@ -31,6 +33,7 @@ type UserContextType = {
     settingType: string,
     userUpdates: AllSettings | CoreSettings | ImageSettings
   ) => void;
+  updateImageUrls: (id) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -83,6 +86,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         updatedUser.settings.coreSettings = settings as CoreSettings;
       } else if (settingsType === 'all') {
         updatedUser.settings = settings as AllSettings;
+      } else if (settingsType === 'imageUrls') {
+        updatedUser.settings.imageUrls = settings as ImageUrls;
+        updatedUser.settings.timestamp = new Date().getTime();
       }
 
       localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -90,8 +96,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     });
   };
 
+  const updateImageUrls = async (id: string) => {
+    const images = await getAllImageUrls(id);
+    updateUserSettings('imageUrls', images);
+  };
+
   return (
-    <UserContext.Provider value={{ user, login, logout, updateUserSettings }}>
+    <UserContext.Provider
+      value={{ user, login, logout, updateUserSettings, updateImageUrls }}
+    >
       {children}
     </UserContext.Provider>
   );
