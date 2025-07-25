@@ -1,13 +1,31 @@
+// context
+import { useUser } from '../context/UserContext';
+
 // types
 import { HourProp } from '../types/HourProp';
 
-export default function DogGrid({
-  hour,
-  images,
-}: {
-  hour: HourProp;
-  images: string[];
-}): JSX.Element {
+// utils
+import getImages from '../utils/getImages';
+
+export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
+  const userContext = useUser();
+  if (!userContext) return <></>;
+  const { user, updateImageUrls } = userContext;
+
+  // TODO loaders for when fetching images
+  console.log(user);
+  if (user.settings) {
+    const now = new Date();
+    const oneHour: number = 1000 * 60 * 60;
+    const timestampExpired: boolean =
+      now.getTime() - user.settings.timestamp > oneHour;
+
+    if (timestampExpired) {
+      updateImageUrls(user.id);
+    }
+  }
+  const images: string[] = getImages(hour);
+
   return (
     <div data-hour-id={hour.time_epoch} className="weather-images">
       {images.map((image: string, i: number) => {
