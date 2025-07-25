@@ -129,12 +129,12 @@ button.error {
     color: red
 }
 
-/* TODO storage */
-
 /* TODO on/ off toggles on cards */
-
-/* TODO  images change on settings */
 
 /* TODO error handling on invalid values (settings card */
 
 /* TODO remove uploaded image/ revert to default */
+
+/* TODO on log out redirect to home first (avoids errors) */
+
+/* TODO click on header resets search/ forecast */
