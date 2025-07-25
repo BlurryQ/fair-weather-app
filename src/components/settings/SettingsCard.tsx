@@ -1,9 +1,10 @@
 import '../../styles/settingsCard.css';
 import { useState, ChangeEvent, useEffect } from 'react';
 
-// remove image default?
-import defaultImage from '../../assets/images/weather/sunny.png';
 import Toggle from '../Toggle';
+
+// TODO remove below once Toggle is live#
+import '../../styles/toggle.css';
 
 // types
 import { SettingdCardData } from '../../types/settings/SettingsCardData';
@@ -11,6 +12,7 @@ import capitalisedEachWord from '../../utils/capitalisedEachWord';
 import SaveButton from '../general/SaveButton';
 import { ImageSettings } from '../../types/settings/ImageSettings';
 import { formatImageSettingsForDB } from '../../utils/formatImageSettings';
+import { getImageUrl } from '../../models/supabase/storage/imageStorage';
 
 export default function SettingsCard({
   index,
@@ -23,7 +25,17 @@ export default function SettingsCard({
 }) {
   const [value, setValue] = useState<number>(setting.value);
   // TODO storage api request for image // save on context?
+
+  const images: Record<string, { default: string }> = import.meta.glob(
+    '../../assets/images/weather/*.png',
+    { eager: true }
+  );
+  const defaultImage =
+    images[`../../assets/images/weather/${setting.name}.png`]?.default;
   const [image, setImage] = useState<string>(defaultImage);
+  const [file, setFile] = useState<File | null>(null);
+  const [imageLoading, setImageLoading] = useState<boolean>(true);
+  /* TODO add loader */
 
   // TODO if setting === active, set isSettingOn to true
   // console.log(setting.active);
@@ -32,11 +44,11 @@ export default function SettingsCard({
   // build settings object
   // dynamically update with values
   // pass this to SaveButton
-  const [settings, setSettings] = useState<SettingdCardData>({
-    name: setting.name,
-    active: setting.active,
-    value: setting.value,
-  });
+  // const [settings, setSettings] = useState<SettingdCardData>({
+  //   name: setting.name,
+  //   active: setting.active,
+  //   value: setting.value,
+  // });
 
   const changeCardColor = () => {
     const cards = document.querySelectorAll('.settings-card');
@@ -50,6 +62,12 @@ export default function SettingsCard({
 
   useEffect(() => {
     changeCardColor();
+
+    getImageUrl(imageSettings.id + '/' + setting.name).then((url) => {
+      if (url) setImage(url);
+      console.log(url);
+      setImageLoading(false);
+    });
   }, [isSettingOn]);
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,12 +75,15 @@ export default function SettingsCard({
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+      setFile(file);
     }
   };
 
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     // TODO remove value in favour of setting?
     setValue(Number(e.target.value));
+    // change below to new setting so it's only this setting getting altered
+    // and not the whole settings object
     setting['value'] = Number(e.target.value);
     imageSettings = formatImageSettingsForDB(
       setting,
@@ -72,13 +93,17 @@ export default function SettingsCard({
 
   return (
     <div className={'settings-card'}>
-      <Toggle
+      {/* <Toggle
         state={isSettingOn}
         setState={setIsSettingOn}
         label={'card-' + index}
-      />
+      /> */}
 
-      <img src={image} alt="Uploaded" />
+      {imageLoading ? (
+        <span>Loading...</span>
+      ) : (
+        <img src={image} alt="Uploaded" className="image" />
+      )}
 
       <div>{capitalisedEachWord(setting.name)}</div>
 
@@ -97,7 +122,12 @@ export default function SettingsCard({
         className="file-input"
       />
 
-      <SaveButton type="image" settings={imageSettings} />
+      <SaveButton
+        type="image"
+        settings={imageSettings}
+        settingName={setting.name}
+        file={file}
+      />
     </div>
   );
 }
