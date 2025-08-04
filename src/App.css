@@ -105,6 +105,7 @@ ul {
     list-style: none;
 }
 
+button.image-reset,
 button.save, 
 button.saving, 
 button.saved,
@@ -125,6 +126,7 @@ button.saved {
     color: green
 }
 
+button.image-reset,
 button.error {
     color: red
 }
