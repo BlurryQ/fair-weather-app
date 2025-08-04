@@ -49,3 +49,10 @@
 .setting-group * {
     padding: 0 1rem;
 }
+
+.image-reset {
+    position: absolute;
+    width: 1.3rem;
+    height: 1.3rem;
+    line-height: 1rem;
+}
