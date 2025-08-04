@@ -6,13 +6,20 @@ import Toggle from '../Toggle';
 // TODO remove below once Toggle is live#
 import '../../styles/toggle.css';
 
+// component
+import Loader from '../Loader';
+import SaveButton from '../general/SaveButton';
+
+// storage
+import { getImageUrl } from '../../models/supabase/storage/imageStorage';
+
 // types
 import { SettingdCardData } from '../../types/settings/SettingsCardData';
-import capitalisedEachWord from '../../utils/capitalisedEachWord';
-import SaveButton from '../general/SaveButton';
 import { ImageSettings } from '../../types/settings/ImageSettings';
+
+// utils
+import capitalisedEachWord from '../../utils/capitalisedEachWord';
 import { formatImageSettingsForDB } from '../../utils/formatImageSettings';
-import { getImageUrl } from '../../models/supabase/storage/imageStorage';
 
 export default function SettingsCard({
   index,
@@ -35,7 +42,6 @@ export default function SettingsCard({
   const [image, setImage] = useState<string>(defaultImage);
   const [file, setFile] = useState<File | null>(null);
   const [imageLoading, setImageLoading] = useState<boolean>(true);
-  /* TODO add loader */
 
   // TODO if setting === active, set isSettingOn to true
   // console.log(setting.active);
@@ -91,6 +97,11 @@ export default function SettingsCard({
     ) as ImageSettings;
   };
 
+  const resetImageHandler = (e: any) => {
+    e.preventDefault();
+    setImage(defaultImage);
+  };
+
   return (
     <div className={'settings-card'}>
       {/* <Toggle
@@ -100,9 +111,14 @@ export default function SettingsCard({
       /> */}
 
       {imageLoading ? (
-        <span>Loading...</span>
+        <Loader />
       ) : (
-        <img src={image} alt="Uploaded" className="image" />
+        <div>
+          <button className="image-reset" onClick={resetImageHandler}>
+            x
+          </button>
+          <img src={image} alt="Uploaded" className="image" />
+        </div>
       )}
 
       <div>{capitalisedEachWord(setting.name)}</div>
