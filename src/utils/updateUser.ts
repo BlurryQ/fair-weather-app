@@ -14,16 +14,12 @@ export default async function updateUser (
   ) {
     try {
       if (location === 'image') {
-        // TODO: Update image settings in the database
+      await updateImageSettings(settings); // Update the image settings in the database
       await updateUserSettings(location, settings); // Update the user context with the new core settings
-      await updateImageSettings(settings); // Update the core settings in the database
       saveState("saved");
       return true;
     } else if (location === 'core') {
-      const coreSettings = await updateCoreSettings(settings); // Update the core settings in the database
-      if (!coreSettings) {
-        throw new Error("Failed to update core settings in the database");
-      }
+      await updateCoreSettings(settings); // Update the core settings in the database
       await updateUserSettings(location, settings); // Update the user context with the new core settings
       saveState("saved");
       return true;
