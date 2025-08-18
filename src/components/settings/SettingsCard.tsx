@@ -44,8 +44,10 @@ export default function SettingsCard({
   const [imageLoading, setImageLoading] = useState<boolean>(true);
 
   // TODO if setting === active, set isSettingOn to true
-  // console.log(setting.active);
   const [isSettingOn, setIsSettingOn] = useState<boolean>(setting.active);
+  const [newImageSettings, setNewImageSettings] = useState<ImageSettings>({
+    ...imageSettings,
+  });
 
   // build settings object
   // dynamically update with values
@@ -71,7 +73,6 @@ export default function SettingsCard({
 
     getImageUrl(imageSettings.id + '/' + setting.name).then((url) => {
       if (url) setImage(url);
-      console.log(url);
       setImageLoading(false);
     });
   }, [isSettingOn]);
@@ -81,25 +82,25 @@ export default function SettingsCard({
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+      console.log(imageUrl);
       setFile(file);
     }
   };
 
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // TODO remove value in favour of setting?
     setValue(Number(e.target.value));
-    // change below to new setting so it's only this setting getting altered
-    // and not the whole settings object
     setting['value'] = Number(e.target.value);
     imageSettings = formatImageSettingsForDB(
       setting,
-      imageSettings
+      newImageSettings
     ) as ImageSettings;
+    setNewImageSettings(imageSettings);
   };
 
   const resetImageHandler = (e: any) => {
     e.preventDefault();
     setImage(defaultImage);
+    console.log(defaultImage);
   };
 
   return (
@@ -140,7 +141,7 @@ export default function SettingsCard({
 
       <SaveButton
         type="image"
-        settings={imageSettings}
+        settings={newImageSettings}
         settingName={setting.name}
         file={file}
       />
