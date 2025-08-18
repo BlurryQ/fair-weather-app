@@ -22,7 +22,7 @@ import supabase from "../client";
   }
     
   export async function updateImageSettings(settings: any) {
-    console.log("from inside supabase call", settings);
+    
     try {
       const {
         data: { user },
