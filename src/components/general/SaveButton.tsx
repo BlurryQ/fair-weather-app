@@ -29,7 +29,9 @@ export default function SaveButton({
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // TODO move below after sorting individual settings card saves
+    // TODO change if statement for when no file/ delete file
     if (file) {
+      console.log(file);
       const imageName: string = settings.id + '/' + settingName;
       uploadImage(imageName, file as File).catch((error) => {
         console.error('Error uploading image:', error);
