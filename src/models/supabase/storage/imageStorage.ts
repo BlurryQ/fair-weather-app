@@ -69,3 +69,14 @@ export async function uploadImage(imageName: string, file: File) {
       console.error(err.message);
     }
   }
+
+  export async function deleteImage(imageData: string[]) {
+    try {
+      const [id, fileName] = imageData
+      const { error } = await supabase.storage.from('images').remove([`${id}/${fileName}`]);
+      if (error) throw error;
+      return true;
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  }
