@@ -7,18 +7,23 @@ import { useUser } from '../../context/UserContext';
 import updateUser from '../../utils/updateUser';
 import { CoreSettings } from '../../types/settings/CoreSettings';
 import { ImageSettings } from '../../types/settings/ImageSettings';
-import { uploadImage } from '../../models/supabase/storage/imageStorage';
+import {
+  deleteImage,
+  uploadImage,
+} from '../../models/supabase/storage/imageStorage';
 
 export default function SaveButton({
   type,
   settings,
   settingName,
   file,
+  deleteImageData,
 }: {
   type: string;
   settings: CoreSettings | ImageSettings;
   settingName?: string;
   file?: File | null;
+  deleteImageData?: string[] | null;
 }): JSX.Element {
   const userContext = useUser();
   if (!userContext) return <></>;
@@ -29,7 +34,7 @@ export default function SaveButton({
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // TODO move below after sorting individual settings card saves
-    // TODO change if statement for when no file/ delete file
+    // to updateUser.ts?
     if (file) {
       console.log(file);
       const imageName: string = settings.id + '/' + settingName;
@@ -37,6 +42,15 @@ export default function SaveButton({
         console.error('Error uploading image:', error);
       });
     }
+
+    if (deleteImageData) {
+      // await updateUser('deleteImage', deleteImageData, setSaveState);
+      deleteImage(deleteImageData);
+    }
+
+    // updateUser takes in the various data types and organises them?
+    // type = file, settings = [imageName, file]
+    // type = deleteImage, settings = deleteImageData
     setSaveState('saving');
     await updateUser(type, settings, setSaveState, updateUserSettings);
     setTimeout(() => {
