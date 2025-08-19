@@ -45,6 +45,7 @@ export default function SettingsCard({
 
   // TODO if setting === active, set isSettingOn to true
   const [isSettingOn, setIsSettingOn] = useState<boolean>(setting.active);
+  const [deleteImageData, setDeleteImageData] = useState<string[] | null>(null);
   const [newImageSettings, setNewImageSettings] = useState<ImageSettings>({
     ...imageSettings,
   });
@@ -100,7 +101,7 @@ export default function SettingsCard({
   const resetImageHandler = (e: any) => {
     e.preventDefault();
     setImage(defaultImage);
-    console.log(defaultImage);
+    setDeleteImageData([imageSettings.id, setting.name]);
   };
 
   return (
@@ -144,6 +145,7 @@ export default function SettingsCard({
         settings={newImageSettings}
         settingName={setting.name}
         file={file}
+        deleteImageData={deleteImageData}
       />
     </div>
   );
