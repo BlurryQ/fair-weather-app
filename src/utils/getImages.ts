@@ -34,21 +34,21 @@ export default function getImages(weather: HourProp): string[] {
 
     // image urls section
     let imageUrls: ImageUrls[] = settings.imageUrls || [];
-    let highUV: string = highUVDefault
-    let lowTemp: string = lowTempDefault
-    let lowVisability: string = lowVisabilityDefault
-    let highWind: string = highWindDefault
-    let highTemp: string = highTempDefault
-    let rainChance: string = rainChanceDefault
-    let snowChance: string = snowChanceDefault
-    let goodDay: string = goodDayDefault
-    let lowWind: string = lowWindDefault
+    let highUV: string | undefined = highUVDefault
+    let lowTemp: string  | undefined = lowTempDefault
+    let lowVisability: string  | undefined = lowVisabilityDefault
+    let highWind: string  | undefined = highWindDefault
+    let highTemp: string  | undefined = highTempDefault
+    let rainChance: string  | undefined = rainChanceDefault
+    let snowChance: string  | undefined = snowChanceDefault
+    let goodDay: string  | undefined = goodDayDefault
+    let lowWind: string  | undefined = lowWindDefault
 
     if (imageUrls.length > 0) {
         
         const now = new Date();
         const oneHour: number = 60 * 60 * 1000;
-        const timestampExpired: boolean = now.getTime() - imageUrls.timestamp > oneHour
+        const timestampExpired: boolean = now.getTime() - settings.timestamp > oneHour
         
         if (timestampExpired) {
             console.log("Image URLs are outdated, fetching new ones...")
