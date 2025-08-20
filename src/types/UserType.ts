@@ -1,11 +1,8 @@
-import { CoreSettings } from './settings/CoreSettings';
-import { ImageSettings } from './settings/ImageSettings';
+import { AllSettings } from './settings/AllSettings';
 
 export type UserType = {
     id: string,
     email: string,
-    settings?: {
-        coreSettings? :CoreSettings,
-        imageSetteings? :ImageSettings
-    }
+    settings?: AllSettings
+    timestamp?: number
 }
