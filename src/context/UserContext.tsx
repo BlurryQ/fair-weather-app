@@ -31,9 +31,9 @@ type UserContextType = {
   logout: () => void;
   updateUserSettings: (
     settingType: string,
-    userUpdates: AllSettings | CoreSettings | ImageSettings
+    userUpdates: AllSettings | CoreSettings | ImageSettings | string[]
   ) => void;
-  updateImageUrls: (id) => Promise<void>;
+  updateImageUrls: (id: string) => Promise<void>;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -75,7 +75,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateUserSettings = async (
     settingsType: string,
-    settings: CoreSettings | ImageSettings | AllSettings
+    settings: CoreSettings | ImageSettings | AllSettings | string[] | ImageUrls
   ) => {
     setUser((prevUser: any) => {
       let updatedUser = { ...prevUser };
@@ -89,6 +89,41 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       } else if (settingsType === 'imageUrls') {
         updatedUser.settings.imageUrls = settings as ImageUrls;
         updatedUser.settings.timestamp = new Date().getTime();
+      } else if (settingsType === 'file') {
+        const [imageName, newImageUrl] = settings as [string, string];
+
+        // TODO move below, returning updatedUser
+        const imageUrls: ImageUrls[] = [...updatedUser.settings.imageUrls];
+        const urlExists = imageUrls.findIndex(
+          (imageUrl: ImageUrls) => imageUrl.name === imageName
+        );
+        if (urlExists === -1)
+          imageUrls.push({
+            name: imageName,
+            url: newImageUrl,
+          });
+        else {
+          imageUrls.map((imageUrl: ImageUrls) => {
+            if (imageUrl.name === imageName) {
+              imageUrl.url = newImageUrl;
+            } else {
+              imageUrl.url = imageUrl.url;
+            }
+            return imageUrl;
+          });
+        }
+        updatedUser.settings.imageUrls = imageUrls;
+      } else if (settingsType === 'deleteImage') {
+        // TODO move below, returning updatedUser (maybe make into one functions)
+        const imageUrls: ImageUrls[] = [...updatedUser.settings.imageUrls];
+        const [, imageName] = settings as string[];
+        const urlIndex = imageUrls.findIndex(
+          (imageUrl: ImageUrls) => imageUrl.name === imageName
+        );
+
+        imageUrls.splice(urlIndex, 1);
+
+        updatedUser.settings.imageUrls = imageUrls;
       }
 
       localStorage.setItem('user', JSON.stringify(updatedUser));
@@ -98,12 +133,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateImageUrls = async (id: string) => {
     const images = await getAllImageUrls(id);
-    updateUserSettings('imageUrls', images);
+    updateUserSettings('imageUrls', images as ImageUrls);
   };
 
   return (
     <UserContext.Provider
-      value={{ user, login, logout, updateUserSettings, updateImageUrls }}
+      value={{
+        user,
+        login,
+        logout,
+        updateUserSettings,
+        updateImageUrls,
+      }}
     >
       {children}
     </UserContext.Provider>
