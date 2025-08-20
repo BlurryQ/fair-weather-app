@@ -6,6 +6,7 @@ import { HourProp } from '../types/HourProp';
 
 // utils
 import getImages from '../utils/getImages';
+import Loader from './Loader';
 
 export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
   const userContext = useUser();
@@ -25,6 +26,9 @@ export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
     }
   }
   const images: string[] = getImages(hour);
+
+  // TODO check this works
+  if (images.length === 0) return <Loader />;
 
   return (
     <div data-hour-id={hour.time_epoch} className="weather-images">
