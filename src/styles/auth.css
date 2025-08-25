@@ -6,6 +6,12 @@
     gap: 1rem;
 }
 
+.auth p {
+    text-align: center;
+    color: var(--sunrise-color);
+    text-shadow: var(--card-shadow);
+}
+
 .auth h1 {
     font-size: 1.5rem;
     color: var(--sunrise-color);
@@ -25,4 +31,44 @@
 
 .auth input {
     text-indent: 0.5ch;
+}
+
+.auth .error {
+    text-align: center;
+}
+
+.auth .success {
+    color: limegreen;
+    text-shadow: var(--card-shadow);
+}
+
+.auth button.reset-password {
+    background: none;
+    color: var(--sunrise-color);
+    font-size: 0.6rem;
+    text-shadow: -3px 3px 3px var(--shadow-color), -5px 5px 5px var(--shadow-color);
+    padding: 0;
+    margin-top: -0.9rem;
+    margin-left: 4.5rem;
+    box-shadow: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-style: dotted;
+    border-color: var(--sunrise-color);
+    height: 35px;
+    width: 4rem;
+}
+
+.auth button.reset-password:hover {
+    border-style: none;
+    text-decoration: wavy underline;
+    cursor: pointer;
+    color: var(--evening-color);
+}
+
+@media only screen and (max-width: 430px) {
+    .auth .auth-buttons {
+        flex-direction: column;
+    }
 }
