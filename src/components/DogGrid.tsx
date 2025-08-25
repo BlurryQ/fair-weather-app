@@ -14,7 +14,6 @@ export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
   const { user, updateImageUrls } = userContext;
 
   // TODO loaders for when fetching images
-  console.log(user);
   if (user.settings) {
     const now = new Date();
     const oneHour: number = 1000 * 60 * 60;
