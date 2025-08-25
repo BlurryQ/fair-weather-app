@@ -32,8 +32,6 @@ export default function SettingsCard({
   imageSettings: ImageSettings;
 }) {
   const [value, setValue] = useState<number>(setting.value);
-  // TODO storage api request for image // save on context?
-
   const images: Record<string, { default: string }> = import.meta.glob(
     '../../assets/images/weather/*.png',
     { eager: true }
