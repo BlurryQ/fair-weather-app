@@ -34,12 +34,12 @@ export default function NavBar() {
       ) : (
         <>
           <li>
-            <Link to="/signup" className="settings-link">
+            <Link to="/sign_up" className="settings-link">
               Sign Up
             </Link>
           </li>
           <li>
-            <Link to="/login" className="settings-link">
+            <Link to="/log_in" className="settings-link">
               Log In
             </Link>
           </li>
