@@ -23,10 +23,8 @@ export default function AuthPage() {
     if (placeholder === 'Email') {
       setEmail(value);
     } else if (placeholder === 'Password') {
-      console.log(value);
       setPassword(value);
     } else if (placeholder === 'Confirm Password') {
-      console.log(value);
       setConfirmPassword(value);
     }
   };
