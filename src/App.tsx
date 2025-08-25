@@ -38,8 +38,10 @@ function App(): JSX.Element {
                 element={<WeatherPage weatherData={weatherData} />}
               />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/signup" element={<AuthPage />} />
-              <Route path="/login" element={<AuthPage />} />
+              <Route path="/sign_up" element={<AuthPage />} />
+              <Route path="/log_in" element={<AuthPage />} />
+              <Route path="/reset_email" element={<AuthPage />} />
+              <Route path="/reset_password" element={<AuthPage />} />
             </Routes>
           )}
         </main>
