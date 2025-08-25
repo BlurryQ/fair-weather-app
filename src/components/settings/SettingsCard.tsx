@@ -20,6 +20,7 @@ import { ImageSettings } from '../../types/settings/ImageSettings';
 // utils
 import capitalisedEachWord from '../../utils/capitalisedEachWord';
 import { formatImageSettingsForDB } from '../../utils/formatImageSettings';
+import imageCompression from 'browser-image-compression';
 
 export default function SettingsCard({
   index,
@@ -42,6 +43,7 @@ export default function SettingsCard({
   const [image, setImage] = useState<string>(defaultImage);
   const [file, setFile] = useState<File | null>(null);
   const [imageLoading, setImageLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
 
   // TODO if setting === active, set isSettingOn to true
   const [isSettingOn, setIsSettingOn] = useState<boolean>(setting.active);
@@ -49,15 +51,6 @@ export default function SettingsCard({
   const [newImageSettings, setNewImageSettings] = useState<ImageSettings>({
     ...imageSettings,
   });
-
-  // build settings object
-  // dynamically update with values
-  // pass this to SaveButton
-  // const [settings, setSettings] = useState<SettingdCardData>({
-  //   name: setting.name,
-  //   active: setting.active,
-  //   value: setting.value,
-  // });
 
   const changeCardColor = () => {
     const cards = document.querySelectorAll('.settings-card');
@@ -78,13 +71,32 @@ export default function SettingsCard({
     });
   }, [isSettingOn]);
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
-      console.log(imageUrl);
-      setFile(file);
+  const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    setError('');
+    const file = e.target.files?.[0] as File;
+
+    const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
+
+    if (file.size > maxSize) return setError('File must be under 5MB');
+
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 250,
+      useWebWorker: true,
+    };
+    // TODO add image uploading spinner
+    setImageLoading(true);
+    try {
+      const compressedFile = await imageCompression(file, options);
+      if (compressedFile) {
+        const imageUrl = URL.createObjectURL(compressedFile);
+        setImage(imageUrl);
+        setFile(compressedFile);
+        if (deleteImageData) setDeleteImageData(null);
+      }
+      setImageLoading(false);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -102,6 +114,7 @@ export default function SettingsCard({
     e.preventDefault();
     setImage(defaultImage);
     setDeleteImageData([imageSettings.id, setting.name]);
+    if (file) setFile(null);
   };
 
   return (
@@ -147,6 +160,8 @@ export default function SettingsCard({
         file={file}
         deleteImageData={deleteImageData}
       />
+
+      {error && <div className="error">{error}</div>}
     </div>
   );
 }
