@@ -129,9 +129,11 @@ export default function SettingsCard({
         <Loader />
       ) : (
         <div>
-          <button className="image-reset" onClick={resetImageHandler}>
-            x
-          </button>
+          {image !== defaultImage && (
+            <button className="image-reset" onClick={resetImageHandler}>
+              x
+            </button>
+          )}
           <img src={image} alt="Uploaded" className="image" />
         </div>
       )}
