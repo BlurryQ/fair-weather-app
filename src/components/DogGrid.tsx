@@ -20,6 +20,7 @@ export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
     const timestampExpired: boolean =
       now.getTime() - user.settings.timestamp > oneHour;
 
+    // TODO prevent errors when imges outdated
     if (timestampExpired) {
       updateImageUrls(user.id);
     }
