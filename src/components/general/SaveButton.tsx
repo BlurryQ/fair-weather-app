@@ -30,7 +30,6 @@ export default function SaveButton({
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setSaveState('saving');
-    // TODO tidy up below?
     if (file) {
       const fileData: [File, string] = [file, settings.id + '/' + settingName];
       await updateUser('file', fileData, setSaveState, updateUserSettings);
