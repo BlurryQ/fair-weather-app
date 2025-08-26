@@ -67,8 +67,47 @@
     color: var(--evening-color);
 }
 
+.auth ul {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   font-size: 0.6rem;
+   gap: 1rem;
+}
+
+.auth ul li {
+    width: 6rem
+}
+
 @media only screen and (max-width: 430px) {
     .auth .auth-buttons {
         flex-direction: column;
     }
 }
+
+@media only screen and (max-width: 768px) {
+    .auth ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 0.5rem;
+    gap: 1rem;
+    }
+}
+
+
+@media only screen and (max-width: 430px) {
+    .auth ul {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+    }
+
+    .auth ul li {
+    width: 10rem;
+}
+.show-btn {
+    position: absolute;
+    bottom: 1rem;
+    left: 33%
+}
+}
+
