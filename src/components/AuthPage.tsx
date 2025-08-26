@@ -9,6 +9,7 @@ import {
 } from '../models/supabase/auth/auth';
 import { useUser } from '../context/UserContext';
 import capitalisedEachWord from '../utils/capitalisedEachWord';
+import PasswordChecklist from 'react-password-checklist';
 
 export default function AuthPage() {
   const location = useLocation();
@@ -22,6 +23,7 @@ export default function AuthPage() {
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
   const userContext = useUser();
   if (!userContext) return <></>;
   const { login } = userContext;
@@ -37,9 +39,12 @@ export default function AuthPage() {
     }
   };
 
+  // TODO clear inputs when page changed
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO implement password checking logic
-    // TODO util function?
+    // TODO util function? takes pagename and authObj?
+    // extra util for password comparison
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -115,12 +120,35 @@ export default function AuthPage() {
           />
         )}
         {(pageName === 'Sign Up' || pageName === 'Reset Password') && (
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            onChange={handleChange}
-            value={confirmPassword}
-          />
+          <>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              onChange={handleChange}
+              value={confirmPassword}
+            />
+
+            {error && <div className="error">{error}</div>}
+            {success && <div className="success">{success}</div>}
+            <PasswordChecklist
+              style={{ color: 'white%' }}
+              rules={[
+                'minLength',
+                'maxLength',
+                'specialChar',
+                'number',
+                'capital',
+                'match',
+              ]}
+              minLength={8}
+              maxLength={25}
+              value={password}
+              valueAgain={confirmPassword}
+              onChange={(match) => {
+                setPasswordsMatch(match);
+              }}
+            />
+          </>
         )}
         {pageName === 'Log In' && (
           <button
@@ -131,11 +159,14 @@ export default function AuthPage() {
             Reset Password
           </button>
         )}
-        <button type="submit" onClick={handleSubmit}>
+        <button
+          className={passwordsMatch ? 'show-btn' : ''}
+          type="submit"
+          onClick={handleSubmit}
+          disabled={pageName === 'Sign Up' && !passwordsMatch}
+        >
           {pageName === 'Reset Email' ? 'Reset Password' : pageName}
         </button>
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">{success}</div>}
       </form>
     </div>
   );
