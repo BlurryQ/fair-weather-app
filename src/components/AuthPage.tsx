@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/auth.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   signUpUser,
   signInUser,
@@ -39,10 +39,13 @@ export default function AuthPage() {
     }
   };
 
-  // TODO clear inputs when page changed
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+  }, [pageName]);
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    // TODO implement password checking logic
     // TODO util function? takes pagename and authObj?
     // extra util for password comparison
     e.preventDefault();
