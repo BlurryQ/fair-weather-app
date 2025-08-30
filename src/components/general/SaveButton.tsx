@@ -9,12 +9,14 @@ import { CoreSettings } from '../../types/settings/CoreSettings';
 import { ImageSettings } from '../../types/settings/ImageSettings';
 
 export default function SaveButton({
+  disabled = false,
   type,
   settings,
   settingName,
   file,
   deleteImageData,
 }: {
+  disabled?: boolean;
   type: string;
   settings: CoreSettings | ImageSettings;
   settingName?: string;
@@ -54,7 +56,7 @@ export default function SaveButton({
     <button
       className={saveState}
       onClick={handleSave}
-      disabled={saveState !== 'save'}
+      disabled={saveState !== 'save' || disabled}
     >
       {saveState}
     </button>
