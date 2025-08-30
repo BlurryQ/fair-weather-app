@@ -28,6 +28,14 @@ export default function AuthPage() {
   if (!userContext) return <></>;
   const { login } = userContext;
 
+  const resetInputs = (): void => {
+    setError('');
+    setSuccess('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { placeholder, value } = e.target;
     if (placeholder === 'Email') {
@@ -40,14 +48,11 @@ export default function AuthPage() {
   };
 
   useEffect(() => {
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    resetInputs();
   }, [pageName]);
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO util function? takes pagename and authObj?
-    // extra util for password comparison
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -56,16 +61,19 @@ export default function AuthPage() {
       const isSuccessful: boolean = await signInUser(email, password, login);
       if (!isSuccessful) {
         setError('Login failed. Please check your credentials.');
+      } else {
+        navigate('/');
       }
-      navigate('/');
     } else if (pageName === 'Sign Up') {
       const isSuccessful: boolean = await signUpUser(email, password);
       if (!isSuccessful) {
         setError('Sign up failed. Please check your credentials.');
-      } else
+      } else {
+        resetInputs();
         setSuccess(
           'Sign up successful. Please check your email for a confirmation link.'
         );
+      }
     } else if (pageName === 'Reset Email') {
       const isSuccessful: boolean = await resetPassword(email);
       if (!isSuccessful)
@@ -154,13 +162,16 @@ export default function AuthPage() {
           </>
         )}
         {pageName === 'Log In' && (
-          <button
-            type="button"
-            onClick={handlePasswordReset}
-            className={'reset-password'}
-          >
-            Reset Password
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={handlePasswordReset}
+              className={'reset-password'}
+            >
+              Reset Password
+            </button>
+            {error && <div className="error">{error}</div>}
+          </>
         )}
         <button
           className={passwordsMatch ? 'show-btn' : ''}
