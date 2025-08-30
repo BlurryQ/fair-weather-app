@@ -105,6 +105,11 @@ ul {
     list-style: none;
 }
 
+button.save,
+button.image-reset {
+    cursor: pointer;
+}
+
 button.image-reset,
 button.save, 
 button.saving, 
@@ -132,8 +137,6 @@ button.error {
 }
 
 /* TODO on/ off toggles on cards */
-
-/* TODO error handling on invalid values (settings card */
 
 /* TODO on log out redirect to home first (avoids errors) */
 
