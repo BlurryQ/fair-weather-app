@@ -50,6 +50,34 @@ export default function SettingsCard({
     ...imageSettings,
   });
 
+  // TODO refactor
+  type limitProp = {
+    name: string;
+    type: string;
+    value: number;
+  };
+
+  const getValueLimits = () => {
+    const isHigh: boolean = setting.name.split('_').shift() === 'high';
+    const oppositeSetting: string = isHigh
+      ? setting.name.replace('high', 'low')
+      : setting.name.replace('low', 'high');
+
+    // TODO TS and type this
+    const limits: limitProp = {
+      name: oppositeSetting,
+      type: 'any', // higher/ lower/ any
+      value: 0,
+    };
+    if (setting.name === oppositeSetting) return limits;
+
+    limits.type = isHigh ? 'lower' : 'higher';
+    limits.value = imageSettings[
+      oppositeSetting as keyof ImageSettings
+    ] as number;
+    return limits;
+  };
+
   const changeCardColor = () => {
     const cards = document.querySelectorAll('.settings-card');
     // TODO get card to toggle correct color on first toggle when false
@@ -75,7 +103,12 @@ export default function SettingsCard({
 
     const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
 
-    if (file.size > maxSize) return setError('File must be under 5MB');
+    if (file.size > maxSize) {
+      setError('File must be under 5MB');
+      return setTimeout(() => {
+        setError('');
+      }, 1500);
+    }
 
     const options = {
       maxSizeMB: 1,
@@ -99,8 +132,23 @@ export default function SettingsCard({
   };
 
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const currentValue: number = Number(e.target.value);
     setValue(Number(e.target.value));
-    setting['value'] = Number(e.target.value);
+    setting['value'] = Number(currentValue);
+    const oppositeValue: limitProp = getValueLimits();
+    if (oppositeValue.type === 'higher') {
+      if (currentValue >= oppositeValue.value) {
+        setError('Must be higher than ' + oppositeValue.value);
+      } else {
+        setError('');
+      }
+    } else if (oppositeValue.type === 'lower') {
+      if (currentValue <= oppositeValue.value) {
+        setError('Must be lower ' + oppositeValue.value);
+      } else {
+        setError('');
+      }
+    }
     imageSettings = formatImageSettingsForDB(
       setting,
       newImageSettings
@@ -154,6 +202,7 @@ export default function SettingsCard({
       />
 
       <SaveButton
+        disabled={!!error}
         type="image"
         settings={newImageSettings}
         settingName={setting.name}
@@ -161,7 +210,9 @@ export default function SettingsCard({
         deleteImageData={deleteImageData}
       />
 
-      {error && <div className="error">{error}</div>}
+      <div className={error ? 'error' : 'invisible'}>
+        {error || 'placeholder'}
+      </div>
     </div>
   );
 }
