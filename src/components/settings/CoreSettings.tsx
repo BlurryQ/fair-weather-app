@@ -4,6 +4,7 @@ import SaveButton from '../general/SaveButton';
 // types
 import { AllSettings } from '../../types/settings/AllSettings';
 import { CoreSettings as CoreSettingsType } from '../../types/settings/CoreSettings';
+import { useState } from 'react';
 
 export default function CoreSettings({
   allSettings,
@@ -11,6 +12,7 @@ export default function CoreSettings({
   allSettings: AllSettings;
 }) {
   // TODO: Error handling for hours
+  const [error, setError] = useState<string>('');
   // TODO return error/ redirect
   const coreSettings: CoreSettingsType = allSettings.coreSettings;
 
@@ -25,8 +27,18 @@ export default function CoreSettings({
       coreSettings.is_miles = e.target.id === 'miles';
     } else if (e.target.id === 'first-hour') {
       coreSettings.first_hour = Number(e.target.value);
+      if (coreSettings.first_hour >= coreSettings.last_hour) {
+        setError('First hour must be less than the last hour');
+      } else {
+        setError('');
+      }
     } else if (e.target.id === 'last-hour') {
       coreSettings.last_hour = Number(e.target.value);
+      if (coreSettings.last_hour <= coreSettings.first_hour) {
+        setError('Last hour must be more than the last hour');
+      } else {
+        setError('');
+      }
     }
   };
 
@@ -55,6 +67,7 @@ export default function CoreSettings({
           onChange={handleChange}
         />
       </div>
+      <p className={error ? 'error' : 'invisible'}>{error || 'placeholder'}</p>
 
       {/* TODO make these radio buttons components? */}
       <div className="setting-group">
@@ -101,7 +114,7 @@ export default function CoreSettings({
         />
       </div>
 
-      <SaveButton type="core" settings={coreSettings} />
+      <SaveButton disabled={!!error} type="core" settings={coreSettings} />
     </div>
   );
 }
