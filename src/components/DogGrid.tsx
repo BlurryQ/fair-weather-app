@@ -24,13 +24,15 @@ export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
     // TODO ckeck if below fixed
     if (timestampExpired) {
       updateImageUrls(user.id);
-      return <>still needs work</>;
+      // TODO loaders not running as expected
+      return <Loader />;
     }
   }
   const images: string[] = getImages(hour);
 
   // TODO check this works
   if (images.length === 0) return <Loader />;
+  // TODO loaders not running as expected
 
   return (
     <div data-hour-id={hour.time_epoch} className="weather-images">
