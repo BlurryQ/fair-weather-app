@@ -36,7 +36,8 @@ export default function ImageSettings({
         return (
           <div key={i}>
             <SettingsCard
-              index={i}
+              // TODO uncomment below: part of the toggle series
+              // index={i}
               setting={setting}
               imageSettings={imageSettings}
             />
