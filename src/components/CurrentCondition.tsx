@@ -13,7 +13,7 @@ export default function CurrentCondition({
   weatherData: WeatherDataProp | null;
   chosenDay: number;
 }): JSX.Element {
-  const [overviewData, setOverviewData] = useState<{}>({});
+  const [overviewData, setOverviewData] = useState<DayOverview | null>(null);
   const userContext = useUser();
   if (!userContext) return <></>;
   const { user } = userContext;
@@ -62,68 +62,68 @@ export default function CurrentCondition({
     });
   };
 
-  return (
-    overviewData.hasOwnProperty('condition') && (
-      <div className="current-conditions">
-        <ul>
-          <li className="time">
-            {chosenDay === 0
-              ? 'Today'
-              : chosenDay === 1
-              ? 'Tomorrow'
-              : 'Day After'}
-          </li>
-          <li>UV: {overviewData.uv}</li>
-          {overviewData.iconURL ? (
-            <img
-              alt={overviewData.condition.text}
-              src={overviewData.iconURL}
-              className="weather-icon"
-            ></img>
-          ) : null}
-          <table>
-            <thead>
-              <tr>
-                <th colSpan={2} className="table-header">
-                  {overviewData.condition.text}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Rain:</th>
-                <td>
-                  {overviewData.daily_will_it_rain ? 'Yes' : 'No'} (
-                  {overviewData.daily_chance_of_rain}%)
-                </td>
-              </tr>
-              <tr>
-                <th>Snow:</th>
-                <td>
-                  {overviewData.daily_will_it_snow ? 'Yes' : 'No'} (
-                  {overviewData.daily_chance_of_snow}%)
-                </td>
-              </tr>
-              <tr>
-                <th>Avg. Temp:</th>
-                <td>{overviewData.avgTemp}</td>
-              </tr>
-              <tr>
-                <th>Temp Range:</th>
-                <td>{overviewData.tempRange}</td>
-              </tr>
-              <tr>
-                <th>Max Wind:</th>
-                <td>{overviewData.wind}</td>
-              </tr>
-              <tr>
-                <th>Avg. View:</th>
-                <td>{overviewData.visability}</td>
-              </tr>
-            </tbody>
-          </table>
-        </ul>
-      </div>
-    )
+  return !!overviewData ? (
+    <div className="current-conditions">
+      <ul>
+        <li className="time">
+          {chosenDay === 0
+            ? 'Today'
+            : chosenDay === 1
+            ? 'Tomorrow'
+            : 'Day After'}
+        </li>
+        <li>UV: {overviewData.uv}</li>
+        {overviewData.iconURL ? (
+          <img
+            alt={overviewData.condition.text}
+            src={overviewData.iconURL}
+            className="weather-icon"
+          ></img>
+        ) : null}
+        <table>
+          <thead>
+            <tr>
+              <th colSpan={2} className="table-header">
+                {overviewData.condition.text}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Rain:</th>
+              <td>
+                {overviewData.daily_will_it_rain ? 'Yes' : 'No'} (
+                {overviewData.daily_chance_of_rain}%)
+              </td>
+            </tr>
+            <tr>
+              <th>Snow:</th>
+              <td>
+                {overviewData.daily_will_it_snow ? 'Yes' : 'No'} (
+                {overviewData.daily_chance_of_snow}%)
+              </td>
+            </tr>
+            <tr>
+              <th>Avg. Temp:</th>
+              <td>{overviewData.avgTemp}</td>
+            </tr>
+            <tr>
+              <th>Temp Range:</th>
+              <td>{overviewData.tempRange}</td>
+            </tr>
+            <tr>
+              <th>Max Wind:</th>
+              <td>{overviewData.wind}</td>
+            </tr>
+            <tr>
+              <th>Avg. View:</th>
+              <td>{overviewData.visability}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ul>
+    </div>
+  ) : (
+    <></>
   );
 }
