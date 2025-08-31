@@ -1,9 +1,9 @@
 import '../../styles/settingsCard.css';
+
 import { useState, ChangeEvent, useEffect } from 'react';
 
-import Toggle from '../Toggle';
-
-// TODO remove below once Toggle is live#
+// TODO uncomment below: part of the toggle series
+// import Toggle from '../Toggle';
 import '../../styles/toggle.css';
 
 // component
@@ -23,11 +23,13 @@ import { formatImageSettingsForDB } from '../../utils/formatImageSettings';
 import imageCompression from 'browser-image-compression';
 
 export default function SettingsCard({
-  index,
+  // TODO uncomment below: part of the toggle series
+  // index,
   setting,
   imageSettings,
 }: {
-  index: number;
+  // TODO uncomment below: part of the toggle series
+  // index: number;
   setting: SettingdCardData;
   imageSettings: ImageSettings;
 }) {
@@ -44,7 +46,8 @@ export default function SettingsCard({
   const [error, setError] = useState<string>('');
 
   // TODO if setting === active, set isSettingOn to true
-  const [isSettingOn, setIsSettingOn] = useState<boolean>(setting.active);
+  // TODO uncomment below: part of the toggle series
+  // const [isSettingOn, setIsSettingOn] = useState<boolean>(setting.active);
   const [deleteImageData, setDeleteImageData] = useState<string[] | null>(null);
   const [newImageSettings, setNewImageSettings] = useState<ImageSettings>({
     ...imageSettings,
@@ -78,24 +81,31 @@ export default function SettingsCard({
     return limits;
   };
 
-  const changeCardColor = () => {
-    const cards = document.querySelectorAll('.settings-card');
-    // TODO get card to toggle correct color on first toggle when false
-    if (cards[index].classList[1] === 'disabled') {
-      cards[index].classList.remove('disabled');
-    } else {
-      cards[index].classList.add('disabled');
-    }
-  };
+  // TODO uncomment below: part of the toggle series
+  // const changeCardColor = () => {
+  //   const cards = document.querySelectorAll('.settings-card');
+  //   // TODO get card to toggle correct color on first toggle when false
+  //   if (cards[index].classList[1] === 'disabled') {
+  //     cards[index].classList.remove('disabled');
+  //   } else {
+  //     cards[index].classList.add('disabled');
+  //   }
+  // };
 
-  useEffect(() => {
-    changeCardColor();
+  useEffect(
+    () => {
+      // TODO uncomment below: part of the toggle series
+      // changeCardColor();
 
-    getImageUrl(imageSettings.id + '/' + setting.name).then((url) => {
-      if (url) setImage(url);
-      setImageLoading(false);
-    });
-  }, [isSettingOn]);
+      getImageUrl(imageSettings.id + '/' + setting.name).then((url) => {
+        if (url) setImage(url);
+        setImageLoading(false);
+      });
+    },
+    [
+      /* isSettingOn */
+    ]
+  );
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     setError('');
@@ -165,6 +175,7 @@ export default function SettingsCard({
 
   return (
     <div className={'settings-card'}>
+      {/* // TODO uncomment below: part of the toggle series */}
       {/* <Toggle
         state={isSettingOn}
         setState={setIsSettingOn}
