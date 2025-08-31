@@ -15,7 +15,6 @@ import { HourProp } from "../types/HourProp";
 import { ImageSettings } from "../types/settings/ImageSettings"
 import { CoreSettings } from "../types/settings/CoreSettings"
 import { ImageUrls } from "../types/settings/ImageUrls"
-import { getAllImageUrls } from "../models/supabase/storage/imageStorage"
 
 export default function getImages(weather: HourProp): string[] {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -45,16 +44,6 @@ export default function getImages(weather: HourProp): string[] {
     let lowWind: string  | undefined = lowWindDefault
 
     if (imageUrls.length > 0) {
-        
-        const now = new Date();
-        const oneHour: number = 60 * 60 * 1000;
-        const timestampExpired: boolean = now.getTime() - settings.timestamp > oneHour
-        
-        if (timestampExpired) {
-            console.log("Image URLs are outdated, fetching new ones...")
-            imageUrls = getAllImageUrls(imageSettings.id);
-        }
-    
         imageUrls.forEach(imageUrl => {
             if (imageUrl.name === 'high_uv') highUV = imageUrl.url;
             else if (imageUrl.name === 'low_temp') lowTemp = imageUrl.url;
