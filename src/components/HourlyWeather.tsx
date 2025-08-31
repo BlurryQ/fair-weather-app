@@ -54,9 +54,9 @@ export default function HourlyWeather({
 
   return (
     <>
+      <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
       {weatherArray.length < 1 ? null : (
         <>
-          <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
           <HourlyWeatherCard
             weatherArray={weatherArray}
             chosenHour={chosenHour}
