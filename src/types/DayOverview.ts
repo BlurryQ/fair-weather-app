@@ -18,4 +18,9 @@ export type DayOverview = {
     maxwind_mph: number,
     maxwind_kph: number,
     uv: number,
+    avgTemp?: string,
+    iconURL?: string,
+    tempRange?: string,
+    wind?: string,
+    visability?: string,
 }

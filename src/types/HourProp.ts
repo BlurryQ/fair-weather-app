@@ -19,4 +19,7 @@ export type HourProp = {
     will_it_rain: number,
     will_it_snow: number,
     placeholder: boolean,
+    temperature?: string,
+    windSpeed?: string,
+    visability?: string,
 }
