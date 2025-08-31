@@ -78,15 +78,9 @@ export default function Settings() {
           </div>
 
           {displaySettingsPage === 'images' ? (
-            <ImageSettings
-              allSettings={allSettings}
-              setAllSettings={setAllSettings}
-            />
+            <ImageSettings allSettings={allSettings} />
           ) : (
-            <CoreSettings
-              allSettings={allSettings}
-              setAllSettings={setAllSettings}
-            />
+            <CoreSettings allSettings={allSettings} />
           )}
         </>
       </form>
