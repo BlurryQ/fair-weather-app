@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import LocationList from './LocationList';
 
 // models
-import { getAutocompleteWeather } from '../models/weatherAPI/weatherModel';
+import { getAutocompleteWeather } from '../../weatherAPI/weatherModel';
 
 // types
 import { Autocomplete } from '../types/Autocomplete';
