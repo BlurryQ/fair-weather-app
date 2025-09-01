@@ -134,3 +134,6 @@ dist
 
 # Settings files
 settings.json
+
+# ext.
+.vscode

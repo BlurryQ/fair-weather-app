@@ -8,11 +8,39 @@ import LocationInput from './LocationInput';
 import LocationPin from '../assets/images/icons/location.svg';
 
 // models
-import { getLatandLongWeather } from '../../weatherAPI/weatherModel';
+// import { getLatandLongWeather } from '../../weatherAPI/weatherModel';
+// import { weatherApiRequest } from '../../netlify/functions/weatherApiRequest';
 
 // types
 import { GeoLocationData } from '../types/GeoLocationData';
 import { WeatherDataProp } from '../types/WeatherDataProp';
+
+// TODO stuff
+interface Location {
+  name: string;
+  region: string;
+}
+
+interface WeatherData {
+  location: Location;
+  current: any; // you can expand this with more fields if needed
+  forecast?: any;
+}
+
+export const getWeatherFromNetlify = async (
+  lat: number,
+  lon: number
+): Promise<{ data: WeatherData }> => {
+  const response = await fetch(
+    `/.netlify/functions/weather?lat=${lat}&lon=${lon}`
+  );
+  if (!response.ok) throw new Error('Failed to fetch weather');
+
+  const data: WeatherData = await response.json();
+  return { data };
+};
+
+// TODO end stuff
 
 export default function Location({
   setWeatherData,
@@ -31,10 +59,11 @@ export default function Location({
     if (longitude === 0 && latitude === 0) return;
     setLoading(true);
     setError(false);
-    getLatandLongWeather(latitude, longitude)
+
+    getWeatherFromNetlify(latitude, longitude)
       .then(({ data }) => {
-        setWeatherData(data);
-        const townAndRegion: string = `${data.location.name}, ${data.location.region}`;
+        setWeatherData(data as WeatherDataProp);
+        const townAndRegion = `${data.location.name}, ${data.location.region}`;
         setLocation(townAndRegion);
         setLoading(false);
       })
@@ -43,7 +72,7 @@ export default function Location({
         setLoading(false);
         setError(true);
       });
-  }, [longitude]);
+  }, [latitude, longitude]);
 
   // ask user for permission, or if browser unable to alert user
   const getLocation = (): void => {
