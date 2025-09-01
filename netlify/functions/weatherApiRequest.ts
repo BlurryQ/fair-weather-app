@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Handler } from '@netlify/functions';
 
-interface WeatherEventQuery {
+type WeatherEventQuery = {
   lat?: string;
   lon?: string;
   query?: string;
@@ -10,7 +10,6 @@ interface WeatherEventQuery {
 const weatherApiRequest: Handler = async (event) => {
   const apiKey = process.env.WEATHER_API;
   if (!apiKey) return { statusCode: 500, body: 'API key not set' };
-
   const { lat, lon, query }: WeatherEventQuery = event.queryStringParameters || {};
 
   try {
