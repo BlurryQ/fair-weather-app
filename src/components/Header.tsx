@@ -20,7 +20,7 @@ export default function Header({
       <div className="header">
         <NavBar />
         <h1>
-          <Link to="/" id="title">
+          <Link to="/" id="title" onClick={() => setWeatherData(null)}>
             Fair Weather App
           </Link>
         </h1>
@@ -29,3 +29,7 @@ export default function Header({
     </header>
   );
 }
+
+// TODO add way to reset the location button either changing longitude
+// or new weatherData prop
+// also need to clear input
