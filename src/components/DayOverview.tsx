@@ -32,19 +32,13 @@ export default function DayOverview({
     setSunsetTime(sunset);
   }, [weatherData, chosenDay]);
 
-  const noWeatherData: boolean = !weatherData || !sunriseTime || !sunsetTime;
-
   return (
     <>
-      {noWeatherData ? (
-        <h2 className="loading">Click the pin or enter your location...</h2>
-      ) : (
-        <div className="current-overview">
-          <SunInfo sunData={sunriseTime} />
-          <CurrentCondition weatherData={weatherData} chosenDay={chosenDay} />
-          <SunInfo sunData={sunsetTime} />
-        </div>
-      )}
+      <div className="current-overview">
+        <SunInfo sunData={sunriseTime} />
+        <CurrentCondition weatherData={weatherData} chosenDay={chosenDay} />
+        <SunInfo sunData={sunsetTime} />
+      </div>
     </>
   );
 }
