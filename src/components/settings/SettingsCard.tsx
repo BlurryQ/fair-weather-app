@@ -16,11 +16,13 @@ import { getImageUrl } from '../../models/supabase/storage/imageStorage';
 // types
 import { SettingdCardData } from '../../types/settings/SettingsCardData';
 import { ImageSettings } from '../../types/settings/ImageSettings';
+import { LimitProp } from '../../types/LimitProp';
 
 // utils
 import capitalisedEachWord from '../../utils/capitalisedEachWord';
 import { formatImageSettingsForDB } from '../../utils/formatImageSettings';
 import imageCompression from 'browser-image-compression';
+import getValueLimits from '../../utils/getValueLimits';
 
 export default function SettingsCard({
   // TODO uncomment below: part of the toggle series
@@ -53,33 +55,10 @@ export default function SettingsCard({
     ...imageSettings,
   });
 
-  // TODO refactor
-  type limitProp = {
-    name: string;
-    type: string;
-    value: number;
-  };
-
-  const getValueLimits = () => {
-    const isHigh: boolean = setting.name.split('_').shift() === 'high';
-    const oppositeSetting: string = isHigh
-      ? setting.name.replace('high', 'low')
-      : setting.name.replace('low', 'high');
-
-    // TODO TS and type this
-    const limits: limitProp = {
-      name: oppositeSetting,
-      type: 'any', // higher/ lower/ any
-      value: 0,
-    };
-    if (setting.name === oppositeSetting) return limits;
-
-    limits.type = isHigh ? 'lower' : 'higher';
-    limits.value = imageSettings[
-      oppositeSetting as keyof ImageSettings
-    ] as number;
-    return limits;
-  };
+  let settingName: string = setting.name;
+  if (settingName === 'high_temp') settingName = 'Warm';
+  else if (settingName === 'low_temp') settingName = 'Cold';
+  else if (settingName === 'good_day') settingName = 'Hot';
 
   // TODO uncomment below: part of the toggle series
   // const changeCardColor = () => {
@@ -107,11 +86,12 @@ export default function SettingsCard({
     ]
   );
 
+  // TODO make below a function
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     setError('');
     const file = e.target.files?.[0] as File;
 
-    const maxSize = 5 * 1024 * 1024; // 5 MB in bytes
+    const maxSize = 12 * 1024 * 1024; // 12 MB in bytes
 
     if (file.size > maxSize) {
       setError('File must be under 5MB');
@@ -125,7 +105,6 @@ export default function SettingsCard({
       maxWidthOrHeight: 250,
       useWebWorker: true,
     };
-    // TODO add image uploading spinner
     setImageLoading(true);
     try {
       const compressedFile = await imageCompression(file, options);
@@ -141,11 +120,15 @@ export default function SettingsCard({
     }
   };
 
+  // TODO make below a function
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue: number = Number(e.target.value);
     setValue(Number(e.target.value));
     setting['value'] = Number(currentValue);
-    const oppositeValue: limitProp = getValueLimits();
+    const oppositeValue: LimitProp = getValueLimits(
+      setting.name,
+      imageSettings
+    );
     if (oppositeValue.type === 'higher') {
       if (currentValue >= oppositeValue.value) {
         setError('Must be higher than ' + oppositeValue.value);
@@ -195,7 +178,7 @@ export default function SettingsCard({
         </div>
       )}
 
-      <div>{capitalisedEachWord(setting.name)}</div>
+      <p>{capitalisedEachWord(settingName || setting.name)}</p>
 
       <input
         id={setting.name + '_value'}
