@@ -1,7 +1,8 @@
+import { Coords } from "./Coords";
+
 export type LocationInputProp = {
     location: string;
-    setLatitude: React.Dispatch<React.SetStateAction<number>>;
+    setCoords: React.Dispatch<React.SetStateAction<Coords>>;
     setLocation: React.Dispatch<React.SetStateAction<string>>;
-    setLongitude: React.Dispatch<React.SetStateAction<number>>;
     setError: React.Dispatch<React.SetStateAction<boolean>>;
   };
