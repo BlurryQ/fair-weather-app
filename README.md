@@ -51,7 +51,7 @@ npm install
 Create a file called .env in the root of the cloned repo and enter the below, using your weatherAPI.com API key (which can be found in your account under Dashboard > API).
 
 ```
-VITE_WEATHER_API=API_KEY_HERE
+WEATHER_API=API_KEY_HERE
 
 VITE_SUPABASE_URL=SUPABASE_URL_HERE
 VITE_SUPABASE_PUBLIC_ANON=SUPABASE_PUBLIC_ANON_HERE
