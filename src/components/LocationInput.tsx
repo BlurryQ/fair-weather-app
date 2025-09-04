@@ -10,18 +10,24 @@ import { getAutocompleteWeather } from '../models/weatherAPI/weatherModel';
 // types
 import { Autocomplete } from '../types/Autocomplete';
 import { LocationInputProp } from '../types/LocationInputProp';
+import { useNavigate } from 'react-router-dom';
 
 export default function LocationInput(
   locationInputProps: LocationInputProp
 ): JSX.Element {
   const [typedLocation, setTypedLocation] = useState<string>('');
   const [autocomplete, setAutocomplete] = useState<Autocomplete[]>([]);
+  const [goHome, setGoHome] = useState<boolean>(false);
   let [highlightedIndex, setHighlightedIndex] = useState<number>(0);
-  const { setLongitude, setLatitude, location, setLocation, setError } =
-    locationInputProps;
+  const { setCoords, location, setLocation, setError } = locationInputProps;
+  const navigate = useNavigate();
 
   // Once location is typed and is 4 or more chars
   useEffect(() => {
+    if (goHome) {
+      setGoHome(false);
+      navigate('');
+    }
     if (typedLocation.length < 4) return;
     setError(false);
 
@@ -33,7 +39,7 @@ export default function LocationInput(
         console.error(err);
         setError(true);
       });
-  }, [typedLocation]);
+  }, [typedLocation, goHome]);
 
   // clears location list generted by API after 1 second of losing focus (enabling selecting location)
   const clearLocationList = (): void => {
@@ -82,8 +88,7 @@ export default function LocationInput(
     lon: number
   ): void => {
     setAutocomplete([]);
-    setLongitude(lon);
-    setLatitude(lat);
+    setCoords({ lon, lat });
     setLocation(location);
   };
 
@@ -98,6 +103,7 @@ export default function LocationInput(
         value={location}
         onBlur={clearLocationList}
         onKeyDown={handleKeyDown}
+        onFocus={() => setGoHome(true)}
       ></input>
       <ul className="locations">
         {autocomplete ? (
