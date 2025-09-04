@@ -12,9 +12,6 @@ import validateSettings from '../../utils/validateSettings';
 import { AllSettings } from '../../types/settings/AllSettings';
 import { formatImageSettingsForCards } from '../../utils/formatImageSettings';
 
-// errors on page cannot be triggers by the user
-// as onChange will not display until valid settings are fetched
-
 export default function ImageSettings({
   allSettings,
 }: {
@@ -23,7 +20,6 @@ export default function ImageSettings({
   const userContext = useUser();
   if (!userContext) return;
   const { user } = userContext;
-  // TODO return error/ redirect
   if (!validateSettings(user.settings)) return;
   const imageSettings: ImageSettingsType = allSettings.imageSettings;
 

@@ -11,11 +11,10 @@ export default function CoreSettings({
 }: {
   allSettings: AllSettings;
 }) {
-  // TODO: Error handling for hours
   const [error, setError] = useState<string>('');
-  // TODO return error/ redirect
   const coreSettings: CoreSettingsType = allSettings.coreSettings;
 
+  // TODO Settings save before button pressed
   const handleChange = (e: any) => {
     const tempSettings: boolean =
       e.target.id === 'celsius' || e.target.id === 'fahrenheit';
