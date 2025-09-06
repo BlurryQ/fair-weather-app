@@ -11,33 +11,90 @@ export default function CoreSettings({
 }: {
   allSettings: AllSettings;
 }) {
-  const [error, setError] = useState<string>('');
-  const coreSettings: CoreSettingsType = allSettings.coreSettings;
+  // TODO move this if keeping
+  type HourErrors = {
+    firstHourError: string;
+    lastHourError: string;
+  };
 
-  // TODO Settings save before button pressed
+  const [error, setError] = useState<HourErrors>({
+    firstHourError: '',
+    lastHourError: '',
+  });
+  // const coreSettings: CoreSettingsType = allSettings.coreSettings;
+  const [coreSettings, setCoreSettings] = useState<CoreSettingsType>({
+    ...allSettings.coreSettings,
+  });
+
+  // TODO refactor
   const handleChange = (e: any) => {
-    const tempSettings: boolean =
-      e.target.id === 'celsius' || e.target.id === 'fahrenheit';
-    const distanceSettings: boolean =
-      e.target.id === 'miles' || e.target.id === 'kilometers';
-    if (tempSettings) {
-      coreSettings.is_celsius = e.target.id === 'celsius';
-    } else if (distanceSettings) {
-      coreSettings.is_miles = e.target.id === 'miles';
-    } else if (e.target.id === 'first-hour') {
-      coreSettings.first_hour = Number(e.target.value);
+    const settingName: string = e.target.id;
+    const value: number = e.target.value;
+    console.log(value);
+    const timeSetting: boolean =
+      settingName === 'first-hour' || settingName === 'last-hour';
+    const tempSetting: boolean =
+      settingName === 'celsius' || settingName === 'fahrenheit';
+    const distanceSetting: boolean =
+      settingName === 'miles' || settingName === 'kilometers';
+    // if tempSetting set metric
+    if (tempSetting) {
+      coreSettings.is_celsius = settingName === 'celsius';
+      // else if distance set metric
+    } else if (distanceSetting) {
+      coreSettings.is_miles = settingName === 'miles';
+      // else if first hour set settingName
+    } else if (timeSetting) {
+      let error: string = '';
+      // if first hour
+      console.log('first', coreSettings.first_hour);
+      console.log('last', coreSettings.last_hour);
+      if (settingName === 'first-hour') {
+        coreSettings.first_hour = Number(e.target.value);
+        console.log('first2', coreSettings.first_hour);
+        // if hour too high error else
+        // if (coreSettings.first_hour >= coreSettings.last_hour) {
+        //   error = 'First hour must be less than the last hour';
+        // }
+        if (value < 0 || value > 22) {
+          error = 'First hour can only be from 0 - 22';
+        }
+        setError((prev) => ({
+          ...prev,
+          firstHourError: error,
+        }));
+        // eles if last hour
+      } else if (settingName === 'last-hour') {
+        coreSettings.last_hour = Number(e.target.value);
+        console.log('last2', coreSettings.last_hour);
+        if (coreSettings.last_hour <= coreSettings.first_hour) {
+          error = 'Last hour must be more than the first hour';
+        }
+        if (value < 1 || value > 23) {
+          error = 'Last hour can only be from 1 - 23';
+        } else {
+          error = '';
+        }
+        setError((prev) => ({
+          ...prev,
+          lastHourError: error,
+        }));
+      }
+
       if (coreSettings.first_hour >= coreSettings.last_hour) {
-        setError('First hour must be less than the last hour');
-      } else {
-        setError('');
+        error = 'First hour must be less than the last hour';
+        setError((prev) => ({
+          ...prev,
+          firstHourError: error,
+        }));
+      } else if (coreSettings.last_hour <= coreSettings.first_hour) {
+        error = 'Last hour must be more than the first hour';
+        setError((prev) => ({
+          ...prev,
+          lastHourError: error,
+        }));
       }
-    } else if (e.target.id === 'last-hour') {
-      coreSettings.last_hour = Number(e.target.value);
-      if (coreSettings.last_hour <= coreSettings.first_hour) {
-        setError('Last hour must be more than the last hour');
-      } else {
-        setError('');
-      }
+      setCoreSettings(coreSettings);
     }
   };
 
@@ -49,7 +106,7 @@ export default function CoreSettings({
           id="first-hour"
           type="number"
           min={0}
-          max={23}
+          max={22}
           defaultValue={coreSettings.first_hour}
           onChange={handleChange}
         />
@@ -60,13 +117,19 @@ export default function CoreSettings({
         <input
           id="last-hour"
           type="number"
-          min={0}
+          min={1}
           max={23}
           defaultValue={coreSettings.last_hour}
           onChange={handleChange}
         />
       </div>
-      <p className={error ? 'error' : 'invisible'}>{error || 'placeholder'}</p>
+      <p
+        className={
+          error.firstHourError || error.lastHourError ? 'error' : 'invisible'
+        }
+      >
+        {error.firstHourError || error.lastHourError || 'error'}
+      </p>
 
       {/* TODO make these radio buttons components? */}
       <div className="setting-group">
@@ -113,7 +176,11 @@ export default function CoreSettings({
         />
       </div>
 
-      <SaveButton disabled={!!error} type="core" settings={coreSettings} />
+      <SaveButton
+        disabled={!!error.firstHourError || !!error.lastHourError}
+        type="core"
+        settings={coreSettings}
+      />
     </div>
   );
 }
