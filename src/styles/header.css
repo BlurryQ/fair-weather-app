@@ -43,7 +43,7 @@
 }
 
 @media only screen and (max-width: 380px) {
-    .header#title {
+    .header #title {
         font-size: 1.2rem;
     }
 
