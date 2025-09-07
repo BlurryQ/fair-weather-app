@@ -38,7 +38,7 @@
 
 @media only screen and (max-width: 550px) {
     .header #title {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
 }
 
@@ -48,7 +48,6 @@
     }
 
     .header {
-        border: 1px solid grey;
         padding: 0.1rem 0.3rem 1rem 0.3rem;
     }
 }
