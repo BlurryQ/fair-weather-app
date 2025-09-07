@@ -47,6 +47,9 @@ export default function Location({
         console.error(err);
         setLoading(false);
         setError(true);
+        setInterval(() => {
+          setError(false);
+        }, 5000);
       });
   }, [coords]);
 
@@ -84,7 +87,7 @@ export default function Location({
       {error ? (
         <ul>
           <li className="error">Error Loading Data</li>
-          <li className="error">Please try again</li>
+          <li className="error">Please try again later</li>
         </ul>
       ) : null}
     </div>

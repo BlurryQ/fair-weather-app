@@ -38,6 +38,9 @@ export default function LocationInput(
       .catch((err) => {
         console.error(err);
         setError(true);
+        setInterval(() => {
+          setError(false);
+        }, 5000);
       });
   }, [typedLocation, goHome]);
 
