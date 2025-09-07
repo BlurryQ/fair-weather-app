@@ -45,20 +45,6 @@
     box-shadow: var(--card-shadow);
   }
   
-  input:checked + .slider {
-    background: var(--card-color);
-  }
-  
-  input + .slider {
-    box-shadow: var(--card-shadow);
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-  }
-  
   .slider.round {
     border-radius: 34px;
   }
@@ -87,7 +73,7 @@ input[type='radio']:checked:after {
   height: 1rem;
   border-radius: 100%;
   position: relative;
-  top: -1px;
+  top: -3px;
   left: 1px;
   background-color: var(--evening-color);
   content: '';
@@ -95,6 +81,20 @@ input[type='radio']:checked:after {
   visibility: visible;
   border: 2px solid white;
   box-shadow: var(--card-shadow);
+}
+
+input:checked + .slider {
+  background: var(--card-color);
+}
+
+input + .slider {
+  box-shadow: var(--card-shadow);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 .radio {
