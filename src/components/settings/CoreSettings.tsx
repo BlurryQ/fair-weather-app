@@ -59,7 +59,7 @@ export default function CoreSettings({
         if (value < 0 || value > 22) {
           error = 'First hour can only be from 0 - 22';
         }
-        setError((prev) => ({
+        return setError((prev) => ({
           ...prev,
           firstHourError: error,
         }));
@@ -75,7 +75,7 @@ export default function CoreSettings({
         } else {
           error = '';
         }
-        setError((prev) => ({
+        return setError((prev) => ({
           ...prev,
           lastHourError: error,
         }));
@@ -83,15 +83,14 @@ export default function CoreSettings({
 
       if (coreSettings.first_hour >= coreSettings.last_hour) {
         error = 'First hour must be less than the last hour';
-        setError((prev) => ({
+        return setError((prev) => ({
           ...prev,
           firstHourError: error,
         }));
-      } else if (coreSettings.last_hour <= coreSettings.first_hour) {
-        error = 'Last hour must be more than the first hour';
+      } else {
         setError((prev) => ({
           ...prev,
-          lastHourError: error,
+          firstHourError: '',
         }));
       }
       setCoreSettings(coreSettings);
@@ -132,8 +131,8 @@ export default function CoreSettings({
       </p>
 
       {/* TODO make these radio buttons components? */}
+      <legend>Temperature:</legend>
       <div className="setting-group">
-        <legend>Temperature:</legend>
         <label htmlFor="celsius">Celsius:</label>
         <input
           className="radio"
@@ -154,8 +153,8 @@ export default function CoreSettings({
         />
       </div>
 
+      <legend>Distance:</legend>
       <div className="setting-group">
-        <legend>Distance:</legend>
         <label htmlFor="miles">Miles:</label>
         <input
           className="radio"
