@@ -48,6 +48,10 @@
     }
 
     .header {
+        border: 1px solid grey;
+    }
+
+    .header {
         padding: 0.1rem 0.3rem 1rem 0.3rem;
     }
 }
