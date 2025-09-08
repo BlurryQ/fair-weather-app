@@ -1,10 +1,10 @@
 # Fair Weather App
 
-![Fair Weather APp](demo.gif)
+![Fair Weather APP](demo.gif)
 
 ## Summary
 
-Hosted: [Fair Weather App](https://blurryq.github.io/fair-weather-app/)
+Hosted: [Fair Weather App](https://fair-weather-app.netlify.app/)
 
 A visual representation of the weather to determine if conditions are fair for activities like dog walking, motorcycle riding, or lawn mowing. This is themed with Dobermann AI generated images and contains a different experience in mobile than desktop.
 
