@@ -56,3 +56,7 @@
     height: 1.3rem;
     line-height: 1rem;
 }
+
+.settings-card input {
+    width: 10rem;
+}
