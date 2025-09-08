@@ -131,3 +131,11 @@ dist
 
 # Vite
 .vite
+
+# Settings files
+settings.json
+
+# ext.
+.vscode
+# Local Netlify folder
+.netlify

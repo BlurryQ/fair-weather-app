@@ -1,0 +1,39 @@
+
+.nav-bar {
+    font-family: Poppins, sans-serif;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    margin-right: 0.5rem;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    color: var(--morning-color);
+    font-size: 0.8rem;
+}
+
+.nav-bar a:hover {
+    color: var(--evening-color);
+    text-decoration: wavy underline;
+}
+
+@media only screen and (max-width: 650px) {
+    .nav-bar a {
+        font-size: 0.8rem;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+
+    .nav-bar a {
+        font-size: 0.7rem;
+    }
+}
+
+@media only screen and (max-width: 380px) {
+    .nav-bar a {
+        font-size: 0.6rem;
+    }
+}

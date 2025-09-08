@@ -12,7 +12,6 @@ import { HourProp } from '../types/HourProp';
 
 // utils
 import getClassName from '../utils/getClassName';
-import getImages from '../utils/getImages';
 import showWeatherDetails from '../utils/showWeatherDetails';
 
 export default function Forecast(
@@ -23,7 +22,6 @@ export default function Forecast(
   if (!hour) return null;
   const [condition, setCondition] = useState<string>('');
   const [conditionIcon, setConditionIcon] = useState<string>('');
-  const [temperature, setTemperature] = useState<number>(0);
 
   const setWeatherData = (hour: HourProp) => {
     const weather: string = hour.condition.text;
@@ -38,9 +36,8 @@ export default function Forecast(
     setWeatherData(hour);
   }, [hour]);
 
-  const today: Date = new Date(hour.time_epoch * 1000);
-  const todaysHours: number = today.getHours();
-  const images: string[] = getImages(hour);
+  const timeStamp: string = hour.time;
+  const [_, hourString]: string[] = timeStamp.split(' ');
   const className = getClassName(index, hour.placeholder);
 
   return (
@@ -50,7 +47,15 @@ export default function Forecast(
       className={className}
     >
       <span data-hour-id={hour.time_epoch} className="weather-overview">
-        <p className="time">{todaysHours}:00</p>
+        <p
+          className={
+            hourString === '00:00' || hourString === '08:00'
+              ? 'times smaller'
+              : 'time'
+          }
+        >
+          {hourString}
+        </p>
         {conditionIcon ? (
           <img
             alt={condition}
@@ -61,13 +66,9 @@ export default function Forecast(
         <p className="temp">{hour.temp_c}°C </p>
       </span>
 
-      <WeatherTable
-        hour={hour}
-        temperature={temperature}
-        setTemperature={setTemperature}
-      />
+      <WeatherTable hour={hour} />
 
-      <DogGrid hour={hour} images={images} />
+      <DogGrid hour={hour} />
 
       <span id="carrat" className="down"></span>
       <table id="weather-details-mobile"></table>

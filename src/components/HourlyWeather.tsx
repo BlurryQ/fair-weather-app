@@ -11,6 +11,8 @@ import { WeatherDataProp } from '../types/WeatherDataProp';
 
 // utils
 import removeUnwantedHours from '../utils/removeUnwantedHours';
+import { useUser } from '../context/UserContext';
+import { CoreSettings } from '../types/settings/CoreSettings';
 
 export default function HourlyWeather({
   weatherData,
@@ -21,6 +23,11 @@ export default function HourlyWeather({
   chosenDay: number;
   setChosenDay: React.Dispatch<SetStateAction<number>>;
 }): JSX.Element | null {
+  const userContext = useUser();
+  if (!userContext) return null;
+  const { user } = userContext;
+  const coreSettings: CoreSettings | number = user.settings?.coreSettings ?? 0;
+
   const [chosenHour, setChosenHour] = useState<number>(1);
   const [weatherArray, setWeatherArray] = useState<HourProp[]>([]);
   // dateEpoch needed here to keep dateSelectors dates synchronised
@@ -31,7 +38,9 @@ export default function HourlyWeather({
     const chosenDaysHours: HourProp[] | null =
       weatherData.forecast.forecastday[chosenDay].hour;
 
-    const validHours: HourProp[] = chosenDaysHours.filter(removeUnwantedHours);
+    const validHours: HourProp[] = chosenDaysHours.filter((hours) =>
+      removeUnwantedHours(hours, coreSettings)
+    );
     setWeatherArray(validHours);
   }, [weatherData, chosenDay]);
 
@@ -45,9 +54,9 @@ export default function HourlyWeather({
 
   return (
     <>
+      <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
       {weatherArray.length < 1 ? null : (
         <>
-          <DateSelector top={true} dateSelectorProp={dateSelectorProp} />
           <HourlyWeatherCard
             weatherArray={weatherArray}
             chosenHour={chosenHour}

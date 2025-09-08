@@ -1,16 +1,26 @@
 .header {
     text-align: center;
-    padding: 1rem 1rem 1rem 1rem;
-    border-radius: 0.7rem;
+    padding: 0.1rem 1rem 1rem 1rem;
+    border-radius: var(--card-radius);
     margin: auto;
     margin-top: 2rem;
     border: 2px solid grey;
-    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    box-shadow: var(--card-shadow);
     width: 80%;
     justify-self: center;
     background: linear-gradient(to bottom, #007dd3 0%, #5cb0df 50%, #95bfd8 100%);
     color: white;
-    text-shadow: -3px 3px 3px var(--shadow-colour), -5px 5px 5px var(--shadow-colour);
+    text-shadow: -3px 3px 3px var(--shadow-color), -5px 5px 5px var(--shadow-color);
+    line-height: 1.2;
+}
+
+#title {
+    text-decoration: none;
+    color: inherit;
+}
+
+.header #title {
+    font-size: 2rem;
 }
 
 @media only screen and (max-width: 768px) {
@@ -21,21 +31,23 @@
 }
 
 @media only screen and (max-width: 650px) {
-    .header {
+    .header #title {
         font-size: 1.6rem;
     }
 }
 
 @media only screen and (max-width: 550px) {
-    .header {
-        font-size: 1.4rem;
-        padding: 1rem 0;
-        margin-top: 0.5rem;
+    .header #title {
+        font-size: 1.3rem;
     }
 }
 
 @media only screen and (max-width: 380px) {
-    .header {
+    .header #title {
         font-size: 1.2rem;
+    }
+
+    .header {
+        padding: 0.1rem 0.3rem 1rem 0.3rem;
     }
 }

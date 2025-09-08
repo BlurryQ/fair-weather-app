@@ -1,90 +1,121 @@
 # Fair Weather App
 
-![Fair Weather APP](demo.gif)
+![Fair Weather App Demo](demo.gif)
 
-## Summary
+## Summary  
 
 Hosted: [Fair Weather App](https://fair-weather-app.netlify.app/)
 
-A visual representation of the weather to determine if conditions are fair for activities like dog walking, motorcycle riding, or lawn mowing. This is themed with Dobermann AI generated images and contains a different experience in mobile than desktop.
+The **Fair Weather App** is my weather companion project that goes beyond forecasts. It helps quickly decide if conditions are right for activities like **dog walking, motorcycle riding, or lawn mowing**, while giving a **visual and customizable experience**.  
+
+I originally built this for personal use, but it’s grown into a **user-based platform** with:  
+- **Customizable metrics** (choose units in °C/°F, miles/km, time ranges, and thresholds).  
+- **User-uploaded images** triggered by weather conditions (rain, visibility, UV, etc).  
+- **Authentication with Supabase**, including signup, login, and password recovery.  
+- **Default Dobermann-themed AI images** if you don’t upload your own.  
+- **Responsive design**, with different layouts for desktop and mobile.  
+
+It combines **WeatherAPI** for forecasts, **Supabase** for auth and storage, and a **React + Vite frontend** for speed and responsiveness.  
+
+---
 
 ## Requirements
 
-- [weatherAPI.com](https://www.weatherapi.com/) account for the API key.
+- A free account on [weatherAPI.com](https://www.weatherapi.com/) for the API key.  
+- A [Supabase](https://supabase.com/) project for auth and storage.  
 
-## Dependencies
+---
 
-- **[React](https://react.dev/)**: A JavaScript library for building user interfaces.
-- **[Vite](https://vitejs.dev/)**: A fast and modern build tool optimized for front-end development, offering quick server startup and hot module replacement (HMR).
-- **[TypeScript](https://www.typescriptlang.org/)**: A superset of JavaScript that adds static types to the language, improving development with better tooling and error checking.
-- **[axios](https://axios-http.com/)**: A promise-based HTTP client for making requests, used for API calls to weatherAPI.
-- **[date-fns](https://date-fns.org/)**: A modern JavaScript library for working with dates, offering a comprehensive set of functions for date manipulation.
-- **[react-spinners](https://www.reactspinners.com/)**: A library for adding CSS-based loading spinners to React applications.
-- **[ESLint](https://eslint.org/)**: A tool for identifying and fixing problems in JavaScript code.
+## Tech Stack & Dependencies
 
-## Setup
+- **Frontend:** [React](https://react.dev/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)  
+- **Backend/Services:** [Supabase](https://supabase.com/) for auth, storage, and database  
+- **API:** [WeatherAPI](https://www.weatherapi.com/)  
+- **HTTP Client:** [axios](https://axios-http.com/)  
+- **Date Handling:** [date-fns](https://date-fns.org/)  
+- **UI Helpers:** [react-spinners](https://www.reactspinners.com/) for loaders  
+- **Build & Quality:** ESLint, TypeScript, Vite  
+- **Deployment:** Netlify with [@netlify/functions](https://docs.netlify.com/functions/overview/)  
 
-To get started with this project, follow the steps below:
+---
 
-### 1. For the Repository
+## Setup & Installation
 
-First you need to fork this repo to your GitHub account by clicking fork button near the top right of this page. If you are unfamiliar with this then please follow this GitHub [guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
+1. **Fork the Repository**  
+   Click **Fork** in the top-right of this repo.  
+   (See GitHub’s [guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) if you’re new.)  
 
-### 2. Clone the Repository
+2. **Clone the Repository**  
+    ```
+    git clone git@github.com:your-username/fair-weather-app.git
+    cd fair-weather-app
+    ```
 
-Next is cloning this to your local device using the follwoing command, changing the "your-username" to your GitHub username:
+3. **Install Dependencies**
+    ```
+    npm install
+    ```
 
-```
-git clone git@github.com:your-username/library.git
-```
+4. **Environment Variables**
+Create a .env file in the project root:
 
-### 3. Install Dependencies
+    ```
+    WEATHER_API=YOUR_WEATHER_API_KEY
 
-Now this repo has been cloned you can install all the npm dependencies by running the following command in your terminal/ cli:
+    VITE_SUPABASE_URL=YOUR_SUPABASE_URL
+    VITE_SUPABASE_PUBLIC_ANON=YOUR_SUPABASE_PUBLIC_ANON_KEY
+    ```
 
-```
-npm install
-```
+5. **Run Locally**
+    ```
+    npm run dev
+    ```
 
-### 4. Set Up The Enviroment
+## Features
 
-Create a file called .env in the root of the cloned repo and enter the below, using your weatherAPI.com API key (which can be found in your account under Dashboard > API).
+- 🔑 **Authentication** – Signup, login, logout, and password reset
 
-```
-VITE_API_KEY=API_KEY_HERE
-```
+- ⚙️ **User Preferences** – Customize metrics, thresholds, and display hours
 
-### 5. Run Project
+- 🎨 **Custom Uploads** – Add your own images for specific triggers (rain, UV, etc)
 
-Once this has installed you can type the following into terminal to run the project.
+- 📱 **Responsive Design** – Different experiences for desktop and mobile
 
-```
-npm run dev
-```
+- ⏱️ **Performance** – Debounced searches and optimized API calls
 
-## Limitations
+## Challenges & Learnings
 
-I have coded this for my useage, so there are currently limitations.
+- **TypeScript Adoption**
+My first project using TypeScript – I had to learn type annotations, interfaces, and strict type checking while still moving quickly.
 
-- You will only see hours 9am - 10pm, and only if the hours have not passed.
-- I have limited to only displaying 4 images which the CSS reflects.
-- The images are hardcoded to certain metrics, eg temperatures below 5 degrees, visibility below 2 miles, etc.
+- **From Static Prototype → User Platform**
+It started as a hardcoded personal project, but expanding it to support auth, user preferences, and database storage meant redesigning state management and building a proper schema in Supabase.
 
-These can all be changed within the utils files, found in the utils folder
+- **Authentication & Database Integration**
+Implementing secure signup/login with auto-provisioned rows for new users was a milestone. Adding “forgotten password” recovery gave me hands-on experience with Supabase Auth.
 
-## Challenges
+- **Custom File Uploads**
+Letting users upload their own images for conditions like rain, fog, or high UV required learning how to handle file uploads in Supabase and dynamically render them in React.
 
-- **TypeScript**  
-  This was my first time using TypeScript, so I had to learn about type annotations, interfaces, and strict type checking while building the project.
+- **Responsive Design & UX**
+Providing different layouts for desktop and mobile was more than just CSS tweaks. Once I added user uploads and preferences, it became a real design challenge to keep both versions clean and usable.
 
-- **Responsive Design & Mobile Experience**  
-  Creating a different experience for mobile and desktop required careful CSS adjustments and media queries. I also had to ensure that the UI remained user-friendly across various screen sizes.
+- **Performance & API Usage**
+To avoid hammering WeatherAPI, I implemented debounced search inputs and optimized fetches to balance responsiveness with efficiency.
 
-- **State Management**  
-  Managing state between components for handling user input, API responses, and selected locations was challenging. I had to decide what should remain in local state versus being lifted to parent components.
+- **Deployment Pipeline**
+Making everything work with Vite, Netlify, serverless functions, and Supabase taught me a lot about environment variables, auth in production, and smooth deployment workflows.
 
-- **Optimizing Performance**  
-  To prevent unnecessary API calls, I implemented debouncing for the location search input. This helped maintain a responsive UI while reducing redundant requests.
+## Future Improvements
 
-- **Deploying with Vite & GitHub Pages**  
-  Since I used Vite for this project, I had to learn how to configure it properly for deployment on GitHub Pages, ensuring the app worked correctly after being built.
+- Toggle settings on or off
+
+- Create your own AI images for custom triggers
+
+- User profile with account settings
+
+- Allow users to choose the amount of forecasted days (default 3)
+
+- Multiple saved profiles/ themes (e.g., Dog Walking vs Motorcycle Riding)
+
+- Notifications/reminders based on weather conditions

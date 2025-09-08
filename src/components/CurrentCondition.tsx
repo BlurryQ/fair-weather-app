@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 
 // props
 import { WeatherDataProp } from '../types/WeatherDataProp';
+import { useUser } from '../context/UserContext';
+import { DayOverview } from '../types/DayOverview';
 
 export default function CurrentCondition({
   weatherData,
@@ -11,16 +13,16 @@ export default function CurrentCondition({
   weatherData: WeatherDataProp | null;
   chosenDay: number;
 }): JSX.Element {
-  const [condition, setCondition] = useState<string>('');
-  const [conditionIcon, setConditionIcon] = useState<string>('');
-  const [rain, setRain] = useState<number>(0);
-  const [rainChance, setRainChance] = useState<number>(0);
-  const [minTemperature, setMinTemperature] = useState<number>(0);
-  const [maxTemperature, setMaxTemperature] = useState<number>(0);
-  const [avgTemperature, setAvgTemperature] = useState<number>(0);
-  const [maxWindSpeed, setMaxWindSpeed] = useState<number>(0);
-  const [uvIndex, setUvIndex] = useState<number>(0);
-  const [avgVisability, setAvgVisability] = useState<number>(0);
+  const [overviewData, setOverviewData] = useState<DayOverview | null>(null);
+  const userContext = useUser();
+  if (!userContext) return <></>;
+  const { user } = userContext;
+  let useCelcius: boolean = true;
+  let useMiles: boolean = true;
+  if (user.hasOwnProperty('settings')) {
+    useCelcius = user.settings?.coreSettings?.is_celsius ?? true;
+    useMiles = user.settings?.coreSettings?.is_miles ?? true;
+  }
 
   useEffect(() => {
     if (!weatherData) return;
@@ -29,31 +31,38 @@ export default function CurrentCondition({
 
   // sets all weather data from restAPI
   const setWeatherData = (weatherData: WeatherDataProp) => {
-    const weatherObj = weatherData.forecast.forecastday[chosenDay].day;
-    const weather: string = weatherObj.condition.text;
-    const iconData: string = weatherObj.condition.icon;
-    const iconURL: string = iconData.substring(2);
-    const avgTemp: number = weatherObj.avgtemp_c;
-    const tempMin: number = weatherObj.mintemp_c;
-    const tempMax: number = weatherObj.maxtemp_c;
-    const maxWind: number = weatherObj.maxwind_mph;
-    const rainChance: number = weatherObj.daily_chance_of_rain;
-    const rain: number = weatherObj.daily_will_it_rain;
-    const uv: number = weatherObj.uv;
-    const avgVisability: number = weatherObj.avgvis_miles;
-    setCondition(weather);
-    setConditionIcon(`https://${iconURL}`);
-    setRain(rain);
-    setRainChance(rainChance);
-    setMinTemperature(tempMin);
-    setMaxTemperature(tempMax);
-    setAvgTemperature(avgTemp);
-    setMaxWindSpeed(maxWind);
-    setUvIndex(uv);
-    setAvgVisability(avgVisability);
+    const chosenDaysWeather: DayOverview =
+      weatherData.forecast.forecastday[chosenDay].day;
+
+    const iconURL: string =
+      'https://' + chosenDaysWeather.condition.icon.substring(2);
+
+    const avgTemp: string = useCelcius
+      ? `${chosenDaysWeather.avgtemp_c}°C`
+      : `${chosenDaysWeather.avgtemp_f}°F`;
+
+    const tempRange: string = useCelcius
+      ? `${chosenDaysWeather.mintemp_c}°C (${chosenDaysWeather.maxtemp_c}°C)`
+      : `${chosenDaysWeather.mintemp_f}°F (${chosenDaysWeather.maxtemp_f}°F)`;
+
+    const wind: string = useMiles
+      ? chosenDaysWeather.maxwind_mph + 'mph'
+      : chosenDaysWeather.maxwind_mph + 'kmh';
+    const visability: string = useMiles
+      ? chosenDaysWeather.avgvis_miles + ' miles'
+      : chosenDaysWeather.avgvis_km + ' kilometers';
+
+    setOverviewData({
+      ...chosenDaysWeather,
+      iconURL,
+      avgTemp,
+      tempRange,
+      wind,
+      visability,
+    });
   };
 
-  return (
+  return !!overviewData ? (
     <div className="current-conditions">
       <ul>
         <li className="time">
@@ -63,11 +72,11 @@ export default function CurrentCondition({
             ? 'Tomorrow'
             : 'Day After'}
         </li>
-        <li>UV: {uvIndex}</li>
-        {conditionIcon ? (
+        <li>UV: {overviewData.uv}</li>
+        {overviewData.iconURL ? (
           <img
-            alt={condition}
-            src={conditionIcon}
+            alt={overviewData.condition.text}
+            src={overviewData.iconURL}
             className="weather-icon"
           ></img>
         ) : null}
@@ -75,7 +84,7 @@ export default function CurrentCondition({
           <thead>
             <tr>
               <th colSpan={2} className="table-header">
-                {condition}
+                {overviewData.condition.text}
               </th>
             </tr>
           </thead>
@@ -83,41 +92,38 @@ export default function CurrentCondition({
             <tr>
               <th>Rain:</th>
               <td>
-                {rain ? 'Yes' : 'No'} ({rainChance}%)
+                {overviewData.daily_will_it_rain ? 'Yes' : 'No'} (
+                {overviewData.daily_chance_of_rain}%)
+              </td>
+            </tr>
+            <tr>
+              <th>Snow:</th>
+              <td>
+                {overviewData.daily_will_it_snow ? 'Yes' : 'No'} (
+                {overviewData.daily_chance_of_snow}%)
               </td>
             </tr>
             <tr>
               <th>Avg. Temp:</th>
-              <td>{avgTemperature}°C</td>
+              <td>{overviewData.avgTemp}</td>
             </tr>
             <tr>
               <th>Temp Range:</th>
-              <td>
-                {minTemperature}°C - {maxTemperature}°C
-              </td>
+              <td>{overviewData.tempRange}</td>
             </tr>
             <tr>
-              <th>Wind:</th>
-              <td>{maxWindSpeed}mph</td>
+              <th>Max Wind:</th>
+              <td>{overviewData.wind}</td>
             </tr>
             <tr>
               <th>Avg. View:</th>
-              <td>{avgVisability} miles</td>
+              <td>{overviewData.visability}</td>
             </tr>
           </tbody>
         </table>
-
-        {/*         <li>{condition}</li>
-        <li>
-          Rain: {rain ? "Yes" : "No"} ({rainChance}%)
-        </li>
-        <li>Avg. Temp: {avgTemperature}°C</li>
-        <li>
-          Temp Range: {minTemperature}°C - {maxTemperature}°C
-        </li>
-        <li>Max Wind: {maxWindSpeed}mph</li>
-        <li>Avg. Visability: {avgVisability} miles</li> */}
       </ul>
     </div>
+  ) : (
+    <></>
   );
 }

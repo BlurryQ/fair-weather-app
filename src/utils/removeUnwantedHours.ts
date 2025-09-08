@@ -2,22 +2,23 @@ import { format } from "date-fns"
 
 // props
 import { HourProp } from "../types/HourProp";
+import { CoreSettings } from "../types/settings/CoreSettings";
 
-export default function removeUnwantedHours(hours: HourProp): boolean {
+export default function removeUnwantedHours(hours: HourProp, coreSettings: CoreSettings | number): boolean {
+    const earliestTime: number = typeof coreSettings === "number" ? 6 : coreSettings.first_hour
+    const latestTime: number = typeof coreSettings === "number" ? 23 : coreSettings.last_hour
 
-    const earliestTime: number = 9
-    const latestTime: number = 22
-
-    const [hoursDate]: string[] = hours.time.split(" ")
+    const [hourDate, hoursTime]: string[] = hours.time.split(" ")
+    const [time]: string[] = hoursTime.split(":")
+    const hourTime: number = Number(time)
 
     const today: Date = new Date()
     const todayFormattedDate = format(today, "yyyy-MM-dd")
-    const currentHour: number = today.getHours()
+    const currentTime: number = today.getHours()
 
-    const epochHour: number = new Date(hours.time_epoch * 1000).getHours()
-    const outsideRelevantHours: boolean = epochHour < earliestTime || epochHour > latestTime
-    const isToday: boolean = todayFormattedDate === hoursDate
+    const outsideRelevantHours: boolean = hourTime < earliestTime || hourTime > latestTime
+    const isToday: boolean = todayFormattedDate === hourDate
 
-    if ((isToday && currentHour > epochHour) || outsideRelevantHours) return false
+    if ((isToday && currentTime > hourTime) || outsideRelevantHours) return false
     return true
 }

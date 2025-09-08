@@ -1,20 +1,20 @@
 .sunrise,
 .sunset {
     border: 2px solid grey;
-    border-radius: 0.7rem;
+    border-radius: var(--card-radius);
     padding: 1rem;
     text-align: center;
     height: min-content;
     align-self: center;
-    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    box-shadow: var(--card-shadow);
 }
 
 .sunrise {
-    background: linear-gradient(to top right, #FFD89C, #FFC857, #FFAE42, #FF9F68);
+    background: linear-gradient(to top right, var(--sunrise-color), var(--morning-color), var(--afternoon-color), var(--evening-color));
 }
 
 .sunset {
-    background: linear-gradient(to bottom right, #FF9F68, #FFAE42, #FF8000, #D95D39);
+    background: linear-gradient(to bottom right, var(--evening-color), var(--afternoon-color), var(--sunset-color), var(--dusk-color));
 }
 
 @media only screen and (max-width: 850px) {

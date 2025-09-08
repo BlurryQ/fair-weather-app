@@ -67,6 +67,19 @@ h6 {
     isolation: isolate;
 }
 
+:root {
+    --sunrise-color: #FFD89C;
+    --morning-color: #FFC857;
+    --afternoon-color: #FFAE42;
+    --evening-color: #FF9F68;
+    --sunset-color: #FF8000;
+    --dusk-color: #D95D39;
+    --shadow-color: rgb(50, 50, 50);
+    --card-color: radial-gradient(circle, #FFC857 30%, #FF9F68 70%);
+    --card-shadow: -2px 2px 2px var(--shadow-color), -4px 4px 6px var(--shadow-color);
+    --card-radius: 0.7rem;
+}
+
 .current-overview {
     display: flex;
     justify-content: space-around;
@@ -75,7 +88,7 @@ h6 {
 h2 {
     font-size: 1.1rem;
     color: white;
-    text-shadow: -3px 3px 3px var(--shadow-colour), -5px 5px 5px var(--shadow-colour);
+    text-shadow: -3px 3px 3px var(--shadow-color), -5px 5px 5px var(--shadow-color);
 }
 
 .loading {
@@ -87,3 +100,55 @@ h2 {
     gap: 1rem;
     text-align: center;
 }
+
+ul {
+    list-style: none;
+}
+
+button.save,
+button.image-reset {
+    cursor: pointer;
+}
+
+button.image-reset,
+button.save, 
+button.saving, 
+button.saved,
+button.error {
+    border-radius: var(--card-radius);
+    background-color: white;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+button.saving {
+    color: var(--evening-color)
+}
+
+button.saved {
+    color: green
+}
+
+button.image-reset,
+button.error {
+    color: red
+}
+
+
+@media only screen and (max-width: 600px) {
+    .loading {
+        font-size: 1rem;
+    }
+
+    .smaller {
+        font-size: 0.8rem;
+    }
+}
+
+/* TODO on/ off toggles on cards */
+
+/* TODO styling mobile weather cards */
+
+/* TODO if fetching new image data also get all settings to avoid cross device misalignment */

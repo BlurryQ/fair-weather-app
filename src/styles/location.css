@@ -11,7 +11,7 @@
 .location input {
     text-indent: 2.7ch;
     width: 25ch;
-    box-shadow: -2px 2px 2px var(--shadow-colour), -4px 4px 6px var(--shadow-colour);
+    box-shadow: var(--card-shadow);
 }
 
 .location-button {
@@ -48,12 +48,12 @@
 
 .error {
     color: #ff3300;
-    text-shadow: -1px 1px 1px var(--shadow-colour), -3px 3px 3px var(--shadow-colour);
+    text-shadow: -1px 1px 1px var(--shadow-color), -3px 3px 3px var(--shadow-color);
 }
 
 .selected {
-    border-bottom: 2px solid #D95D39;
-    border-left: 2px solid #D95D39;
+    border-bottom: 2px solid var(--dusk-color);
+    border-left: 2px solid var(--dusk-color);
     border-radius: 0.5rem;
     width: fit-content;
     background-color: #ffd79c96;

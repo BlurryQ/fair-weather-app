@@ -5,25 +5,32 @@ import { useEffect, useState } from 'react';
 import LocationList from './LocationList';
 
 // models
-import { getAutocompleteWeather } from '../models/weatherModel';
+import { getAutocompleteWeather } from '../models/weatherAPI/weatherModel';
 
 // types
 import { Autocomplete } from '../types/Autocomplete';
 import { LocationInputProp } from '../types/LocationInputProp';
+import { useNavigate } from 'react-router-dom';
 
 export default function LocationInput(
   locationInputProps: LocationInputProp
 ): JSX.Element {
   const [typedLocation, setTypedLocation] = useState<string>('');
   const [autocomplete, setAutocomplete] = useState<Autocomplete[]>([]);
-  let [highlightedIndex, setHighlightedIndex] = useState<number>(0)
-  const { setLongitude, setLatitude, location, setLocation, setError } =
-    locationInputProps;
+  const [goHome, setGoHome] = useState<boolean>(false);
+  let [highlightedIndex, setHighlightedIndex] = useState<number>(0);
+  const { setCoords, location, setLocation, setError } = locationInputProps;
+  const navigate = useNavigate();
 
   // Once location is typed and is 4 or more chars
   useEffect(() => {
+    if (goHome) {
+      setGoHome(false);
+      navigate('');
+    }
     if (typedLocation.length < 4) return;
     setError(false);
+
     getAutocompleteWeather(typedLocation)
       .then((data) => {
         setAutocomplete(data.data);
@@ -31,8 +38,11 @@ export default function LocationInput(
       .catch((err) => {
         console.error(err);
         setError(true);
+        setInterval(() => {
+          setError(false);
+        }, 5000);
       });
-  }, [typedLocation]);
+  }, [typedLocation, goHome]);
 
   // clears location list generted by API after 1 second of losing focus (enabling selecting location)
   const clearLocationList = (): void => {
@@ -40,7 +50,7 @@ export default function LocationInput(
       setAutocomplete([]);
     }, 1000);
   };
-  
+
   // on input change update input and run useEffect
   const searchLocations = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const entry: string = e.target.value;
@@ -52,37 +62,43 @@ export default function LocationInput(
 
   // handles key presses
   const handleKeyDown = (e: React.KeyboardEvent): void => {
-    const keyPressed: string = e.key
-    if (keyPressed === "ArrowDown" && highlightedIndex < autocomplete.length - 1) 
-      return setHighlightedIndex(highlightedIndex + 1) 
-    else if (keyPressed === "ArrowUp" && highlightedIndex > 0)
-      return setHighlightedIndex(highlightedIndex - 1) 
-    else if (keyPressed === "Enter" && autocomplete.length === 0) 
-      return setError(true)
-    else if (keyPressed === "Enter" && autocomplete.length > 0) 
-      return selectLocation(autocomplete[highlightedIndex])
-  }
+    const keyPressed: string = e.key;
+    if (
+      keyPressed === 'ArrowDown' &&
+      highlightedIndex < autocomplete.length - 1
+    )
+      return setHighlightedIndex(highlightedIndex + 1);
+    else if (keyPressed === 'ArrowUp' && highlightedIndex > 0)
+      return setHighlightedIndex(highlightedIndex - 1);
+    else if (keyPressed === 'Enter' && autocomplete.length === 0)
+      return setError(true);
+    else if (keyPressed === 'Enter' && autocomplete.length > 0)
+      return selectLocation(autocomplete[highlightedIndex]);
+  };
 
   // on list element clicked get geolocation details and search (copied)
   const selectLocation = (location: Autocomplete): void => {
     const locationName: string = location.name;
     const lat: number = location.lat;
     const lon: number = location.lon;
-    displayLocationData(locationName, lat, lon)
+    displayLocationData(locationName, lat, lon);
   };
 
   // set relevant setters to display location data
-  const displayLocationData = (location: string, lat: number, lon: number): void => {
+  const displayLocationData = (
+    location: string,
+    lat: number,
+    lon: number
+  ): void => {
     setAutocomplete([]);
-    setLongitude(lon);
-    setLatitude(lat);
+    setCoords({ lon, lat });
     setLocation(location);
-  }
+  };
 
   return (
     <>
       <input
-        autoComplete='off'
+        autoComplete="off"
         autoFocus
         id="location"
         placeholder="@location"
@@ -90,6 +106,7 @@ export default function LocationInput(
         value={location}
         onBlur={clearLocationList}
         onKeyDown={handleKeyDown}
+        onFocus={() => setGoHome(true)}
       ></input>
       <ul className="locations">
         {autocomplete ? (

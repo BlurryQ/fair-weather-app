@@ -8,27 +8,32 @@ import LocationInput from './LocationInput';
 import LocationPin from '../assets/images/icons/location.svg';
 
 // models
-import { getLatandLongWeather } from '../models/weatherModel';
+import { getLatandLongWeather } from '../models/weatherAPI/weatherModel';
 
 // types
 import { GeoLocationData } from '../types/GeoLocationData';
 import { WeatherDataProp } from '../types/WeatherDataProp';
+import { Coords } from '../types/Coords';
 
 export default function Location({
   setWeatherData,
   setLoading,
+  coords,
+  setCoords,
 }: {
   setWeatherData: React.Dispatch<React.SetStateAction<WeatherDataProp | null>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  coords: Coords;
+  setCoords: React.Dispatch<React.SetStateAction<Coords>>;
 }): JSX.Element {
   const [error, setError] = useState<boolean>(false);
-  const [longitude, setLongitude] = useState<number>(0);
-  const [latitude, setLatitude] = useState<number>(0);
   const [location, setLocation] = useState<string>('');
 
   // Once longitude is updated get geolocation data
   useEffect(() => {
-    if (longitude === 0 && latitude === 0) return;
+    const longitude: number = coords.lon;
+    const latitude: number = coords.lat;
+    if (longitude === 0 && latitude === 0) return setLocation('');
     setLoading(true);
     setError(false);
     getLatandLongWeather(latitude, longitude)
@@ -42,8 +47,11 @@ export default function Location({
         console.error(err);
         setLoading(false);
         setError(true);
+        setInterval(() => {
+          setError(false);
+        }, 5000);
       });
-  }, [longitude]);
+  }, [coords]);
 
   // ask user for permission, or if browser unable to alert user
   const getLocation = (): void => {
@@ -60,8 +68,7 @@ export default function Location({
   const showPosition = (geolocation: GeoLocationData): void => {
     const currentLongitude: number = geolocation.coords.longitude;
     const currentLatitude: number = geolocation.coords.latitude;
-    setLongitude(currentLongitude);
-    setLatitude(currentLatitude);
+    setCoords({ lon: currentLongitude, lat: currentLatitude });
     setLoading(false);
   };
 
@@ -73,15 +80,14 @@ export default function Location({
       </button>
       <LocationInput
         location={location}
-        setLatitude={setLatitude}
+        setCoords={setCoords}
         setLocation={setLocation}
-        setLongitude={setLongitude}
         setError={setError}
       />
       {error ? (
         <ul>
           <li className="error">Error Loading Data</li>
-          <li className="error">Please try again</li>
+          <li className="error">Please try again later</li>
         </ul>
       ) : null}
     </div>

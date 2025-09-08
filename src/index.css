@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 :root {
-    --shadow-colour: rgb(50, 50, 50);
-    --card-color: radial-gradient(circle, #FFC857 30%, #FF9F68 70%);
-
     font-family: "Chewy", serif;
     font-size: 2rem;
 }
@@ -18,7 +16,7 @@ html {
 @media only screen and (max-width: 767px) {
     html {
         background: url("./assets/images/backgrounds/sky-mobile.jpg");
-        background-size: 125%;
+        background-size: 130%;
     }
 
 }
