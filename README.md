@@ -4,7 +4,7 @@
 
 ## Summary  
 
-Hosted here: [Fair Weather App](https://fair-weather-app.netlify.app/)  
+Hosted: [Fair Weather App](https://fair-weather-app.netlify.app/)
 
 The **Fair Weather App** is my weather companion project that goes beyond forecasts. It helps quickly decide if conditions are right for activities like **dog walking, motorcycle riding, or lawn mowing**, while giving a **visual and customizable experience**.  
 
