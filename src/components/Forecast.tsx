@@ -47,7 +47,15 @@ export default function Forecast(
       className={className}
     >
       <span data-hour-id={hour.time_epoch} className="weather-overview">
-        <p className="time">{hourString}</p>
+        <p
+          className={
+            hourString === '00:00' || hourString === '08:00'
+              ? 'times smaller'
+              : 'time'
+          }
+        >
+          {hourString}
+        </p>
         {conditionIcon ? (
           <img
             alt={condition}
