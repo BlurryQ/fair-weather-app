@@ -136,15 +136,18 @@ button.error {
     color: red
 }
 
+
 @media only screen and (max-width: 600px) {
-  .loading {
-    font-size: 1rem;
-  }
+    .loading {
+        font-size: 1rem;
+    }
+
+    .smaller {
+        font-size: 0.8rem;
+    }
 }
 
 /* TODO on/ off toggles on cards */
-
-/* TODO styling core page */
 
 /* TODO styling mobile weather cards */
 
