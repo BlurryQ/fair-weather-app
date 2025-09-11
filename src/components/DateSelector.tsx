@@ -51,7 +51,7 @@ export default function DateSelector({
       >
         &lt;
       </button>
-      {format(dateEpoch, 'EEE MMM do yyyy')}
+      {format(dateEpoch, 'EEE MMM do')}
       <button
         onClick={nextDate}
         className={`date-scroll ${chosenDay === 2 ? 'hidden' : null}`}
