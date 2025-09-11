@@ -92,15 +92,19 @@ export default function CurrentCondition({
             <tr>
               <th>Rain:</th>
               <td>
-                {overviewData.daily_will_it_rain ? 'Yes' : 'No'} (
-                {overviewData.daily_chance_of_rain}%)
+                {overviewData.daily_will_it_rain ? 'Yes' : 'No'}
+                {overviewData.daily_chance_of_rain
+                  ? ` (${overviewData.daily_chance_of_rain}%)`
+                  : ''}
               </td>
             </tr>
             <tr>
               <th>Snow:</th>
               <td>
-                {overviewData.daily_will_it_snow ? 'Yes' : 'No'} (
-                {overviewData.daily_chance_of_snow}%)
+                {overviewData.daily_will_it_snow ? 'Yes' : 'No'}
+                {overviewData.daily_chance_of_snow
+                  ? ` (${overviewData.daily_chance_of_snow}%)`
+                  : ''}
               </td>
             </tr>
             <tr>

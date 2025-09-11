@@ -69,16 +69,20 @@ export default function WeatherTable({
           <th>Rain:</th>
           <td>
             {' '}
-            {weatherData.will_it_rain ? 'Yes' : 'No'} (
-            {weatherData.chance_of_rain}%)
+            {weatherData.will_it_rain ? 'Yes' : 'No'}
+            {weatherData.chance_of_rain
+              ? ` (${weatherData.chance_of_rain}%)`
+              : ''}
           </td>
         </tr>
         <tr>
           <th>Snow:</th>
           <td>
             {' '}
-            {weatherData.will_it_snow ? 'Yes' : 'No'} (
-            {weatherData.chance_of_snow}%)
+            {weatherData.will_it_snow ? 'Yes' : 'No'}
+            {weatherData.chance_of_snow
+              ? ` (${weatherData.chance_of_snow}%)`
+              : ''}
           </td>
         </tr>
         <tr>
