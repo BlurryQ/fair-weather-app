@@ -1,20 +1,21 @@
 .settings-card {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     width: 350px;
     background: var(--card-color);
     border-radius: var(--card-radius);
     box-shadow: var(--card-shadow);
     padding: 0.5rem;
-    gap: 0.5rem;
+    gap: 0.3rem;
     margin-bottom: 1rem;
-    height: 638px;
+    height: 700px;
 }
 
 .settings-card * {
     border-radius: var(--card-radius);
+    line-height: 1rem;
 }
 
 .settings-toggle {
@@ -57,6 +58,31 @@
     line-height: 1rem;
 }
 
-.settings-card input {
-    width: 10rem;
+.settings-card .value-metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.settings-card .value {
+    text-align: end;
+    width: 3.5rem;
+}
+
+.settings-card .detail {
+    color: slategray;
+    font-weight: 100;
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+.settings-card .disabled {
+    color: black;
+    border: none;
+    background: none;
+}
+
+.settings-card button {
+    line-height: inherit;
 }
