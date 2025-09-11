@@ -23,6 +23,8 @@ import capitalisedEachWord from '../../utils/capitalisedEachWord';
 import { formatImageSettingsForDB } from '../../utils/formatImageSettings';
 import imageCompression from 'browser-image-compression';
 import getValueLimits from '../../utils/getValueLimits';
+import getSettingDetail from '../../utils/getSettingDetail';
+import getMetrics from '../../utils/getMetrics';
 
 export default function SettingsCard({
   // TODO uncomment below: part of the toggle series
@@ -54,6 +56,8 @@ export default function SettingsCard({
   const [newImageSettings, setNewImageSettings] = useState<ImageSettings>({
     ...imageSettings,
   });
+
+  const isGoodDay: boolean = setting.name === 'good_day';
 
   let settingName: string = setting.name;
   if (settingName === 'high_temp') settingName = 'Warm';
@@ -97,7 +101,7 @@ export default function SettingsCard({
       setError('File must be under 5MB');
       return setTimeout(() => {
         setError('');
-      }, 1500);
+      }, 3000);
     }
 
     const options = {
@@ -178,15 +182,21 @@ export default function SettingsCard({
         </div>
       )}
 
-      <p>{capitalisedEachWord(settingName || setting.name)}</p>
+      <p>{capitalisedEachWord(settingName)}</p>
 
-      <input
-        id={setting.name + '_value'}
-        type="number"
-        value={value}
-        onChange={handleValueChange}
-        className={setting.name === 'good_day' ? 'invisible' : ''}
-      />
+      <p className="detail">{getSettingDetail(settingName)}</p>
+
+      <div className="value-metric">
+        <input
+          id={setting.name + '_value'}
+          type="number"
+          value={isGoodDay ? imageSettings.high_temp : value}
+          onChange={handleValueChange}
+          className={`value ${isGoodDay ? 'disabled' : ''}`}
+          disabled={isGoodDay}
+        />
+        <div className="metric">{getMetrics(settingName)}</div>
+      </div>
 
       <input
         type="file"
