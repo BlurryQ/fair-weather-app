@@ -40,7 +40,7 @@ import supabase from "../client";
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(
         email,
-        { redirectTo: 'http://localhost:5173/reset_password' }
+        { redirectTo: 'https://fair-weather-app.netlify.app/reset_password' }
       )
       if (error) throw error;
       return true
