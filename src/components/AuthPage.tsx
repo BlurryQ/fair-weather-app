@@ -10,6 +10,7 @@ import {
 import { useUser } from '../context/UserContext';
 import capitalisedEachWord from '../utils/capitalisedEachWord';
 import PasswordChecklist from 'react-password-checklist';
+import clearError from '../utils/clearError';
 
 export default function AuthPage() {
   const location = useLocation();
@@ -37,6 +38,7 @@ export default function AuthPage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // TODO use id or name rather than placeholder
     const { placeholder, value } = e.target;
     if (placeholder === 'Email') {
       setEmail(value);
@@ -53,6 +55,7 @@ export default function AuthPage() {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     // TODO util function? takes pagename and authObj?
+    // TODO onSubmit in form not handler
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -85,10 +88,8 @@ export default function AuthPage() {
           'If this email exists on our database an email will be sent.'
         );
 
-      setTimeout(() => {
-        setSuccess('');
-        setError('');
-      }, 1500);
+      // TODO use fx?
+      clearError(setError, setSuccess);
     } else if (pageName === 'Reset Password') {
       const isSuccessful: any = await updatePassword(password);
       if (!isSuccessful)
