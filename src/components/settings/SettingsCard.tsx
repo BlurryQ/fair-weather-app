@@ -1,6 +1,6 @@
 import '../../styles/settingsCard.css';
 
-import { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect, useRef } from 'react';
 
 // TODO uncomment below: part of the toggle series
 // import Toggle from '../Toggle';
@@ -8,7 +8,7 @@ import '../../styles/toggle.css';
 
 // component
 import Loader from '../Loader';
-import SaveButton from '../general/SaveButton';
+import SaveButton from '../common/SaveButton';
 
 // storage
 import { getImageUrl } from '../../models/supabase/storage/imageStorage';
@@ -16,15 +16,16 @@ import { getImageUrl } from '../../models/supabase/storage/imageStorage';
 // types
 import { SettingdCardData } from '../../types/settings/SettingsCardData';
 import { ImageSettings } from '../../types/settings/ImageSettings';
-import { LimitProp } from '../../types/LimitProp';
 
 // utils
 import capitalisedEachWord from '../../utils/capitalisedEachWord';
+import clearError from '../../utils/clearError';
 import { formatImageSettingsForDB } from '../../utils/formatImageSettings';
-import imageCompression from 'browser-image-compression';
-import getValueLimits from '../../utils/getValueLimits';
 import getSettingDetail from '../../utils/getSettingDetail';
 import getMetrics from '../../utils/getMetrics';
+import prepareImageForUpload from '../../utils/prepareImageForUpload';
+import validateImageForUpload from '../../utils/validateImageForUpload';
+import validateImageValue from '../../utils/validateImageValue';
 
 export default function SettingsCard({
   // TODO uncomment below: part of the toggle series
@@ -46,6 +47,7 @@ export default function SettingsCard({
     images[`../../assets/images/weather/${setting.name}.png`]?.default;
   const [image, setImage] = useState<string>(defaultImage);
   const [file, setFile] = useState<File | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [imageLoading, setImageLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
@@ -89,63 +91,34 @@ export default function SettingsCard({
       /* isSettingOn */
     ]
   );
-
-  // TODO make below a function
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     setError('');
-    const file = e.target.files?.[0] as File;
-
-    const maxSize = 12 * 1024 * 1024; // 12 MB in bytes
-
-    if (file.size > maxSize) {
-      setError('File must be under 5MB');
-      return setTimeout(() => {
-        setError('');
-      }, 3000);
-    }
-
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 250,
-      useWebWorker: true,
-    };
     setImageLoading(true);
-    try {
-      const compressedFile = await imageCompression(file, options);
-      if (compressedFile) {
-        const imageUrl = URL.createObjectURL(compressedFile);
-        setImage(imageUrl);
-        setFile(compressedFile);
-        if (deleteImageData) setDeleteImageData(null);
-      }
-      setImageLoading(false);
-    } catch (error) {
-      console.log(error);
+    if (deleteImageData) setDeleteImageData(null);
+
+    const file = e.target.files?.[0] as File;
+    const imageValidationError: string = validateImageForUpload(file);
+    if (imageValidationError) {
+      setError(imageValidationError);
+      return clearError(setError);
     }
+
+    await prepareImageForUpload(file, setFile, setImage);
+    setImageLoading(false);
   };
 
-  // TODO make below a function
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue: number = Number(e.target.value);
-    setValue(Number(e.target.value));
-    setting['value'] = Number(currentValue);
-    const oppositeValue: LimitProp = getValueLimits(
+    setValue(currentValue);
+
+    const valueValidationError: string = validateImageValue(
       setting.name,
-      imageSettings
+      currentValue
     );
-    if (oppositeValue.type === 'higher') {
-      if (currentValue >= oppositeValue.value) {
-        setError('Must be higher than ' + oppositeValue.value);
-      } else {
-        setError('');
-      }
-    } else if (oppositeValue.type === 'lower') {
-      if (currentValue <= oppositeValue.value) {
-        setError('Must be lower ' + oppositeValue.value);
-      } else {
-        setError('');
-      }
-    }
+    if (valueValidationError) return setError(valueValidationError);
+    else setError('');
+
+    setting['value'] = currentValue;
     imageSettings = formatImageSettingsForDB(
       setting,
       newImageSettings
@@ -157,6 +130,9 @@ export default function SettingsCard({
     e.preventDefault();
     setImage(defaultImage);
     setDeleteImageData([imageSettings.id, setting.name]);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
     if (file) setFile(null);
   };
 
@@ -203,6 +179,7 @@ export default function SettingsCard({
         accept="image/*"
         onChange={handleImageUpload}
         className="file-input"
+        ref={inputRef}
       />
 
       <SaveButton
