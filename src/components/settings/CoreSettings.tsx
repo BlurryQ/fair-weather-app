@@ -1,5 +1,5 @@
 // components
-import SaveButton from '../general/SaveButton';
+import SaveButton from '../common/SaveButton';
 
 // types
 import { AllSettings } from '../../types/settings/AllSettings';
