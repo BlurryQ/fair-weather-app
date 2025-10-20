@@ -2,6 +2,10 @@
 import { Autocomplete } from "../../types/Autocomplete";
 import { WeatherDataProp } from "../../types/WeatherDataProp";
 
+
+// TODO review comments
+
+
 // export const getWeatherData = async (
 //   lat: number,
 //   lon: number
