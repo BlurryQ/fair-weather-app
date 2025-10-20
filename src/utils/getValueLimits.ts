@@ -2,6 +2,7 @@ import { LimitProp } from "../types/LimitProp";
 import { ImageSettings } from "../types/settings/ImageSettings";
 
 export default function getValueLimits (settingName: string, imageSettings: ImageSettings) {
+  // get value limits for opposite image settings received
     const isHigh: boolean = settingName.split('_').shift() === 'high';
     const oppositeSetting: string = isHigh
       ? settingName.replace('high', 'low')

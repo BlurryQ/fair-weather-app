@@ -1,4 +1,5 @@
  export default function validateImageForUpload (file: File ): string {
+  // check file exists and is under size limit
     if (!file) 
       return ('No file selected');
 

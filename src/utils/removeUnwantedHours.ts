@@ -5,6 +5,7 @@ import { HourProp } from "../types/HourProp";
 import { CoreSettings } from "../types/settings/CoreSettings";
 
 export default function removeUnwantedHours(hours: HourProp, coreSettings: CoreSettings | number): boolean {
+    // determine if hour is within relevant hours based on core settings
     const earliestTime: number = typeof coreSettings === "number" ? 6 : coreSettings.first_hour
     const latestTime: number = typeof coreSettings === "number" ? 23 : coreSettings.last_hour
 

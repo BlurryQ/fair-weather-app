@@ -1,6 +1,7 @@
 import { CoreSettings } from "../types/settings/CoreSettings";
 
 export default function getMetrics(settingName: string): string {
+  // return metric string based on setting name and core settings
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const coreSettings: CoreSettings = user.settings.coreSettings
 

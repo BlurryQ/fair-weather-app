@@ -6,6 +6,7 @@ import getValueLimits from "./getValueLimits";
     settingName: string,
     currentValue:number,
   ): string {
+    // check image settings and send opposite value limits
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         const imageSettings: ImageSettings = user.settings.imageSettings;
 

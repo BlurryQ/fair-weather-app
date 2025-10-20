@@ -1,4 +1,5 @@
 export default function showWeatherDetails(e: React.MouseEvent<HTMLDivElement>): void {
+    // toggles mobile weather details display
     const target = e.target as HTMLDivElement;
 
     // below = target.dataset.hourId || target.parent.Nodedataset.hourId but better error handling

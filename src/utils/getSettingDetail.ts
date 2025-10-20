@@ -1,4 +1,5 @@
 export default function getSettingDetail(settingName: string): string {
+  // return setting detail string based on setting name
     switch (settingName) {
       case 'Hot':
         return 'for temperatures above';

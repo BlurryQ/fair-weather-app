@@ -17,6 +17,7 @@ export default async function updateUser (
   saveState: React.Dispatch<React.SetStateAction<string>>,
   updateUserSettings: (settingType: string, userUpdates: CoreSettings | ImageSettings | string[]) => void
   ) {
+    // update user settings based on setting type
     try {
       if (settingType === 'image') {
         settings = settings as ImageSettings

@@ -2,6 +2,7 @@ import {ImageSettings} from '../types/settings/ImageSettings';
 import { BooleanSettingKeys, NumericSettingKeys, SettingdCardData } from '../types/settings/SettingsCardData';
 
 export const formatImageSettingsForCards = (imageSettings: ImageSettings): SettingdCardData[] => {
+  // format image settings for settings cards
     const settings: string[] = Object.keys(imageSettings);
     const validSettings: string[] = settings.filter((setting) =>
       setting.includes('_on')
@@ -20,6 +21,7 @@ export const formatImageSettingsForCards = (imageSettings: ImageSettings): Setti
   };
 
   export const formatImageSettingsForDB = (key: SettingdCardData, imageSettings: ImageSettings): ImageSettings => {   
+    // inverse function to format image settings for database
     imageSettings[key.name as NumericSettingKeys] = key.value;
     imageSettings[key.name + '_on' as BooleanSettingKeys] = key.active; 
     return imageSettings;

@@ -1,4 +1,5 @@
 export default function getClassName(index: number, isPlaceholder: boolean): string {
+  // get class name for forecast hour based on index and placeholder status
   let className: string = 'forecast';
   if (index === 0) className += ' far-left';
   if (index === 4) className += ' far-right';

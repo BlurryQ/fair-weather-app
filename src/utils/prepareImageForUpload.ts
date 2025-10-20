@@ -4,6 +4,7 @@
     file: File, 
     setFile: React.Dispatch<React.SetStateAction<File | null>>, 
     setImage: React.Dispatch<React.SetStateAction<string>>) {
+      // try and compress image before upload
       const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 250,

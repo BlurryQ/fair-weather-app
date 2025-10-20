@@ -17,6 +17,7 @@ import { CoreSettings } from "../types/settings/CoreSettings"
 import { ImageUrls } from "../types/settings/ImageUrls"
 
 export default function getImages(weather: HourProp): string[] {
+    // determine which images to show based on user and weather settings
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const settings = user.settings || {};
 
