@@ -17,8 +17,7 @@ import showWeatherDetails from '../utils/showWeatherDetails';
 export default function Forecast(
   forecastProp: ForecastProp
 ): JSX.Element | null {
-  const { hour, index, chosenHour, setChosenHour, displayNavButton } =
-    forecastProp;
+  const { hour, index, setChosenHour, displayNavButton } = forecastProp;
   if (!hour) return null;
   const [condition, setCondition] = useState<string>('');
   const [conditionIcon, setConditionIcon] = useState<string>('');
@@ -75,7 +74,6 @@ export default function Forecast(
 
       {index === 2 ? (
         <NavButtons
-          chosenHour={chosenHour}
           setChosenHour={setChosenHour}
           displayNavButton={displayNavButton}
         />

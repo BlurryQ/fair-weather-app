@@ -4,19 +4,17 @@ import '../styles/forecast.css';
 import { DisplayNavButtons } from '../types/DisplayNavButtons';
 
 export default function NavButtons({
-  chosenHour,
   setChosenHour,
   displayNavButton,
 }: {
-  chosenHour: number;
   setChosenHour: React.Dispatch<React.SetStateAction<number>>;
   displayNavButton: DisplayNavButtons;
 }): JSX.Element {
   const handleChange = (direct: string) => {
     if (direct === 'left') {
-      setChosenHour(chosenHour - 1);
+      setChosenHour((prev) => prev - 1);
     } else {
-      setChosenHour(chosenHour + 1);
+      setChosenHour((prev) => prev + 1);
     }
   };
 

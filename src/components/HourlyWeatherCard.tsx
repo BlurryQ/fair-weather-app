@@ -19,7 +19,7 @@ export default function HourlyWeatherCard({
 }): JSX.Element {
   const displayNavButton: DisplayNavButtons = {
     left: chosenHour > 1,
-    right: chosenHour < weatherArray.length - 2,
+    right: chosenHour < weatherArray.length,
   };
 
   const hoursToDisplay: HourProp[] = filterHoursForScreenSize(
@@ -35,7 +35,6 @@ export default function HourlyWeatherCard({
             key={hour.time_epoch}
             hour={hour}
             index={index}
-            chosenHour={chosenHour}
             setChosenHour={setChosenHour}
             displayNavButton={displayNavButton}
           />
