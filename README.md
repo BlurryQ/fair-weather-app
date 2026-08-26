@@ -11,25 +11,26 @@ The **Fair Weather App** is my weather companion project that goes beyond foreca
 I originally built this for personal use, but it’s grown into a **user-based platform** with:  
 - **Customizable metrics** (choose units in °C/°F, miles/km, time ranges, and thresholds).  
 - **User-uploaded images** triggered by weather conditions (rain, visibility, UV, etc).  
-- **Authentication with Supabase**, including signup, login, and password recovery.  
+- **Authentication with Appwrite**, including signup, login, and password recovery.  
 - **Default Dobermann-themed AI images** if you don’t upload your own.  
 - **Responsive design**, with different layouts for desktop and mobile.  
 
-It combines **WeatherAPI** for forecasts, **Supabase** for auth and storage, and a **React + Vite frontend** for speed and responsiveness.  
+It combines **WeatherAPI** for forecasts, **Appwrite** for auth, database and storage, and a **React + Vite frontend** for speed and responsiveness.  
 
 ---
 
 ## Requirements
 
 - A free account on [weatherAPI.com](https://www.weatherapi.com/) for the API key.  
-- A [Supabase](https://supabase.com/) project for auth and storage.  
+- An [Appwrite](https://appwrite.io/) project (Cloud or self-hosted) for auth, database and storage.  
+  Run `npm run migrate:setup` to create the collections and bucket. See [MIGRATION.md](./MIGRATION.md).  
 
 ---
 
 ## Tech Stack & Dependencies
 
 - **Frontend:** [React](https://react.dev/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)  
-- **Backend/Services:** [Supabase](https://supabase.com/) for auth, storage, and database  
+- **Backend/Services:** [Appwrite](https://appwrite.io/) for auth, storage, and database  
 - **API:** [WeatherAPI](https://www.weatherapi.com/)  
 - **HTTP Client:** [axios](https://axios-http.com/)  
 - **Date Handling:** [date-fns](https://date-fns.org/)  
@@ -57,13 +58,15 @@ It combines **WeatherAPI** for forecasts, **Supabase** for auth and storage, and
     ```
 
 4. **Environment Variables**
-Create a .env file in the project root:
+Copy `.env.example` to `.env` and fill it in:
 
     ```
     WEATHER_API=YOUR_WEATHER_API_KEY
 
-    VITE_SUPABASE_URL=YOUR_SUPABASE_URL
-    VITE_SUPABASE_PUBLIC_ANON=YOUR_SUPABASE_PUBLIC_ANON_KEY
+    VITE_APPWRITE_ENDPOINT=https://fra.cloud.appwrite.io/v1
+    VITE_APPWRITE_PROJECT_ID=YOUR_PROJECT_ID
+    VITE_APPWRITE_DATABASE_ID=main
+    VITE_APPWRITE_BUCKET_ID=images
     ```
 
 5. **Run Locally**

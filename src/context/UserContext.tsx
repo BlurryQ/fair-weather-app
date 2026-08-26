@@ -7,7 +7,9 @@ import React, {
 } from 'react';
 
 // models
-import getAllSettings from '../models/supabase/tables/getAllSettings';
+import getAllSettings from '../models/appwrite/tables/getAllSettings';
+import { account } from '../models/appwrite/client';
+import { signOutUser } from '../models/appwrite/auth/auth';
 
 // types
 import { AllSettings } from '../types/settings/AllSettings';
@@ -17,7 +19,7 @@ import { UserType } from '../types/UserType';
 
 // utils
 import validateSettings from '../utils/validateSettings';
-import { getAllImageUrls } from '../models/supabase/storage/imageStorage';
+import { getAllImageUrls } from '../models/appwrite/storage/imageStorage';
 import { ImageUrls } from '../types/settings/ImageUrls';
 
 const noUser: UserType = {
@@ -63,12 +65,41 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   }, [user]);
 
+  // Reconcile the persisted user with the live Appwrite session on load.
+  // A stale session (e.g. a leftover Supabase login) resolves to logged-out.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const acc = await account.get();
+        if (cancelled) return;
+        if (acc.$id !== user.id) {
+          login({
+            id: acc.$id,
+            email: acc.email,
+            confirmed_at: acc.registration || acc.$createdAt,
+          } as UserType);
+        } else if (validateSettings(user.settings)) {
+          // Same session across a reload: image object URLs from the previous
+          // session are dead, so regenerate them.
+          updateImageUrls(acc.$id);
+        }
+      } catch {
+        if (!cancelled && user.id) logout();
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const login = (userData: UserType) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
+    if (user.id) signOutUser();
     setUser(noUser);
     localStorage.removeItem('user');
   };
@@ -87,6 +118,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       } else if (settingsType === 'all') {
         updatedUser.settings = settings as AllSettings;
       } else if (settingsType === 'imageUrls') {
+        // Release the previous session's object URLs before replacing them.
+        const previous: ImageUrls[] = updatedUser.settings?.imageUrls || [];
+        previous.forEach((entry: ImageUrls) => {
+          if (entry.url?.startsWith('blob:')) URL.revokeObjectURL(entry.url);
+        });
         updatedUser.settings.imageUrls = settings as ImageUrls;
         updatedUser.settings.timestamp = new Date().getTime();
       } else if (settingsType === 'file') {

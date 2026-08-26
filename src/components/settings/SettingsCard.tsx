@@ -11,7 +11,7 @@ import Loader from '../Loader';
 import SaveButton from '../common/SaveButton';
 
 // storage
-import { getImageUrl } from '../../models/supabase/storage/imageStorage';
+import { getImageUrl } from '../../models/appwrite/storage/imageStorage';
 
 // types
 import { SettingdCardData } from '../../types/settings/SettingsCardData';

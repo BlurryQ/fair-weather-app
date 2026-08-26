@@ -6,7 +6,7 @@ import {
   signInUser,
   resetPassword,
   updatePassword,
-} from '../models/supabase/auth/auth';
+} from '../models/appwrite/auth/auth';
 import { useUser } from '../context/UserContext';
 import capitalisedEachWord from '../utils/capitalisedEachWord';
 import PasswordChecklist from 'react-password-checklist';
@@ -68,14 +68,12 @@ export default function AuthPage() {
         navigate('/');
       }
     } else if (pageName === 'Sign Up') {
-      const isSuccessful: boolean = await signUpUser(email, password);
+      const isSuccessful: boolean = await signUpUser(email, password, login);
       if (!isSuccessful) {
         setError('Sign up failed. Please check your credentials.');
       } else {
         resetInputs();
-        setSuccess(
-          'Sign up successful. Please check your email for a confirmation link.'
-        );
+        navigate('/');
       }
     } else if (pageName === 'Reset Email') {
       const isSuccessful: boolean = await resetPassword(email);

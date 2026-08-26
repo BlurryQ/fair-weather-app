@@ -12,12 +12,14 @@ import { ImageUrls } from '../../../types/settings/ImageUrls';
 export default async function getAllSettings(): Promise<AllSettings> {
   const coreSettings: CoreSettings = await getCoreSettings();
   const imageSettings: ImageSettings = await getImageSettings();
-  const imageUrls: ImageUrls[] | undefined = await getAllImageUrls(imageSettings.id);
+  const imageUrls: ImageUrls[] | undefined = await getAllImageUrls(
+    imageSettings.id
+  );
   const allSettings: AllSettings = {
     coreSettings,
     imageSettings,
     imageUrls: imageUrls || [],
     timestamp: new Date().getTime(), // Set current timestamp
   };
-  return (allSettings);
-};
+  return allSettings;
+}

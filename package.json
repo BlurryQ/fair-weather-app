@@ -10,11 +10,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "migrate:setup": "node scripts/setup-appwrite.mjs",
+    "migrate:export": "node scripts/export-supabase.mjs",
+    "migrate:import": "node scripts/import-appwrite.mjs"
   },
   "dependencies": {
     "@netlify/functions": "^4.2.5",
-    "@supabase/supabase-js": "^2.49.4",
+    "appwrite": "^16.0.2",
     "axios": "^1.7.7",
     "browser-image-compression": "^2.0.2",
     "date-fns": "^4.1.0",
@@ -26,6 +29,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "node-appwrite": "^14.1.0",
+    "pg": "^8.13.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",

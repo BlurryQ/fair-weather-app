@@ -1,11 +1,11 @@
 // models
-import { updateCoreSettings } from '../models/supabase/tables/coreSettings';
-import { updateImageSettings } from '../models/supabase/tables/imageSettings';
+import { updateCoreSettings } from '../models/appwrite/tables/coreSettings';
+import { updateImageSettings } from '../models/appwrite/tables/imageSettings';
 import {
   deleteImage,
   getImageUrl,
   uploadImage,
-} from '../models/supabase/storage/imageStorage';
+} from '../models/appwrite/storage/imageStorage';
 
 // types
 import { CoreSettings } from '../types/settings/CoreSettings';
