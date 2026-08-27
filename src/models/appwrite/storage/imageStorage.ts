@@ -56,15 +56,22 @@ async function findImageDoc(userId: string, name: string) {
   return res.documents[0] ?? null;
 }
 
-export async function uploadImage(imageName: string, file: File) {
+export async function uploadImage(imageName: string, file: File | Blob) {
   try {
     const [userId, name] = imageName.split('/');
     const existing = await findImageDoc(userId, name);
 
+    // browser-image-compression can return a Blob; Appwrite's web SDK only
+    // recognises a File (it does `value instanceof File` internally).
+    const upload =
+      file instanceof File
+        ? file
+        : new File([file], name, { type: file.type || 'image/png' });
+
     const created = await storage.createFile(
       IMAGES_BUCKET_ID,
       ID.unique(),
-      file,
+      upload,
       OWNER(userId)
     );
 

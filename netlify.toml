@@ -1,2 +1,8 @@
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "VITE_APPWRITE_ENDPOINT,VITE_APPWRITE_PROJECT_ID,VITE_APPWRITE_DATABASE_ID,VITE_APPWRITE_BUCKET_ID"
+
+# SPA fallback so deep links (/reset_password?userId=…, /settings, …) resolve
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
