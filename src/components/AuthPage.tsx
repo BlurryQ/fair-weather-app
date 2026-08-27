@@ -25,6 +25,14 @@ export default function AuthPage() {
   const [success, setSuccess] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+  // Captured on first render, before anything can rewrite the URL.
+  const [recovery] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      userId: params.get('userId') ?? '',
+      secret: params.get('secret') ?? '',
+    };
+  });
   const userContext = useUser();
   if (!userContext) return <></>;
   const { login } = userContext;
@@ -89,12 +97,17 @@ export default function AuthPage() {
       // TODO use fx?
       clearError(setError, setSuccess);
     } else if (pageName === 'Reset Password') {
-      const isSuccessful: any = await updatePassword(password);
-      if (!isSuccessful)
+      const isSuccessful: any = await updatePassword(
+        password,
+        recovery.userId,
+        recovery.secret
+      );
+      if (!isSuccessful) {
         setError('Error updating password. Please try again later.');
-      else
+      } else {
         setSuccess('Password updated successfully. Please log in to continue.');
-      navigate('/log_in');
+        navigate('/log_in');
+      }
     }
     return setLoading(false);
   };

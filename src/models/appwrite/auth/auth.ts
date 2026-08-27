@@ -80,12 +80,14 @@ export async function resetPassword(email: string) {
   }
 }
 
-export async function updatePassword(password: string) {
+export async function updatePassword(
+  password: string,
+  userId: string,
+  secret: string
+) {
   try {
-    // Appwrite appends ?userId=&secret= to the recovery redirect URL.
-    const params = new URLSearchParams(window.location.search);
-    const userId = params.get('userId');
-    const secret = params.get('secret');
+    // userId + secret come from the ?userId=&secret= Appwrite appends to the
+    // recovery redirect URL, captured by AuthPage before the URL can change.
     if (!userId || !secret) throw new Error('Missing recovery parameters');
     await account.updateRecovery(userId, secret, password);
     console.log('User updated');

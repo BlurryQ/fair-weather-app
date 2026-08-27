@@ -26,7 +26,11 @@ export default function LocationInput(
   useEffect(() => {
     if (goHome) {
       setGoHome(false);
-      navigate('');
+      // Don't bounce away from auth pages - the recovery link lands on
+      // /reset_password?userId=...&secret=... and must stay put.
+      if (!/^\/(reset_|log_in|sign_up)/.test(window.location.pathname)) {
+        navigate('');
+      }
     }
     if (typedLocation.length < 4) return;
     setError(false);
