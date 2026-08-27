@@ -36,9 +36,34 @@ const DB = APPWRITE_DATABASE_ID;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const ok409 = (err) => {
-  if (err?.code === 409) return;
+  if (err?.code === 409) return; // already exists - fine
+  if (err?.code === 403) {
+    console.error(
+      `\n${err.message}\n` +
+        `This is an Appwrite plan limit. Reuse an existing resource by id ` +
+        `(set APPWRITE_DATABASE_ID / APPWRITE_BUCKET_ID) or free one up in the console.\n`
+    );
+    process.exit(1);
+  }
   throw err;
 };
+
+async function ensureDatabase() {
+  try {
+    await databases.get(DB);
+    console.log(`Database ${DB} (exists)`);
+    return;
+  } catch (err) {
+    if (err?.code !== 404) throw err;
+  }
+  try {
+    await databases.create(DB, 'fair-weather');
+    console.log(`Database ${DB} (created)`);
+  } catch (err) {
+    ok409(err);
+    console.log(`Database ${DB} (exists)`);
+  }
+}
 
 const CORE_INT = [
   ['first_hour', 0, 23, 6],
@@ -104,8 +129,7 @@ async function waitForAttributes(colId) {
 }
 
 async function main() {
-  console.log(`Database ${DB}`);
-  await databases.create(DB, 'fair-weather').catch(ok409);
+  await ensureDatabase();
 
   console.log('core_settings');
   await createCollection('core_settings', 'Core Settings');
@@ -138,23 +162,39 @@ async function main() {
     .createIndex(DB, 'images', 'by_user', 'key', ['user'])
     .catch(ok409);
 
-  console.log(`bucket ${APPWRITE_BUCKET_ID}`);
-  await storage
-    .createBucket(
-      APPWRITE_BUCKET_ID,
-      'Weather Images',
-      [Permission.create(Role.users())],
-      true, // fileSecurity - per-file permissions
-      true, // enabled
-      5 * 1024 * 1024, // maxFileSize
-      [], // allowedFileExtensions - empty: migrated files have no extension
-      'none', // compression
-      false, // encryption
-      false // antivirus
-    )
-    .catch(ok409);
+  await ensureBucket();
 
   console.log('\nDone.');
+}
+
+async function ensureBucket() {
+  const cfg = [
+    'Weather Images',
+    [Permission.create(Role.users())],
+    true, // fileSecurity - per-file permissions
+    true, // enabled
+    5 * 1024 * 1024, // maxFileSize
+    [], // allowedFileExtensions - empty: migrated files have no extension
+    'none', // compression
+    false, // encryption
+    false, // antivirus
+  ];
+  try {
+    await storage.getBucket(APPWRITE_BUCKET_ID);
+    await storage.updateBucket(APPWRITE_BUCKET_ID, ...cfg);
+    console.log(`bucket ${APPWRITE_BUCKET_ID} (updated)`);
+    return;
+  } catch (err) {
+    if (err?.code !== 404) throw err;
+  }
+  try {
+    await storage.createBucket(APPWRITE_BUCKET_ID, ...cfg);
+    console.log(`bucket ${APPWRITE_BUCKET_ID} (created)`);
+  } catch (err) {
+    ok409(err); // 403 -> message + exit; 409 -> falls through (exists)
+    await storage.updateBucket(APPWRITE_BUCKET_ID, ...cfg);
+    console.log(`bucket ${APPWRITE_BUCKET_ID} (updated)`);
+  }
 }
 
 main().catch((err) => {

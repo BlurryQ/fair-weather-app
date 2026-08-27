@@ -50,8 +50,10 @@ npm install
 
 ### 2. Create the schema (you run)
 
-Fill `APPWRITE_ENDPOINT`, `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY` in your
-environment (or a local `.env` you `source`), then:
+Copy `.env.example` to `.env` and fill in `APPWRITE_ENDPOINT`,
+`APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY` (the long **secret** from the API key,
+not its name). Use `KEY=value` with no spaces or quotes. The `npm run migrate:*`
+scripts load `.env` automatically (`node --env-file=.env`).
 
 ```
 npm run migrate:setup
@@ -62,9 +64,9 @@ Creates database `main`, collections `core_settings` / `image_settings` /
 
 ### 3. Export from Supabase (you run)
 
-Get the Postgres connection string from Supabase dashboard → Settings → Database
-→ Connection string (URI). Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-`SUPABASE_DB_URL`.
+Add `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_DB_URL` to `.env`.
+The Postgres connection string is in the Supabase dashboard → Settings →
+Database → Connection string (URI).
 
 > **PAUSE POINT — stop writes to Supabase here.** Run the export at a quiet
 > time. Any sign-up or settings change made after this point will not be

@@ -11,9 +11,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "migrate:setup": "node scripts/setup-appwrite.mjs",
-    "migrate:export": "node scripts/export-supabase.mjs",
-    "migrate:import": "node scripts/import-appwrite.mjs"
+    "migrate:setup": "node --env-file=.env scripts/setup-appwrite.mjs",
+    "migrate:export": "node --env-file=.env scripts/export-supabase.mjs",
+    "migrate:import": "node --env-file=.env scripts/import-appwrite.mjs"
   },
   "dependencies": {
     "@netlify/functions": "^4.2.5",
