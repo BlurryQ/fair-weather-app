@@ -70,7 +70,15 @@ export default function getImages(weather: HourProp): WeatherImage[] {
     }
 
     const images: WeatherImage[] = []
-    const add = (name: string) => images.push({ src: url(name), name })
+    // Skip a slot the user has switched off in settings. A missing/undefined
+    // flag (no saved settings yet) still renders, so behaviour only changes
+    // once someone explicitly toggles a card off.
+    const isOn = (name: string): boolean =>
+        imageSettings[`${name}_on` as keyof ImageSettings] !== false
+    const add = (name: string) => {
+        if (!isOn(name)) return
+        images.push({ src: url(name), name })
+    }
 
     if (weather.will_it_snow || weather.chance_of_snow >= snowPercentageTrigger) add('snow_chance')
     else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) add('rain_chance')

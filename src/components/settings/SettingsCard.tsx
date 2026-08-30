@@ -2,8 +2,7 @@ import '../../styles/settingsCard.css';
 
 import { useState, ChangeEvent, useEffect, useRef } from 'react';
 
-// TODO uncomment below: part of the toggle series
-// import Toggle from '../Toggle';
+import Toggle from '../Toggle';
 import '../../styles/toggle.css';
 
 // component
@@ -28,13 +27,9 @@ import validateImageForUpload from '../../utils/validateImageForUpload';
 import validateImageValue from '../../utils/validateImageValue';
 
 export default function SettingsCard({
-  // TODO uncomment below: part of the toggle series
-  // index,
   setting,
   imageSettings,
 }: {
-  // TODO uncomment below: part of the toggle series
-  // index: number;
   setting: SettingdCardData;
   imageSettings: ImageSettings;
 }) {
@@ -51,9 +46,7 @@ export default function SettingsCard({
   const [imageLoading, setImageLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
-  // TODO if setting === active, set isSettingOn to true
-  // TODO uncomment below: part of the toggle series
-  // const [isSettingOn, setIsSettingOn] = useState<boolean>(setting.active);
+  const [isSettingOn, setIsSettingOn] = useState<boolean>(setting.active);
   const [deleteImageData, setDeleteImageData] = useState<string[] | null>(null);
   const [newImageSettings, setNewImageSettings] = useState<ImageSettings>({
     ...imageSettings,
@@ -66,31 +59,23 @@ export default function SettingsCard({
   else if (settingName === 'low_temp') settingName = 'Cold';
   else if (settingName === 'good_day') settingName = 'Hot';
 
-  // TODO uncomment below: part of the toggle series
-  // const changeCardColor = () => {
-  //   const cards = document.querySelectorAll('.settings-card');
-  //   // TODO get card to toggle correct color on first toggle when false
-  //   if (cards[index].classList[1] === 'disabled') {
-  //     cards[index].classList.remove('disabled');
-  //   } else {
-  //     cards[index].classList.add('disabled');
-  //   }
-  // };
+  // Flip the local switch and mirror it into the pending ImageSettings so
+  // SaveButton persists the `<name>_on` column (same round-trip as a value edit).
+  const handleToggle: React.Dispatch<React.SetStateAction<boolean>> = (next) => {
+    const active = typeof next === 'function' ? next(isSettingOn) : next;
+    setIsSettingOn(active);
+    setting['active'] = active;
+    setNewImageSettings((prev) => ({
+      ...(formatImageSettingsForDB(setting, { ...prev }) as ImageSettings),
+    }));
+  };
 
-  useEffect(
-    () => {
-      // TODO uncomment below: part of the toggle series
-      // changeCardColor();
-
-      getImageUrl(imageSettings.id + '/' + setting.name).then((url) => {
-        if (url) setImage(url);
-        setImageLoading(false);
-      });
-    },
-    [
-      /* isSettingOn */
-    ]
-  );
+  useEffect(() => {
+    getImageUrl(imageSettings.id + '/' + setting.name).then((url) => {
+      if (url) setImage(url);
+      setImageLoading(false);
+    });
+  }, []);
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     setError('');
     setImageLoading(true);
@@ -137,13 +122,12 @@ export default function SettingsCard({
   };
 
   return (
-    <div className={'settings-card'}>
-      {/* // TODO uncomment below: part of the toggle series */}
-      {/* <Toggle
+    <div className={isSettingOn ? 'settings-card' : 'settings-card disabled'}>
+      <Toggle
         state={isSettingOn}
-        setState={setIsSettingOn}
-        label={'card-' + index}
-      /> */}
+        setState={handleToggle}
+        label={'card-' + setting.name}
+      />
 
       {imageLoading ? (
         <Loader />

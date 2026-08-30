@@ -26,15 +26,15 @@ Priority key:
 
 ---
 
-## P2 — Finish the settings toggle-switch feature
+## P2 — Finish the settings toggle-switch feature ✅ DONE
 
-One feature spread across four files; most of it is commented out. Do these together.
+One feature spread across four files; most of it was commented out.
 
-- [ ] `src/components/settings/SettingsCard.tsx` — uncomment and finish the toggle-series logic (lines 5, 31, 36, 55, 69, 82, 141)
-- [ ] `src/components/settings/SettingsCard.tsx:54` — when `setting === active`, set `isSettingOn` to `true`
-- [ ] `src/components/settings/ImageSettings.tsx:35` — uncomment the toggle-series code
-- [ ] `src/components/settings/SettingsCard.tsx:72` — card should show the correct colour on the first toggle when the value is `false`
-- [ ] `src/App.css:150` — styling for the on/off toggles on cards
+- [x] `SettingsCard.tsx` — `<Toggle>` wired up; `isSettingOn` inits from `setting.active`; a `handleToggle` wrapper mirrors the switch into `newImageSettings` via `formatImageSettingsForDB` so SaveButton persists the `<name>_on` column
+- [x] `SettingsCard.tsx` — first-toggle colour bug fixed by dropping the `querySelectorAll('.settings-card')[index]` + positional `classList[1]` hack; card class is now state-driven (`isSettingOn ? 'settings-card' : 'settings-card disabled'`). The `index` prop is gone entirely.
+- [x] `ImageSettings.tsx` — stopped passing `index`
+- [x] `getImages.ts` — `add()` now skips a slot whose `<name>_on` is `false` (strict check, so no saved-settings = unchanged behaviour)
+- [x] `App.css` — toggle placement + dimmed controls on a disabled card; removed the stale conflicting `.settings-card label` rule in `settingsCard.css`
 
 ---
 

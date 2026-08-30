@@ -147,6 +147,35 @@ button.error {
     }
 }
 
-/* TODO on/ off toggles on cards */
+/* on/off toggle placement on settings cards */
+.settings-card label {
+    position: relative;
+    align-self: center;
+    width: 1.9rem;
+    height: 1.05rem;
+    margin: 0.25rem 0;
+}
+
+/* The hidden checkbox still lays out at its 60px .switch size and shoves the
+   absolutely-positioned .slider off its static origin. Pull it out of flow and
+   pin the slider to the label so the control tracks align-self: center. */
+.settings-card .switch {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.settings-card .slider {
+    left: 0;
+    top: 0;
+}
+
+.settings-card.disabled .file-input,
+.settings-card.disabled .value-metric {
+    opacity: 0.5;
+    pointer-events: none;
+}
 
 /* TODO styling mobile weather cards */
