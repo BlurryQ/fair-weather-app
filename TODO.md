@@ -3,6 +3,8 @@
 Generated from `TODO` comments in the codebase, ordered by priority.
 
 > **P1 is done** (2026-08-30) — fixed in `DogGrid.tsx`, `getImages.ts`, `UserContext.tsx`, `App.css`. See notes under each item.
+> **P2 is done** (2026-08-30) — per-image on/off toggles wired through settings → getImages. Commit `39fe350`.
+> **P3 is done** (2026-08-30) — AuthPage, UserContext and CoreSettings refactors, no behaviour change. Two latent bugs found and logged under P4.
 
 Priority key:
 - **P1** – Bugs / broken behaviour in the live app
@@ -38,7 +40,7 @@ One feature spread across four files; most of it was commented out.
 
 ---
 
-## P3 — Refactors & cleanup
+## P3 — Refactors & cleanup ✅ DONE
 
 ### AuthPage ✅ DONE
 - [x] `AuthPage.tsx:49` — inputs identified by `name=`; `handleChange` switches on `name`, not placeholder text
@@ -46,9 +48,8 @@ One feature spread across four files; most of it was commented out.
 - [x] `AuthPage.tsx:65` — per-page Appwrite call extracted to `utils/authAction`, returns `{error, success, redirect, resetInputs, clearAfterDelay}` the component applies
 - [x] `AuthPage.tsx:97` — kept the `clearError` timeout (via `clearAfterDelay`); an effect would also dismiss errors the other pages keep until next submit
 
-### UserContext
-- [ ] `src/context/UserContext.tsx:131` — move logic below, return `updatedUser`
-- [ ] `src/context/UserContext.tsx:153` — same; consider merging into a single function
+### UserContext ✅ DONE
+- [x] `UserContext.tsx` `file` / `deleteImage` branches — the inline imageUrls array building is gone; both branches now call module-scope `upsertImageUrl` / `removeImageUrl` pure helpers (each returns a new array). Kept as two helpers rather than one nullable-url function — clearer at the call site.
 
 ### Settings components ✅ DONE
 - [x] `CoreSettings.tsx:133` — radio rows extracted to `components/common/RadioGroup` (Fragment keys, identical DOM)

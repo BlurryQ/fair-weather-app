@@ -28,6 +28,20 @@ const noUser: UserType = {
   email: '',
 };
 
+// Single-entry edits to the imageUrls list, kept out of the setUser updater so
+// each branch there stays a one-liner. Both return a new array.
+const upsertImageUrl = (
+  imageUrls: ImageUrls[],
+  name: string,
+  url: string
+): ImageUrls[] =>
+  imageUrls.some((entry) => entry.name === name)
+    ? imageUrls.map((entry) => (entry.name === name ? { ...entry, url } : entry))
+    : [...imageUrls, { name, url }];
+
+const removeImageUrl = (imageUrls: ImageUrls[], name: string): ImageUrls[] =>
+  imageUrls.filter((entry) => entry.name !== name);
+
 type UserContextType = {
   user: UserType;
   login: (userData: UserType) => void;
@@ -153,39 +167,17 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         updatedUser.settings.timestamp = new Date().getTime();
       } else if (settingsType === 'file') {
         const [imageName, newImageUrl] = settings as [string, string];
-
-        // TODO move below, returning updatedUser
-        const imageUrls: ImageUrls[] = [...updatedUser.settings.imageUrls];
-        const urlExists = imageUrls.findIndex(
-          (imageUrl: ImageUrls) => imageUrl.name === imageName
+        updatedUser.settings.imageUrls = upsertImageUrl(
+          updatedUser.settings.imageUrls,
+          imageName,
+          newImageUrl
         );
-        if (urlExists === -1)
-          imageUrls.push({
-            name: imageName,
-            url: newImageUrl,
-          });
-        else {
-          imageUrls.map((imageUrl: ImageUrls) => {
-            if (imageUrl.name === imageName) {
-              imageUrl.url = newImageUrl;
-            } else {
-              imageUrl.url = imageUrl.url;
-            }
-            return imageUrl;
-          });
-        }
-        updatedUser.settings.imageUrls = imageUrls;
       } else if (settingsType === 'deleteImage') {
-        // TODO move below, returning updatedUser (maybe make into one functions)
-        const imageUrls: ImageUrls[] = [...updatedUser.settings.imageUrls];
         const [, imageName] = settings as string[];
-        const urlIndex = imageUrls.findIndex(
-          (imageUrl: ImageUrls) => imageUrl.name === imageName
+        updatedUser.settings.imageUrls = removeImageUrl(
+          updatedUser.settings.imageUrls,
+          imageName
         );
-
-        imageUrls.splice(urlIndex, 1);
-
-        updatedUser.settings.imageUrls = imageUrls;
       }
 
       localStorage.setItem('user', JSON.stringify(updatedUser));
