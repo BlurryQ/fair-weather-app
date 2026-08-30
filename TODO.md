@@ -70,4 +70,4 @@ One feature spread across four files; most of it was commented out.
     3. `.show-weather-details` expand chevron is a tiny floating control lost in the whitespace.
     4. The day header ("Sun Aug 30th") renders twice (top and bottom of the list) — likely a desktop carousel artifact leaking into mobile; may be a separate bug.
   - Needs a design-direction call before implementation (denser list? fewer images? drop placeholders?).
-- [x] `src/models/weatherAPI/weatherModel.ts` — dead code removed: commented-out `getWeatherData` (unused; superseded by `getLatandLongWeather`) and the old axios snippets. `axios` is now an unused dependency — drop it from `package.json` in a follow-up.
+- [x] `src/models/weatherAPI/weatherModel.ts` — dead code removed: commented-out `getWeatherData` (unused; superseded by `getLatandLongWeather`) and the old axios snippets. (`axios` stays a dependency — still used by `netlify/functions/weatherApiRequest.ts`.)

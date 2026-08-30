@@ -9,6 +9,5 @@ export default function getClassName(index: number, isPlaceholder: boolean): str
   // if placeholder show blank page and  logo
   if (isPlaceholder)
     className += ' out-of-range'
-  // console.log(className)
   return className;
 }
