@@ -1,16 +1,11 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/auth.css';
 import { useEffect, useState } from 'react';
-import {
-  signUpUser,
-  signInUser,
-  resetPassword,
-  updatePassword,
-} from '../models/appwrite/auth/auth';
 import { useUser } from '../context/UserContext';
 import capitalisedEachWord from '../utils/capitalisedEachWord';
 import PasswordChecklist from 'react-password-checklist';
 import clearError from '../utils/clearError';
+import authAction from '../utils/authAction';
 
 export default function AuthPage() {
   const location = useLocation();
@@ -46,13 +41,12 @@ export default function AuthPage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO use id or name rather than placeholder
-    const { placeholder, value } = e.target;
-    if (placeholder === 'Email') {
+    const { name, value } = e.target;
+    if (name === 'email') {
       setEmail(value);
-    } else if (placeholder === 'Password') {
+    } else if (name === 'password') {
       setPassword(value);
-    } else if (placeholder === 'Confirm Password') {
+    } else if (name === 'confirmPassword') {
       setConfirmPassword(value);
     }
   };
@@ -61,55 +55,28 @@ export default function AuthPage() {
     resetInputs();
   }, [pageName]);
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    // TODO util function? takes pagename and authObj?
-    // TODO onSubmit in form not handler
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setSuccess('');
-    if (pageName === 'Log In') {
-      const isSuccessful: boolean = await signInUser(email, password, login);
-      if (!isSuccessful) {
-        setError('Login failed. Please check your credentials.');
-      } else {
-        navigate('/');
-      }
-    } else if (pageName === 'Sign Up') {
-      const isSuccessful: boolean = await signUpUser(email, password, login);
-      if (!isSuccessful) {
-        setError('Sign up failed. Please check your credentials.');
-      } else {
-        resetInputs();
-        navigate('/');
-      }
-    } else if (pageName === 'Reset Email') {
-      const isSuccessful: boolean = await resetPassword(email);
-      if (!isSuccessful)
-        setError(
-          'Cannot find this email address. Please check your credentials.'
-        );
-      else
-        setSuccess(
-          'If this email exists on our database an email will be sent.'
-        );
 
-      // TODO use fx?
-      clearError(setError, setSuccess);
-    } else if (pageName === 'Reset Password') {
-      const isSuccessful: any = await updatePassword(
-        password,
-        recovery.userId,
-        recovery.secret
-      );
-      if (!isSuccessful) {
-        setError('Error updating password. Please try again later.');
-      } else {
-        setSuccess('Password updated successfully. Please log in to continue.');
-        navigate('/log_in');
-      }
-    }
-    return setLoading(false);
+    const result = await authAction(
+      pageName,
+      { email, password, recovery },
+      login
+    );
+
+    if (result.error) setError(result.error);
+    if (result.success) setSuccess(result.success);
+    if (result.resetInputs) resetInputs();
+    // Reset Email leaves the user on the page, so its message self-clears after
+    // a delay rather than lingering; an effect would also dismiss errors on the
+    // pages that keep them until the next submit.
+    if (result.clearAfterDelay) clearError(setError, setSuccess);
+    if (result.redirect) navigate(result.redirect);
+
+    setLoading(false);
   };
 
   const handlePasswordReset = async () => {
@@ -125,10 +92,11 @@ export default function AuthPage() {
     <div className="auth">
       <h1>{pageName === 'Reset Email' ? 'Reset Password' : pageName}</h1>
       {pageName === 'Reset Email' && <p>Please enter your email address.</p>}
-      <form className="auth">
+      <form className="auth" onSubmit={handleSubmit}>
         {pageName !== 'Reset Password' && (
           <input
             type="email"
+            name="email"
             placeholder="Email"
             onChange={handleChange}
             value={email}
@@ -137,6 +105,7 @@ export default function AuthPage() {
         {(pageName === 'Sign Up' || pageName !== 'Reset Email') && (
           <input
             type="password"
+            name="password"
             placeholder="Password"
             onChange={handleChange}
             value={password}
@@ -146,6 +115,7 @@ export default function AuthPage() {
           <>
             <input
               type="password"
+              name="confirmPassword"
               placeholder="Confirm Password"
               onChange={handleChange}
               value={confirmPassword}
@@ -188,7 +158,6 @@ export default function AuthPage() {
         <button
           className={passwordsMatch ? 'show-btn' : ''}
           type="submit"
-          onClick={handleSubmit}
           disabled={pageName === 'Sign Up' && !passwordsMatch}
         >
           {pageName === 'Reset Email' ? 'Reset Password' : pageName}
