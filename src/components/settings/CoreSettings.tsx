@@ -1,99 +1,63 @@
 // components
 import SaveButton from '../common/SaveButton';
+import RadioGroup from '../common/RadioGroup';
 
 // types
 import { AllSettings } from '../../types/settings/AllSettings';
 import { CoreSettings as CoreSettingsType } from '../../types/settings/CoreSettings';
+import { HourErrors } from '../../types/settings/HourErrors';
 import { useState } from 'react';
+
+const NO_ERRORS: HourErrors = { firstHourError: '', lastHourError: '' };
 
 export default function CoreSettings({
   allSettings,
 }: {
   allSettings: AllSettings;
 }) {
-  // TODO move this if keeping
-  type HourErrors = {
-    firstHourError: string;
-    lastHourError: string;
-  };
+  const [error, setError] = useState<HourErrors>(NO_ERRORS);
 
-  const [error, setError] = useState<HourErrors>({
-    firstHourError: '',
-    lastHourError: '',
-  });
-  // const coreSettings: CoreSettingsType = allSettings.coreSettings;
-  const [coreSettings, setCoreSettings] = useState<CoreSettingsType>({
+  // All inputs below are uncontrolled; this object is mutated in place as the
+  // user edits and read by SaveButton on save. It intentionally does not drive
+  // rendering (only the hour-range error message does).
+  const [coreSettings] = useState<CoreSettingsType>({
     ...allSettings.coreSettings,
   });
 
-  // TODO refactor
-  const handleChange = (e: any) => {
-    const settingName: string = e.target.id;
-    const value: number = e.target.value;
-    console.log(value);
-    const timeSetting: boolean =
-      settingName === 'first-hour' || settingName === 'last-hour';
-    const tempSetting: boolean =
-      settingName === 'celsius' || settingName === 'fahrenheit';
-    const distanceSetting: boolean =
-      settingName === 'miles' || settingName === 'kilometers';
-    // if tempSetting set metric
-    if (tempSetting) {
-      coreSettings.is_celsius = settingName === 'celsius';
-      // else if distance set metric
-    } else if (distanceSetting) {
-      coreSettings.is_miles = settingName === 'miles';
-      // else if first hour set settingName
-    } else if (timeSetting) {
-      let error: string = '';
-      // if first hour
-      console.log('first', coreSettings.first_hour);
-      console.log('last', coreSettings.last_hour);
-      if (settingName === 'first-hour') {
-        coreSettings.first_hour = Number(e.target.value);
-        console.log('first2', coreSettings.first_hour);
-        // if hour too high error else
-        // if (coreSettings.first_hour >= coreSettings.last_hour) {
-        //   error = 'First hour must be less than the last hour';
-        // }
-        if (value < 0 || value > 22) {
-          error = 'First hour can only be from 0 - 22';
-        }
-        return setError((prev) => ({
-          ...prev,
-          firstHourError: error,
-        }));
-        // eles if last hour
-      } else if (settingName === 'last-hour') {
-        coreSettings.last_hour = Number(e.target.value);
-        console.log('last2', coreSettings.last_hour);
-        if (coreSettings.last_hour <= coreSettings.first_hour) {
-          error = 'Last hour must be more than the first hour';
-        }
-        if (value < 1 || value > 23) {
-          error = 'Last hour can only be from 1 - 23';
-        } else {
-          error = '';
-        }
-        return setError((prev) => ({
-          ...prev,
-          lastHourError: error,
-        }));
-      }
+  const hourError = (settingName: string, hour: number): string => {
+    if (settingName === 'first-hour' && (hour < 0 || hour > 22))
+      return 'First hour can only be from 0 - 22';
+    if (settingName === 'last-hour' && (hour < 1 || hour > 23))
+      return 'Last hour can only be from 1 - 23';
+    return '';
+  };
 
-      if (coreSettings.first_hour >= coreSettings.last_hour) {
-        error = 'First hour must be less than the last hour';
-        return setError((prev) => ({
-          ...prev,
-          firstHourError: error,
-        }));
-      } else {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    switch (id) {
+      case 'celsius':
+      case 'fahrenheit':
+        coreSettings.is_celsius = id === 'celsius';
+        break;
+      case 'miles':
+      case 'kilometers':
+        coreSettings.is_miles = id === 'miles';
+        break;
+      case 'first-hour':
+        coreSettings.first_hour = Number(value);
         setError((prev) => ({
           ...prev,
-          firstHourError: '',
+          firstHourError: hourError(id, Number(value)),
         }));
-      }
-      setCoreSettings(coreSettings);
+        break;
+      case 'last-hour':
+        coreSettings.last_hour = Number(value);
+        setError((prev) => ({
+          ...prev,
+          lastHourError: hourError(id, Number(value)),
+        }));
+        break;
     }
   };
 
@@ -130,50 +94,41 @@ export default function CoreSettings({
         {error.firstHourError || error.lastHourError || 'error'}
       </p>
 
-      {/* TODO make these radio buttons components? */}
-      <legend>Temperature:</legend>
-      <div className="setting-group">
-        <label htmlFor="celsius">Celsius:</label>
-        <input
-          className="radio"
-          id="celsius"
-          name="temperature"
-          type="radio"
-          defaultChecked={coreSettings.is_celsius === true}
-          onChange={handleChange}
-        />
-        <label htmlFor="fahrenheit">Fahrenheit:</label>
-        <input
-          className="radio"
-          id="fahrenheit"
-          name="temperature"
-          type="radio"
-          defaultChecked={coreSettings.is_celsius === false}
-          onChange={handleChange}
-        />
-      </div>
+      <RadioGroup
+        legend="Temperature"
+        name="temperature"
+        onChange={handleChange}
+        options={[
+          {
+            id: 'celsius',
+            label: 'Celsius',
+            checked: coreSettings.is_celsius === true,
+          },
+          {
+            id: 'fahrenheit',
+            label: 'Fahrenheit',
+            checked: coreSettings.is_celsius === false,
+          },
+        ]}
+      />
 
-      <legend>Distance:</legend>
-      <div className="setting-group">
-        <label htmlFor="miles">Miles:</label>
-        <input
-          className="radio"
-          id="miles"
-          name="distance"
-          type="radio"
-          defaultChecked={coreSettings.is_miles === true}
-          onChange={handleChange}
-        />
-        <label htmlFor="kilometers">Kilometers:</label>
-        <input
-          className="radio"
-          id="kilometers"
-          name="distance"
-          type="radio"
-          defaultChecked={coreSettings.is_miles === false}
-          onChange={handleChange}
-        />
-      </div>
+      <RadioGroup
+        legend="Distance"
+        name="distance"
+        onChange={handleChange}
+        options={[
+          {
+            id: 'miles',
+            label: 'Miles',
+            checked: coreSettings.is_miles === true,
+          },
+          {
+            id: 'kilometers',
+            label: 'Kilometers',
+            checked: coreSettings.is_miles === false,
+          },
+        ]}
+      />
 
       <SaveButton
         disabled={!!error.firstHourError || !!error.lastHourError}

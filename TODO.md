@@ -40,25 +40,27 @@ One feature spread across four files; most of it was commented out.
 
 ## P3 — Refactors & cleanup
 
-### AuthPage
-- [ ] `src/components/AuthPage.tsx:49` — use `id` / `name` instead of `placeholder` to identify fields
-- [ ] `src/components/AuthPage.tsx:66` — move submit handling into the form's `onSubmit` rather than a separate handler
-- [ ] `src/components/AuthPage.tsx:65` — extract a util function taking pageName + authObj
-- [ ] `src/components/AuthPage.tsx:97` — review "use fx?"
+### AuthPage ✅ DONE
+- [x] `AuthPage.tsx:49` — inputs identified by `name=`; `handleChange` switches on `name`, not placeholder text
+- [x] `AuthPage.tsx:66` — submit runs off `<form onSubmit>` (FormEvent); button `onClick` removed
+- [x] `AuthPage.tsx:65` — per-page Appwrite call extracted to `utils/authAction`, returns `{error, success, redirect, resetInputs, clearAfterDelay}` the component applies
+- [x] `AuthPage.tsx:97` — kept the `clearError` timeout (via `clearAfterDelay`); an effect would also dismiss errors the other pages keep until next submit
 
 ### UserContext
 - [ ] `src/context/UserContext.tsx:131` — move logic below, return `updatedUser`
 - [ ] `src/context/UserContext.tsx:153` — same; consider merging into a single function
 
-### Settings components
-- [ ] `src/components/settings/CoreSettings.tsx:133` — extract the repeated radio buttons into a component
-- [ ] `src/components/settings/CoreSettings.tsx:29` — refactor
-- [ ] `src/components/settings/CoreSettings.tsx:14` — move this helper elsewhere if it's being kept
+### Settings components ✅ DONE
+- [x] `CoreSettings.tsx:133` — radio rows extracted to `components/common/RadioGroup` (Fragment keys, identical DOM)
+- [x] `CoreSettings.tsx:29` — `handleChange` cleaned: typed event, dropped 5 `console.log`s and the dead cross-field branch, `switch` on input id, range checks via one `hourError` helper. Direct-mutation model kept (inputs are uncontrolled). See new P4 note re: the cross-field rule.
+- [x] `CoreSettings.tsx:14` — `HourErrors` moved to `src/types/settings/HourErrors.ts`
 
 ---
 
 ## P4 — Polish & low-risk
 
 - [ ] `src/components/AuthPage.tsx:119` — improve the loading state
+- [ ] `src/components/AuthPage.tsx` — Reset Email page renders no `.error` / `.success` element (the message divs are gated behind Sign Up / Reset Password / Log In), so that branch's "Cannot find this email…" / "email will be sent" feedback never displays. Add a message slot to the Reset Email view. _(found 2026-08-30 during the P3 AuthPage refactor)_
+- [ ] `src/components/settings/CoreSettings.tsx` — first/last hour cross-field validation ("First hour must be less than the last hour") never fired: it was commented out on the first-hour path and unreachable on the last-hour path, where an in-range value always cleared the error. Decide whether that rule should exist and wire it up if so. _(found 2026-08-30 during the P3 CoreSettings refactor)_
 - [ ] `src/App.css:152` — styling for mobile weather cards
 - [ ] `src/models/weatherAPI/weatherModel.ts:6` — review comments
