@@ -16,7 +16,25 @@ import { ImageSettings } from "../types/settings/ImageSettings"
 import { CoreSettings } from "../types/settings/CoreSettings"
 import { ImageUrls } from "../types/settings/ImageUrls"
 
-export default function getImages(weather: HourProp): string[] {
+// Bundled fallback for every slot name. A user's uploaded image can fail to load
+// (e.g. an object URL left over from a dead session); DogGrid swaps back to these
+// on an <img> error so the grid never shows a broken image.
+export const IMAGE_DEFAULTS: Record<string, string> = {
+    high_uv: highUVDefault,
+    low_temp: lowTempDefault,
+    low_visability: lowVisabilityDefault,
+    high_wind: highWindDefault,
+    high_temp: highTempDefault,
+    rain_chance: rainChanceDefault,
+    snow_chance: snowChanceDefault,
+    good_day: goodDayDefault,
+    low_wind: lowWindDefault,
+    favicon: placeholder,
+}
+
+export type WeatherImage = { src: string; name: string }
+
+export default function getImages(weather: HourProp): WeatherImage[] {
     // determine which images to show based on user and weather settings
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const settings = user.settings || {};
@@ -32,32 +50,13 @@ export default function getImages(weather: HourProp): string[] {
     const highWindTrigger: number = imageSettings.high_wind|| 35
     const visibilityTrigger: number = imageSettings.low_visability || 2
 
-    // image urls section
-    let imageUrls: ImageUrls[] = settings.imageUrls || [];
-    let highUV: string | undefined = highUVDefault
-    let lowTemp: string  | undefined = lowTempDefault
-    let lowVisability: string  | undefined = lowVisabilityDefault
-    let highWind: string  | undefined = highWindDefault
-    let highTemp: string  | undefined = highTempDefault
-    let rainChance: string  | undefined = rainChanceDefault
-    let snowChance: string  | undefined = snowChanceDefault
-    let goodDay: string  | undefined = goodDayDefault
-    let lowWind: string  | undefined = lowWindDefault
-
-    if (imageUrls.length > 0) {
-        imageUrls.forEach(imageUrl => {
-            if (imageUrl.name === 'high_uv') highUV = imageUrl.url;
-            else if (imageUrl.name === 'low_temp') lowTemp = imageUrl.url;
-            else if (imageUrl.name === 'low_visability') lowVisability = imageUrl.url;
-            else if (imageUrl.name === 'high_wind') highWind = imageUrl.url;
-            else if (imageUrl.name === 'high_temp') highTemp = imageUrl.url;
-            else if (imageUrl.name === 'rain_chance') rainChance = imageUrl.url;
-            else if (imageUrl.name === 'snow_chance') snowChance = imageUrl.url;
-            else if (imageUrl.name === 'good_day') goodDay = imageUrl.url;
-            else if (imageUrl.name === 'low_wind') lowWind = imageUrl.url;
-        });
-    }   
-
+    // image urls section - start from the bundled default, use the user's upload
+    // if they have one for that slot
+    const imageUrls: ImageUrls[] = settings.imageUrls || [];
+    const url = (name: string): string => {
+        const custom = imageUrls.find((entry: ImageUrls) => entry.name === name)
+        return custom?.url || IMAGE_DEFAULTS[name]
+    }
 
     // core settings section
     const coreSettings: CoreSettings = settings.coreSettings || null;
@@ -69,23 +68,25 @@ export default function getImages(weather: HourProp): string[] {
         weatherWind = coreSettings.is_miles? weather.wind_mph : weather.wind_kph
         weatherVis = coreSettings.is_miles? weather.vis_miles : weather.vis_km
     }
-    const images = []
-    
-    if (weather.will_it_snow || weather.chance_of_snow >= snowPercentageTrigger) images.push(snowChance)
-    else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) images.push(rainChance)
-    
-    if (weatherTemp > highHotTrigger) images.push(goodDay)
-    else if (weatherTemp < lowTempTrigger) images.push(lowTemp)
-    else images.push(highTemp)
 
-    if (weatherWind >= highWindTrigger) images.push(highWind)
-    else if (weatherWind >= lowWindTrigger) images.push(lowWind)
+    const images: WeatherImage[] = []
+    const add = (name: string) => images.push({ src: url(name), name })
 
-    if (weather.uv > uvTrigger) images.push(highUV)
+    if (weather.will_it_snow || weather.chance_of_snow >= snowPercentageTrigger) add('snow_chance')
+    else if (weather.will_it_rain || weather.chance_of_rain >= rainPercentageTrigger) add('rain_chance')
 
-    if (weatherVis <= visibilityTrigger) images.push(lowVisability)
+    if (weatherTemp > highHotTrigger) add('good_day')
+    else if (weatherTemp < lowTempTrigger) add('low_temp')
+    else add('high_temp')
 
-    while (images.length < 4) images.push(placeholder)
+    if (weatherWind >= highWindTrigger) add('high_wind')
+    else if (weatherWind >= lowWindTrigger) add('low_wind')
+
+    if (weather.uv > uvTrigger) add('high_uv')
+
+    if (weatherVis <= visibilityTrigger) add('low_visability')
+
+    while (images.length < 4) images.push({ src: placeholder, name: 'favicon' })
     while (images.length > 4) images.pop()
 
     return images

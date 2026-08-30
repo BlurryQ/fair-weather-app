@@ -2,6 +2,7 @@ import React, {
   createContext,
   useContext,
   useState,
+  useRef,
   ReactNode,
   useEffect,
 } from 'react';
@@ -36,6 +37,8 @@ type UserContextType = {
     userUpdates: AllSettings | CoreSettings | ImageSettings | string[]
   ) => void;
   updateImageUrls: (id: string) => Promise<void>;
+  refreshAllSettings: (id: string) => Promise<void>;
+  settingsRefreshing: boolean;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -49,6 +52,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : noUser;
   });
+
+  // True while a full settings refresh is in flight. DogGrid dims the grid
+  // rather than each instance kicking off its own refetch on render.
+  const [settingsRefreshing, setSettingsRefreshing] = useState(false);
+  const lastRefreshRef = useRef(0);
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -80,9 +88,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             confirmed_at: acc.registration || acc.$createdAt,
           } as UserType);
         } else if (validateSettings(user.settings)) {
-          // Same session across a reload: image object URLs from the previous
-          // session are dead, so regenerate them.
-          updateImageUrls(acc.$id);
+          // Same session across a reload: the previous session's image object
+          // URLs are dead and settings may have changed on another device, so
+          // pull the whole payload fresh rather than just the image URLs.
+          refreshAllSettings(acc.$id);
         }
       } catch {
         if (!cancelled && user.id) logout();
@@ -92,6 +101,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       cancelled = true;
     };
   }, []);
+
+  // Object URLs and setting values go stale after an hour (or when another
+  // device changes them). Refresh the whole payload centrally so every DogGrid
+  // stays aligned, instead of each one refetching from its render body.
+  useEffect(() => {
+    const timestamp = user.settings?.timestamp;
+    if (!user.id || !timestamp) return;
+    const ONE_HOUR = 1000 * 60 * 60;
+    if (Date.now() - timestamp > ONE_HOUR) {
+      refreshAllSettings(user.id);
+    }
+  }, [user]);
 
   const login = (userData: UserType) => {
     setUser(userData);
@@ -116,6 +137,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       } else if (settingsType === 'core') {
         updatedUser.settings.coreSettings = settings as CoreSettings;
       } else if (settingsType === 'all') {
+        // A full refresh brings a fresh set of object URLs; release the old ones.
+        const previous: ImageUrls[] = updatedUser.settings?.imageUrls || [];
+        previous.forEach((entry: ImageUrls) => {
+          if (entry.url?.startsWith('blob:')) URL.revokeObjectURL(entry.url);
+        });
         updatedUser.settings = settings as AllSettings;
       } else if (settingsType === 'imageUrls') {
         // Release the previous session's object URLs before replacing them.
@@ -172,6 +198,23 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     updateUserSettings('imageUrls', images as ImageUrls);
   };
 
+  // Pull core settings, image settings and image URLs in one go. Guarded so
+  // overlapping triggers (reload + expiry check) don't fire duplicate fetches.
+  const refreshAllSettings = async (id: string) => {
+    if (!id) return;
+    if (settingsRefreshing || Date.now() - lastRefreshRef.current < 5000) return;
+    lastRefreshRef.current = Date.now();
+    setSettingsRefreshing(true);
+    try {
+      const settings = await getAllSettings();
+      updateUserSettings('all', settings);
+    } catch (error) {
+      console.error('Failed to refresh settings:', error);
+    } finally {
+      setSettingsRefreshing(false);
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -180,6 +223,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         logout,
         updateUserSettings,
         updateImageUrls,
+        refreshAllSettings,
+        settingsRefreshing,
       }}
     >
       {children}

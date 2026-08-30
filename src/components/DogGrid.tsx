@@ -5,48 +5,46 @@ import { useUser } from '../context/UserContext';
 import { HourProp } from '../types/HourProp';
 
 // utils
-import getImages from '../utils/getImages';
+import getImages, { IMAGE_DEFAULTS, WeatherImage } from '../utils/getImages';
 import Loader from './Loader';
 
 export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
   const userContext = useUser();
   if (!userContext) return <></>;
-  const { user, updateImageUrls } = userContext;
+  const { user, settingsRefreshing } = userContext;
 
-  // TODO loaders for when fetching images
-  if (user.settings) {
-    const now = new Date();
-    const oneHour: number = 1000 * 60 * 60;
-    const timestampExpired: boolean =
-      now.getTime() - user.settings.timestamp > oneHour;
+  // Stale timestamps / dead object URLs are handled centrally in UserContext:
+  // it refreshes the whole settings payload and flips settingsRefreshing. While
+  // that is in flight the bundled defaults still render fine, so only fall back
+  // to the full loader when there are no settings to draw from at all.
+  if (settingsRefreshing && !user.settings) return <Loader />;
 
-    // TODO prevent errors when imges outdated
-    // TODO ckeck if below fixed
-    if (timestampExpired) {
-      updateImageUrls(user.id);
-      // TODO loaders not running as expected
-      return <Loader />;
-    }
-  }
-  const images: string[] = getImages(hour);
-
-  // TODO check this works
-  if (images.length === 0) return <Loader />;
-  // TODO loaders not running as expected
+  const images: WeatherImage[] = getImages(hour);
 
   return (
-    <div data-hour-id={hour.time_epoch} className="weather-images">
-      {images.map((image: string, i: number) => {
-        // split at [2] for placeholder due to different location (eg. /fair-weather-app/images/rainy.png)
-        let alt: string = image.split('/')[5] || image.split('/')[1];
-        alt = alt.split('.')[0];
-        const imageClass: string = alt === 'favicon' ? 'dog opaque' : 'dog';
+    <div
+      data-hour-id={hour.time_epoch}
+      className="weather-images"
+      style={settingsRefreshing ? { opacity: 0.5 } : undefined}
+    >
+      {images.map(({ src, name }: WeatherImage, i: number) => {
+        const imageClass: string = name === 'favicon' ? 'dog opaque' : 'dog';
         return (
           <img
-            key={`${image}-${i}`}
+            key={`${src}-${i}`}
             className={imageClass}
-            src={image}
-            alt={alt}
+            src={src}
+            alt={name}
+            onError={(e) => {
+              // A user upload can 404 (dead session URL, deleted file). Swap in
+              // the bundled default once so we never show a broken image.
+              const img = e.currentTarget;
+              if (img.dataset.fellBack) return;
+              const fallback = IMAGE_DEFAULTS[name];
+              if (!fallback) return;
+              img.dataset.fellBack = 'true';
+              img.src = fallback;
+            }}
           />
         );
       })}
