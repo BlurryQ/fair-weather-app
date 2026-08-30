@@ -24,12 +24,23 @@ export default function CoreSettings({
     ...allSettings.coreSettings,
   });
 
-  const hourError = (settingName: string, hour: number): string => {
-    if (settingName === 'first-hour' && (hour < 0 || hour > 22))
-      return 'First hour can only be from 0 - 22';
-    if (settingName === 'last-hour' && (hour < 1 || hour > 23))
-      return 'Last hour can only be from 1 - 23';
-    return '';
+  // Both messages are recomputed from both current values on every hour edit,
+  // so fixing one field also clears a stale error left on the other.
+  const validateHours = (first: number, last: number): HourErrors => {
+    let firstHourError = '';
+    let lastHourError = '';
+
+    if (first < 0 || first > 22)
+      firstHourError = 'First hour can only be from 0 - 22';
+    else if (first >= last)
+      firstHourError = 'First hour must be less than the last hour';
+
+    if (last < 1 || last > 23)
+      lastHourError = 'Last hour can only be from 1 - 23';
+    else if (last <= first)
+      lastHourError = 'Last hour must be more than the first hour';
+
+    return { firstHourError, lastHourError };
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,17 +57,11 @@ export default function CoreSettings({
         break;
       case 'first-hour':
         coreSettings.first_hour = Number(value);
-        setError((prev) => ({
-          ...prev,
-          firstHourError: hourError(id, Number(value)),
-        }));
+        setError(validateHours(coreSettings.first_hour, coreSettings.last_hour));
         break;
       case 'last-hour':
         coreSettings.last_hour = Number(value);
-        setError((prev) => ({
-          ...prev,
-          lastHourError: hourError(id, Number(value)),
-        }));
+        setError(validateHours(coreSettings.first_hour, coreSettings.last_hour));
         break;
     }
   };

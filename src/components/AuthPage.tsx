@@ -155,6 +155,12 @@ export default function AuthPage() {
             {error && <div className="error">{error}</div>}
           </>
         )}
+        {pageName === 'Reset Email' && (
+          <>
+            {error && <div className="error">{error}</div>}
+            {success && <div className="success">{success}</div>}
+          </>
+        )}
         <button
           className={passwordsMatch ? 'show-btn' : ''}
           type="submit"

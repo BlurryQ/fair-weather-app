@@ -60,8 +60,8 @@ One feature spread across four files; most of it was commented out.
 
 ## P4 — Polish & low-risk
 
-- [ ] `src/components/AuthPage.tsx:119` — improve the loading state
-- [ ] `src/components/AuthPage.tsx` — Reset Email page renders no `.error` / `.success` element (the message divs are gated behind Sign Up / Reset Password / Log In), so that branch's "Cannot find this email…" / "email will be sent" feedback never displays. Add a message slot to the Reset Email view. _(found 2026-08-30 during the P3 AuthPage refactor)_
-- [ ] `src/components/settings/CoreSettings.tsx` — first/last hour cross-field validation ("First hour must be less than the last hour") never fired: it was commented out on the first-hour path and unreachable on the last-hour path, where an in-range value always cleared the error. Decide whether that rule should exist and wire it up if so. _(found 2026-08-30 during the P3 CoreSettings refactor)_
-- [ ] `src/App.css:152` — styling for mobile weather cards
-- [ ] `src/models/weatherAPI/weatherModel.ts:6` — review comments
+- [ ] `src/components/AuthPage.tsx:86` — improve the loading state (`// TODO pimp loading`)
+- [x] `src/components/AuthPage.tsx` — Reset Email now renders `.error` / `.success` in its own message slot; verified the "Cannot find this email address" error shows and self-clears. _(found + fixed 2026-08-30)_
+- [x] `src/components/settings/CoreSettings.tsx` — cross-field hour validation wired up via `validateHours(first, last)`, recomputed from both values on each edit so fixing one field clears the other's stale error; `SaveButton` stays disabled while either error is set. _(found + fixed 2026-08-30)_
+- [ ] `src/App.css:181` — styling for mobile weather cards
+- [x] `src/models/weatherAPI/weatherModel.ts` — dead code removed: commented-out `getWeatherData` (unused; superseded by `getLatandLongWeather`) and the old axios snippets. `axios` is now an unused dependency — drop it from `package.json` in a follow-up.
