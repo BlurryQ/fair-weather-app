@@ -23,7 +23,7 @@ It combines **WeatherAPI** for forecasts, **Appwrite** for auth, database and st
 
 - A free account on [weatherAPI.com](https://www.weatherapi.com/) for the API key.  
 - An [Appwrite](https://appwrite.io/) project (Cloud or self-hosted) for auth, database and storage.  
-  Run `npm run migrate:setup` to create the collections and bucket. See [MIGRATION.md](./MIGRATION.md).  
+  Run `npm run migrate:setup` to create the collections and bucket (needs the server `APPWRITE_*` values in `.env` — see `.env.example`).  
 
 ---
 
