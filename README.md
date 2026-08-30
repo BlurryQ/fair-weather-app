@@ -1,6 +1,6 @@
 # Fair Weather App
 
-<video src="https://github.com/BlurryQ/fair-weather-app/raw/main/demo.mp4" autoplay loop muted playsinline controls width="100%"></video>
+![Fair Weather App Demo](demo.gif)
 
 ## Summary  
 
