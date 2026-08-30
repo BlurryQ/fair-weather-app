@@ -30,6 +30,7 @@ It combines **WeatherAPI** for forecasts, **Appwrite** for auth, database and st
 ## Tech Stack & Dependencies
 
 - **Frontend:** [React](https://react.dev/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)  
+- **Mobile:** [Capacitor](https://capacitorjs.com/) Android wrapper (thin shell over the hosted site)  
 - **Backend/Services:** [Appwrite](https://appwrite.io/) for auth, storage, and database  
 - **API:** [WeatherAPI](https://www.weatherapi.com/)  
 - **HTTP Client:** [axios](https://axios-http.com/)  
@@ -73,6 +74,47 @@ Copy `.env.example` to `.env` and fill it in:
     ```
     npm run dev
     ```
+
+---
+
+## Android app (Capacitor)
+
+The repo also ships a [Capacitor](https://capacitorjs.com/) Android wrapper. It's a
+thin native shell: the WebView loads the **live site**
+(`server.url` in `capacitor.config.ts`), so weather (Netlify Functions) and auth
+(Appwrite) work exactly as on the web. It needs a network connection — it isn't a
+bundled offline app.
+
+**Prerequisites**
+
+- Android SDK with `platforms;android-35` and `build-tools;35.0.0`
+- JDK 21 (Gradle 8.11 / AGP 8.7)
+- `ANDROID_SDK_ROOT` set, or `android/local.properties` with `sdk.dir=...`
+
+**Build the APK**
+
+```
+npm run android:apk
+```
+
+Produces a debug-signed, sideloadable APK at `apk/fair-weather-app-debug.apk`
+(the `apk/` folder is git-ignored). This is a debug build — not signed for the
+Play Store.
+
+**Install on a device**
+
+```
+npm run android:install        # USB device, via adb install -r
+```
+
+or copy `apk/fair-weather-app-debug.apk` onto the phone and open it (allow
+"install from unknown sources").
+
+**Other tasks**
+
+- `npm run android:sync` — rebuild web assets and `cap sync` (run after web changes)
+- `npm run android:icons` — regenerate launcher icon + splash from `resources/icon.png` / `resources/splash.png` (uses `@capacitor/assets`)
+- App id: `com.blurryq.fairweather`. To point the shell at a local dev server, change `server.url` in `capacitor.config.ts` and re-sync.
 
 ## Features
 

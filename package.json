@@ -8,11 +8,17 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "android:sync": "npm run build && cap sync android",
+    "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug && cd .. && mkdir -p apk && cp android/app/build/outputs/apk/debug/app-debug.apk apk/fair-weather-app-debug.apk && echo 'APK -> apk/fair-weather-app-debug.apk'",
+    "android:install": "adb install -r apk/fair-weather-app-debug.apk",
+    "android:icons": "capacitor-assets generate --android",
     "migrate:setup": "node --env-file=.env scripts/setup-appwrite.mjs",
     "migrate:export": "node --env-file=.env scripts/export-supabase.mjs",
     "migrate:import": "node --env-file=.env scripts/import-appwrite.mjs"
   },
   "dependencies": {
+    "@capacitor/android": "^7.6.8",
+    "@capacitor/core": "^7.6.8",
     "@netlify/functions": "^4.2.5",
     "appwrite": "^16.0.2",
     "axios": "^1.7.7",
@@ -25,9 +31,9 @@
     "react-spinners": "^0.15.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.6.8",
     "@eslint/js": "^9.13.0",
-    "node-appwrite": "^14.1.0",
-    "pg": "^8.13.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
@@ -35,6 +41,8 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
+    "node-appwrite": "^14.1.0",
+    "pg": "^8.13.1",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.11.0",
     "vite": "^7.1.3"

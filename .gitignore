@@ -142,3 +142,6 @@ settings.json
 .vscode
 # Local Netlify folder
 .netlify
+
+# Built APKs (rebuild with: npm run android:apk)
+apk/
