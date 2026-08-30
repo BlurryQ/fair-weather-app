@@ -29,6 +29,13 @@ export default function Location({
   const [error, setError] = useState<boolean>(false);
   const [location, setLocation] = useState<string>('');
 
+  // stop the spinner and flash the inline error for 5s
+  const flashError = (): void => {
+    setLoading(false);
+    setError(true);
+    setTimeout(() => setError(false), 5000);
+  };
+
   // Once longitude is updated get geolocation data
   useEffect(() => {
     const longitude: number = coords.lon;
@@ -45,11 +52,7 @@ export default function Location({
       })
       .catch((err) => {
         console.error(err);
-        setLoading(false);
-        setError(true);
-        setInterval(() => {
-          setError(false);
-        }, 5000);
+        flashError();
       });
   }, [coords]);
 
@@ -58,7 +61,12 @@ export default function Location({
     setLoading(true);
     setError(false);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
+      navigator.geolocation.getCurrentPosition(showPosition, (err) => {
+        // permission denied, position unavailable, or timeout - without this
+        // callback getCurrentPosition fails silently and the spinner never stops
+        console.error(err);
+        flashError();
+      });
     } else {
       alert('Geolocation is not supported by this browser.');
     }
