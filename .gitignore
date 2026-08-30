@@ -142,6 +142,3 @@ settings.json
 .vscode
 # Local Netlify folder
 .netlify
-
-# demo video is hosted as a GitHub release asset, not in the repo
-/demo.mp4
