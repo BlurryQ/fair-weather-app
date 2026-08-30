@@ -312,13 +312,17 @@
         margin: 0;
         display: grid;
         align-items: center;
-        grid-template-columns: 75px 1fr 10px;
-        grid-template-rows: 180px;
+        column-gap: 0.4rem;
+        grid-template-columns: 82px 1fr 34px;
+        grid-template-rows: auto;
         height: auto;
     }
 
-    .forecast .time {
-        font-size: 0.9rem;
+    .forecast .time,
+    .forecast .times {
+        font-size: 0.8rem;
+        line-height: 1.2;
+        white-space: nowrap;
     }
 
     .weather {
@@ -332,9 +336,45 @@
         width: 50px
     }
 
+    /* Real images only on mobile, laid out by how many there are:
+       1 -> fills the image column, 2 -> one row, 3-4 -> wraps to a second row.
+       (Desktop keeps its fixed 2x2 grid with the favicon placeholders.) */
+    .forecast .opaque {
+        display: none;
+    }
+
     .weather-images {
-        margin: 0.2rem;
-        grid-template-columns: repeat(4, 1fr);
+        margin: 0.2rem 0;
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+    }
+
+    .forecast .dog {
+        width: 100%;
+        height: auto;
+        max-height: none;
+    }
+
+    /* lone image: cap it so a single card doesn't tower over the list */
+    .weather-images:not(:has(img:not(.opaque) ~ img:not(.opaque))) .dog {
+        width: auto;
+        max-width: 100%;
+        max-height: 170px;
+    }
+
+    /* two or more real images: two per row */
+    .weather-images:has(img:not(.opaque) ~ img:not(.opaque)) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* expand chevron: centre it in a real column instead of a 10px sliver */
+    #carrat.up,
+    #carrat.down {
+        justify-self: center;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.6;
     }
 
     thead {
@@ -365,48 +405,5 @@
         display: block;
         font-size: 0.65rem;
         font-style: italic;
-    }
-}
-
-
-@media only screen and (max-width: 630px) {
-    .weather-images {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .forecast .dog {
-        width: 57%;
-    }
-}
-
-
-@media only screen and (max-width: 550px) {
-    .weather-images {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .forecast .dog {
-        width: 65%;
-    }
-}
-
-
-@media only screen and (max-width: 500px) {
-    .forecast .dog {
-        width: 80%;
-    }
-}
-
-
-@media only screen and (max-width: 460px) {
-    .forecast .dog {
-        width: 90%;
-    }
-}
-
-
-@media only screen and (max-width: 410px) {
-    .forecast .dog {
-        width: 100%;
     }
 }

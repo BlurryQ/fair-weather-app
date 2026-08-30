@@ -178,4 +178,5 @@ button.error {
     pointer-events: none;
 }
 
-/* TODO styling mobile weather cards */
+/* Mobile hourly-forecast card styling lives in styles/forecast.css
+   (the max-width: 767px block). */
