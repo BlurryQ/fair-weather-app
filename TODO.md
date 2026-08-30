@@ -58,16 +58,15 @@ One feature spread across four files; most of it was commented out.
 
 ---
 
-## P4 — Polish & low-risk
+## P4 — Polish & low-risk ✅ DONE
 
 - [x] `src/components/AuthPage.tsx` — loading state now renders the shared `<Loader />` (CircleLoader spinner) instead of bare "Loading..." text. Verified with a stalled-network browser pass.
 - [x] `src/components/AuthPage.tsx` — Reset Email now renders `.error` / `.success` in its own message slot; verified the "Cannot find this email address" error shows and self-clears. _(found + fixed 2026-08-30)_
 - [x] `src/components/settings/CoreSettings.tsx` — cross-field hour validation wired up via `validateHours(first, last)`, recomputed from both values on each edit so fixing one field clears the other's stale error; `SaveButton` stays disabled while either error is set. _(found + fixed 2026-08-30)_
-- [ ] `src/App.css:181` — styling for mobile weather cards **(deferred to its own session)**
-  - Investigated 2026-08-30 at 390px width. `forecast.css` already has mobile breakpoints (767/630/550/500/460/410); the remaining problems on the hourly `.forecast` cards:
-    1. Each hour card is ~300px tall for two data points (time, temp) + images — `.weather-images` grid rows don't shrink to the small `.dog` images, leaving large empty orange gaps.
-    2. `getImages` always pads to 4 images; on the 2×2 mobile grid most cards show 2 real images + 2 faded paw placeholders (`.opaque`, `opacity: 0.15`), which reads as "failed to load". Either skip the pad-to-4 on mobile or style the empty state.
-    3. `.show-weather-details` expand chevron is a tiny floating control lost in the whitespace.
-    4. The day header ("Sun Aug 30th") renders twice (top and bottom of the list) — likely a desktop carousel artifact leaking into mobile; may be a separate bug.
-  - Needs a design-direction call before implementation (denser list? fewer images? drop placeholders?).
+- [x] `src/App.css:181` — styling for mobile weather cards. Reworked `forecast.css` `max-width: 767px` block; the marker comment is gone. _(done + shipped 2026-08-30, commit `10d80a9`)_
+  1. Fixed — dropped the hard-coded `grid-template-rows: 180px`; card height now tracks content (~195px for the common single-image hour).
+  2. Fixed — mobile hides the `.opaque` favicon padding and sizes the real images to their count via `:has()` sibling checks: 1 fills the image column, 2 sit in a row, 3–4 wrap. Desktop keeps its fixed 2×2 placeholder grid (pure CSS, no `getImages` change).
+  3. Fixed — the expand chevron (`#carrat`) is centred in a real 34px column instead of a 10px sliver. (`.show-weather-details` was already dead/unused CSS.)
+  4. Not a bug — the second "Sun Aug 30th" is an intentional `<DateSelector top={false}>` in `HourlyWeather.tsx` for day-nav from the bottom of a long list. Left as-is.
+  - Also folded away the redundant 630/550/500/460/410px `.dog` width media blocks.
 - [x] `src/models/weatherAPI/weatherModel.ts` — dead code removed: commented-out `getWeatherData` (unused; superseded by `getLatandLongWeather`) and the old axios snippets. (`axios` stays a dependency — still used by `netlify/functions/weatherApiRequest.ts`.)
