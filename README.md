@@ -91,6 +91,10 @@ bundled offline app.
 - JDK 21 (Gradle 8.11 / AGP 8.7)
 - `ANDROID_SDK_ROOT` set, or `android/local.properties` with `sdk.dir=...`
 
+The manifest declares `ACCESS_COARSE_LOCATION` / `ACCESS_FINE_LOCATION` so the
+"click the pin" `navigator.geolocation` call triggers the OS permission prompt;
+grant it once and location search works.
+
 **Build the APK**
 
 ```
