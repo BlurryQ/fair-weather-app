@@ -4,10 +4,14 @@
     file: File, 
     setFile: React.Dispatch<React.SetStateAction<File | null>>, 
     setImage: React.Dispatch<React.SetStateAction<string>>) {
-      // try and compress image before upload
+      // Compress before upload. The cards render these up to ~220 CSS px on
+      // mobile (more on high-DPI screens), so 250px looked pixelated - 1024
+      // matches the bundled default images and stays well under the bucket's
+      // 5 MB limit.
       const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 250,
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1024,
+        initialQuality: 0.82,
         useWebWorker: true,
       };
 
