@@ -6,6 +6,7 @@ import capitalisedEachWord from '../utils/capitalisedEachWord';
 import PasswordChecklist from 'react-password-checklist';
 import clearError from '../utils/clearError';
 import authAction from '../utils/authAction';
+import Loader from './Loader';
 
 export default function AuthPage() {
   const location = useLocation();
@@ -83,9 +84,8 @@ export default function AuthPage() {
     navigate('/reset_email');
   };
 
-  // TODO pimp loading
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <Loader />;
   }
 
   return (

@@ -60,8 +60,14 @@ One feature spread across four files; most of it was commented out.
 
 ## P4 — Polish & low-risk
 
-- [ ] `src/components/AuthPage.tsx:86` — improve the loading state (`// TODO pimp loading`)
+- [x] `src/components/AuthPage.tsx` — loading state now renders the shared `<Loader />` (CircleLoader spinner) instead of bare "Loading..." text. Verified with a stalled-network browser pass.
 - [x] `src/components/AuthPage.tsx` — Reset Email now renders `.error` / `.success` in its own message slot; verified the "Cannot find this email address" error shows and self-clears. _(found + fixed 2026-08-30)_
 - [x] `src/components/settings/CoreSettings.tsx` — cross-field hour validation wired up via `validateHours(first, last)`, recomputed from both values on each edit so fixing one field clears the other's stale error; `SaveButton` stays disabled while either error is set. _(found + fixed 2026-08-30)_
-- [ ] `src/App.css:181` — styling for mobile weather cards
+- [ ] `src/App.css:181` — styling for mobile weather cards **(deferred to its own session)**
+  - Investigated 2026-08-30 at 390px width. `forecast.css` already has mobile breakpoints (767/630/550/500/460/410); the remaining problems on the hourly `.forecast` cards:
+    1. Each hour card is ~300px tall for two data points (time, temp) + images — `.weather-images` grid rows don't shrink to the small `.dog` images, leaving large empty orange gaps.
+    2. `getImages` always pads to 4 images; on the 2×2 mobile grid most cards show 2 real images + 2 faded paw placeholders (`.opaque`, `opacity: 0.15`), which reads as "failed to load". Either skip the pad-to-4 on mobile or style the empty state.
+    3. `.show-weather-details` expand chevron is a tiny floating control lost in the whitespace.
+    4. The day header ("Sun Aug 30th") renders twice (top and bottom of the list) — likely a desktop carousel artifact leaking into mobile; may be a separate bug.
+  - Needs a design-direction call before implementation (denser list? fewer images? drop placeholders?).
 - [x] `src/models/weatherAPI/weatherModel.ts` — dead code removed: commented-out `getWeatherData` (unused; superseded by `getLatandLongWeather`) and the old axios snippets. `axios` is now an unused dependency — drop it from `package.json` in a follow-up.
