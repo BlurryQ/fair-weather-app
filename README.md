@@ -17,6 +17,12 @@ I originally built this for personal use, but it’s grown into a **user-based p
 
 It combines **WeatherAPI** for forecasts, **Appwrite** for auth, database and storage, and a **React + Vite frontend** for speed and responsiveness.  
 
+### The Dobermann dashboard
+
+Each forecast hour is checked against your thresholds, and the conditions that match surface as image cards. Upload your own picture for any trigger, or fall back to the bundled Dobermann set:
+
+![The default Dobermann weather-trigger images](docs/weather-dobermann-grid.jpg)
+
 ---
 
 ## Requirements
@@ -30,12 +36,15 @@ It combines **WeatherAPI** for forecasts, **Appwrite** for auth, database and st
 ## Tech Stack & Dependencies
 
 - **Frontend:** [React](https://react.dev/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)  
+- **Routing:** [React Router](https://reactrouter.com/)  
 - **Mobile:** [Capacitor](https://capacitorjs.com/) Android wrapper (thin shell over the hosted site)  
 - **Backend/Services:** [Appwrite](https://appwrite.io/) for auth, storage, and database  
 - **API:** [WeatherAPI](https://www.weatherapi.com/)  
 - **HTTP Client:** [axios](https://axios-http.com/)  
 - **Date Handling:** [date-fns](https://date-fns.org/)  
-- **UI Helpers:** [react-spinners](https://www.reactspinners.com/) for loaders  
+- **Image uploads:** [browser-image-compression](https://www.npmjs.com/package/browser-image-compression) to downscale pictures before they reach storage  
+- **Auth forms:** [react-password-checklist](https://www.npmjs.com/package/react-password-checklist) for live password-rule feedback  
+- **Loading state:** a hand-animated weather SVG (`src/assets/loader.svg`)  
 - **Build & Quality:** ESLint, TypeScript, Vite  
 - **Deployment:** Netlify with [@netlify/functions](https://docs.netlify.com/functions/overview/)  
 
@@ -128,6 +137,8 @@ or copy `apk/fair-weather-app-debug.apk` onto the phone and open it (allow
 
 - 🎨 **Custom Uploads** – Add your own images for specific triggers (rain, UV, etc)
 
+- 🎚️ **Toggle triggers** – Switch any weather card on or off so only the conditions you care about show
+
 - 📱 **Responsive Design** – Different experiences for desktop and mobile
 
 - ⏱️ **Performance** – Debounced searches and optimized API calls
@@ -138,13 +149,16 @@ or copy `apk/fair-weather-app-debug.apk` onto the phone and open it (allow
 My first project using TypeScript – I had to learn type annotations, interfaces, and strict type checking while still moving quickly.
 
 - **From Static Prototype → User Platform**
-It started as a hardcoded personal project, but expanding it to support auth, user preferences, and database storage meant redesigning state management and building a proper schema in Supabase.
+It started as a hardcoded personal project, but expanding it to support auth, user preferences, and database storage meant redesigning state management and building a proper backend schema.
 
 - **Authentication & Database Integration**
-Implementing secure signup/login with auto-provisioned rows for new users was a milestone. Adding “forgotten password” recovery gave me hands-on experience with Supabase Auth.
+Implementing secure signup/login with auto-provisioned records for new users was a milestone, and adding “forgotten password” recovery gave me hands-on experience with a hosted auth service.
+
+- **Migrating Supabase → Appwrite**
+The first version ran on Supabase (Postgres + Auth + Storage). Moving to Appwrite meant re-modelling the schema as collections, porting the new-user row trigger into application code, and writing export/import scripts (`npm run migrate:export` / `migrate:import`) to carry existing users and uploaded images across.
 
 - **Custom File Uploads**
-Letting users upload their own images for conditions like rain, fog, or high UV required learning how to handle file uploads in Supabase and dynamically render them in React.
+Letting users upload their own images for conditions like rain, fog, or high UV required learning how to handle file uploads, compress them client-side, and dynamically render them in React.
 
 - **Responsive Design & UX**
 Providing different layouts for desktop and mobile was more than just CSS tweaks. Once I added user uploads and preferences, it became a real design challenge to keep both versions clean and usable.
@@ -153,15 +167,11 @@ Providing different layouts for desktop and mobile was more than just CSS tweaks
 To avoid hammering WeatherAPI, I implemented debounced search inputs and optimized fetches to balance responsiveness with efficiency.
 
 - **Deployment Pipeline**
-Making everything work with Vite, Netlify, serverless functions, and Supabase taught me a lot about environment variables, auth in production, and smooth deployment workflows.
+Making everything work with Vite, Netlify, serverless functions, and Appwrite taught me a lot about environment variables, auth in production, and smooth deployment workflows.
 
 ## Future Improvements
 
-- Toggle settings on or off
-
 - Create your own AI images for custom triggers
-
-- User profile with account settings
 
 - Allow users to choose the amount of forecasted days (default 3)
 
