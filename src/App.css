@@ -101,6 +101,19 @@ h2 {
     text-align: center;
 }
 
+.loader-icon {
+    width: min(420px, 92vw);
+    max-width: 100%;
+    /* matches the cropped viewBox in Loader.tsx */
+    aspect-ratio: 1150 / 900;
+}
+
+.loader-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 ul {
     list-style: none;
 }
