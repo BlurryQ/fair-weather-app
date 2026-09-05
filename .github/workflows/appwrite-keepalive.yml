@@ -1,37 +1,53 @@
 name: Appwrite Keepalive
 
-# The app can sit idle for months. Appwrite Cloud does not pause on
-# inactivity the way Supabase did, but may reclaim projects that get zero
-# traffic for a very long time. A weekly request keeps it counted as active.
+# The app can sit idle for months. Appwrite Cloud pauses a project after
+# ~7 days with no real API traffic, so this reads one document from the
+# database twice a week to keep it counted as active. A bare /v1/ping does
+# not count - it has to hit an actual service (auth / db / storage).
+#
+# Needs two repo secrets: APPWRITE_PROJECT_ID and APPWRITE_API_KEY (a
+# server key with the databases.read scope). The step fails loudly if
+# either is missing or the request is not a 2xx.
 #
 # GitHub also disables scheduled workflows after 60 days with no repository
 # activity, which would silently stop the ping above. The keepalive job
-# below runs on the same weekly schedule but only pushes an empty commit
-# when nothing has been pushed to the branch in the last 45 days, so there
-# is no git-log noise during active development.
+# below runs on the same schedule but only pushes an empty commit when
+# nothing has been pushed to the branch in the last 45 days, so there is
+# no git-log noise during active development.
 
 on:
   schedule:
-    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+    # Twice a week so a delayed or skipped run never leaves a >7-day gap.
+    - cron: "0 6 * * 1,4" # Mondays & Thursdays 06:00 UTC
   workflow_dispatch: {}
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Appwrite
+      - name: Read one document so the DB registers real activity
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" \
-            "https://fra.cloud.appwrite.io/v1/ping" \
-            -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}")
+          : "${APPWRITE_PROJECT_ID:?APPWRITE_PROJECT_ID secret is not set}"
+          : "${APPWRITE_API_KEY:?APPWRITE_API_KEY secret is not set}"
+          body=$(mktemp)
+          code=$(curl -s -o "$body" -w "%{http_code}" \
+            "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections/core_settings/documents?queries[]=limit(1)" \
+            -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
+            -H "X-Appwrite-Key: ${APPWRITE_API_KEY}")
           echo "HTTP $code"
-          # Any response means the project was reached. Only fail on a
-          # network error (000) or a 5xx.
+          cat "$body"; echo
+          # A 2xx means the databases API actually served a request for this
+          # project. Anything else (401 bad key, 404 wrong ids, 5xx) is a
+          # real failure - don't let it pass silently like the old ping did.
           case "$code" in
-            000|5??) exit 1 ;;
+            2??) ;;
+            *) exit 1 ;;
           esac
         env:
+          APPWRITE_ENDPOINT: https://fra.cloud.appwrite.io/v1
+          APPWRITE_DATABASE_ID: main
           APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+          APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
 
   keepalive:
     # Schedule only - a manual workflow_dispatch run just does the ping.
