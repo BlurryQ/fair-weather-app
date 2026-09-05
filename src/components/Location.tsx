@@ -61,12 +61,23 @@ export default function Location({
     setLoading(true);
     setError(false);
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, (err) => {
-        // permission denied, position unavailable, or timeout - without this
-        // callback getCurrentPosition fails silently and the spinner never stops
-        console.error(err);
-        flashError();
-      });
+      navigator.geolocation.getCurrentPosition(
+        showPosition,
+        (err) => {
+          // permission denied, position unavailable, or timeout - without this
+          // callback getCurrentPosition fails silently and the spinner never stops
+          console.error(err);
+          flashError();
+        },
+        {
+          // City-level is plenty for weather and high accuracy is slower.
+          // Accept a fix up to 5 min old so repeat taps are instant, and
+          // cap the wait so a slow fix flashes the error instead of hanging.
+          enableHighAccuracy: false,
+          maximumAge: 300000,
+          timeout: 10000,
+        }
+      );
     } else {
       alert('Geolocation is not supported by this browser.');
     }
