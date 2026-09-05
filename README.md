@@ -29,7 +29,7 @@ Each forecast hour is checked against your thresholds, and the conditions that m
 
 - A free account on [weatherAPI.com](https://www.weatherapi.com/) for the API key.  
 - An [Appwrite](https://appwrite.io/) project (Cloud or self-hosted) for auth, database and storage.  
-  Run `npm run migrate:setup` to create the collections and bucket (needs the server `APPWRITE_*` values in `.env` — see `.env.example`).  
+  Run `npm run setup:appwrite` to create the collections and bucket (needs the server `APPWRITE_*` values in `.env` — see `.env.example`).  
 
 ---
 
@@ -155,7 +155,7 @@ It started as a hardcoded personal project, but expanding it to support auth, us
 Implementing secure signup/login with auto-provisioned records for new users was a milestone, and adding “forgotten password” recovery gave me hands-on experience with a hosted auth service.
 
 - **Migrating Supabase → Appwrite**
-The first version ran on Supabase (Postgres + Auth + Storage). Moving to Appwrite meant re-modelling the schema as collections, porting the new-user row trigger into application code, and writing export/import scripts (`npm run migrate:export` / `migrate:import`) to carry existing users and uploaded images across.
+The first version ran on Supabase (Postgres + Auth + Storage). Moving to Appwrite meant re-modelling the schema as collections, porting the new-user row trigger into application code, and writing one-off export/import scripts to carry existing users and uploaded images across.
 
 - **Custom File Uploads**
 Letting users upload their own images for conditions like rain, fog, or high UV required learning how to handle file uploads, compress them client-side, and dynamically render them in React.
