@@ -18,7 +18,7 @@ export default function LocationInput(
   const [typedLocation, setTypedLocation] = useState<string>('');
   const [autocomplete, setAutocomplete] = useState<Autocomplete[]>([]);
   const [goHome, setGoHome] = useState<boolean>(false);
-  let [highlightedIndex, setHighlightedIndex] = useState<number>(0);
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(0);
   const { setCoords, location, setLocation, setError } = locationInputProps;
   const navigate = useNavigate();
 

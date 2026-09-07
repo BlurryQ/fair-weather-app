@@ -42,7 +42,7 @@ export default function Settings() {
   };
 
   // return early if user is not logged in or settings are not valid
-  if (!user.hasOwnProperty('confirmed_at')) {
+  if (!Object.prototype.hasOwnProperty.call(user, 'confirmed_at')) {
     return (
       <div className="login">
         No user settings found. Please <Link to="/login">log in</Link>

@@ -36,7 +36,7 @@ export default function Forecast(
   }, [hour]);
 
   const timeStamp: string = hour.time;
-  const [_, hourString]: string[] = timeStamp.split(' ');
+  const [, hourString]: string[] = timeStamp.split(' ');
   const className = getClassName(index, hour.placeholder);
 
   return (

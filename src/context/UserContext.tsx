@@ -144,7 +144,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     settings: CoreSettings | ImageSettings | AllSettings | string[] | ImageUrls
   ) => {
     setUser((prevUser: any) => {
-      let updatedUser = { ...prevUser };
+      const updatedUser = { ...prevUser };
 
       if (settingsType === 'image') {
         updatedUser.settings.imageSettings = settings as ImageSettings;

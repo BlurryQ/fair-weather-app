@@ -3,6 +3,6 @@ import { Autocomplete } from './Autocomplete';
 export type LocationListProp = {
   autocomplete: Autocomplete[];
   highlightedIndex: number,
-  displayLocationData: Function
+  displayLocationData: (location: string, lat: number, lon: number) => void
 };
 

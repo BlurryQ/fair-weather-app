@@ -5,7 +5,7 @@ export default function filterHoursForScreenSize(
     chosenHour: number
 ): HourProp[] {
     // return hours based on screen size, eg carousel or cards
-    let windowSize: number = window.innerWidth
+    const windowSize: number = window.innerWidth
     if (windowSize <= 767)
         return hours
 

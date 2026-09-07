@@ -12,7 +12,7 @@ export default function LocationList(
     const location: string = e.target.textContent;
     const latLon: string = e.target.attributes.value.value;
     const [lat, lon]: string[] = latLon.split(' ');
-    displayLocationData(location, lat, lon)
+    displayLocationData(location, Number(lat), Number(lon))
   };
 
   const {

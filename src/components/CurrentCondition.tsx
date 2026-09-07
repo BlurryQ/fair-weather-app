@@ -19,7 +19,7 @@ export default function CurrentCondition({
   const { user } = userContext;
   let useCelcius: boolean = true;
   let useMiles: boolean = true;
-  if (user.hasOwnProperty('settings')) {
+  if (Object.prototype.hasOwnProperty.call(user, 'settings')) {
     useCelcius = user.settings?.coreSettings?.is_celsius ?? true;
     useMiles = user.settings?.coreSettings?.is_miles ?? true;
   }
@@ -62,7 +62,7 @@ export default function CurrentCondition({
     });
   };
 
-  return !!overviewData ? (
+  return overviewData ? (
     <div className="current-conditions">
       <ul>
         <li className="time">
