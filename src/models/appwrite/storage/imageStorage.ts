@@ -1,4 +1,4 @@
-import { ID, Query, Permission, Role } from 'appwrite';
+import { ID, Query, Permission, Role, Models } from 'appwrite';
 import {
   account,
   databases,
@@ -7,6 +7,14 @@ import {
   IMAGES_COLLECTION_ID,
   IMAGES_BUCKET_ID,
 } from '../client';
+import getErrorMessage from '../../../utils/getErrorMessage';
+
+// One row per user image in the `images` collection.
+type ImageDoc = Models.Document & {
+  user: string;
+  name: string;
+  file_id: string;
+};
 
 // Appwrite storage has no folders. Each user image is one document in the
 // `images` collection ({ user, name, file_id }) pointing at a bucket file.
@@ -41,18 +49,21 @@ async function fetchObjectUrl(fileId: string): Promise<string | null> {
     const res = await fetch(url, { headers: { 'X-Appwrite-JWT': jwt } });
     if (!res.ok) return null;
     return URL.createObjectURL(await res.blob());
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
     return null;
   }
 }
 
-async function findImageDoc(userId: string, name: string) {
-  const res = await databases.listDocuments(DATABASE_ID, IMAGES_COLLECTION_ID, [
-    Query.equal('user', userId),
-    Query.equal('name', name),
-    Query.limit(1),
-  ]);
+async function findImageDoc(
+  userId: string,
+  name: string
+): Promise<ImageDoc | null> {
+  const res = await databases.listDocuments<ImageDoc>(
+    DATABASE_ID,
+    IMAGES_COLLECTION_ID,
+    [Query.equal('user', userId), Query.equal('name', name), Query.limit(1)]
+  );
   return res.documents[0] ?? null;
 }
 
@@ -76,7 +87,7 @@ export async function uploadImage(imageName: string, file: File | Blob) {
     );
 
     if (existing) {
-      const oldFileId = (existing as any).file_id as string | undefined;
+      const oldFileId: string | undefined = existing.file_id;
       await databases.updateDocument(
         DATABASE_ID,
         IMAGES_COLLECTION_ID,
@@ -99,26 +110,27 @@ export async function uploadImage(imageName: string, file: File | Blob) {
     }
 
     return { path: `${userId}/${name}` };
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
   }
 }
 
 export async function getAllImageUrls(id: string) {
   try {
-    const res = await databases.listDocuments(DATABASE_ID, IMAGES_COLLECTION_ID, [
-      Query.equal('user', id),
-      Query.limit(100),
-    ]);
+    const res = await databases.listDocuments<ImageDoc>(
+      DATABASE_ID,
+      IMAGES_COLLECTION_ID,
+      [Query.equal('user', id), Query.limit(100)]
+    );
     const results = await Promise.all(
-      res.documents.map(async (doc: any) => {
-        const url = await fetchObjectUrl(doc.file_id as string);
-        return url ? { name: doc.name as string, url } : null;
+      res.documents.map(async (doc) => {
+        const url = await fetchObjectUrl(doc.file_id);
+        return url ? { name: doc.name, url } : null;
       })
     );
     return results.filter((r): r is { name: string; url: string } => r !== null);
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
   }
 }
 
@@ -127,9 +139,9 @@ export async function getImageUrl(imageName: string) {
     const [userId, name] = imageName.split('/');
     const doc = await findImageDoc(userId, name);
     if (!doc) return null;
-    return fetchObjectUrl((doc as any).file_id as string);
-  } catch (err: any) {
-    console.error(err.message);
+    return fetchObjectUrl(doc.file_id);
+  } catch (err) {
+    console.error(getErrorMessage(err));
   }
 }
 
@@ -138,13 +150,13 @@ export async function deleteImage(imageData: string[]) {
     const [userId, name] = imageData;
     const doc = await findImageDoc(userId, name);
     if (!doc) return true;
-    const fileId = (doc as any).file_id as string | undefined;
+    const fileId: string | undefined = doc.file_id;
     await databases.deleteDocument(DATABASE_ID, IMAGES_COLLECTION_ID, doc.$id);
     if (fileId) {
       await storage.deleteFile(IMAGES_BUCKET_ID, fileId).catch(() => undefined);
     }
     return true;
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
   }
 }

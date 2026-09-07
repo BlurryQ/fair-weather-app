@@ -10,8 +10,11 @@ import { getAllImageUrls } from '../storage/imageStorage';
 import { ImageUrls } from '../../../types/settings/ImageUrls';
 
 export default async function getAllSettings(): Promise<AllSettings> {
-  const coreSettings: CoreSettings = await getCoreSettings();
-  const imageSettings: ImageSettings = await getImageSettings();
+  const coreSettings: CoreSettings | undefined = await getCoreSettings();
+  const imageSettings: ImageSettings | undefined = await getImageSettings();
+  if (!coreSettings || !imageSettings) {
+    throw new Error('Could not load settings from Appwrite');
+  }
   const imageUrls: ImageUrls[] | undefined = await getAllImageUrls(
     imageSettings.id
   );

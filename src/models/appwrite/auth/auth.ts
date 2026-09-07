@@ -1,6 +1,7 @@
 import { ID, Models } from 'appwrite';
 import { account } from '../client';
 import provisionUserSettings from '../tables/provisionUser';
+import getErrorMessage from '../../../utils/getErrorMessage';
 
 type MappedUser = { id: string; email: string; confirmed_at: string };
 type LoginFn = (user: MappedUser) => void;
@@ -35,8 +36,8 @@ export async function signUpUser(
     await provisionUserSettings(user.$id);
     login(mapUser(user));
     return true;
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
     return false;
   }
 }
@@ -52,8 +53,8 @@ export async function signInUser(
     const user = await account.get();
     login(mapUser(user));
     return true;
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
     return false;
   }
 }
@@ -62,8 +63,8 @@ export async function signOutUser() {
   try {
     await account.deleteSession('current');
     console.log('User signed out');
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
   }
 }
 
@@ -74,8 +75,8 @@ export async function resetPassword(email: string) {
       `${window.location.origin}/reset_password`
     );
     return true;
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
     return false;
   }
 }
@@ -92,8 +93,8 @@ export async function updatePassword(
     await account.updateRecovery(userId, secret, password);
     console.log('User updated');
     return true;
-  } catch (err: any) {
-    console.error(err.message);
+  } catch (err) {
+    console.error(getErrorMessage(err));
     return false;
   }
 }
