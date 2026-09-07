@@ -24,8 +24,9 @@ const weatherApiRequest: Handler = async (event) => {
 
     const response = await axios.get(url);
     return { statusCode: 200, body: JSON.stringify(response.data) };
-  } catch (err: any) {
-    return { statusCode: 500, body: err.message };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Request failed';
+    return { statusCode: 500, body: message };
   }
 };
 

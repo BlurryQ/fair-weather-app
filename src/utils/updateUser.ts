@@ -13,22 +13,22 @@ import { ImageSettings } from '../types/settings/ImageSettings';
 
 export default async function updateUser (
   settingType: string,
-  settings: any,
+  settings: unknown,
   saveState: React.Dispatch<React.SetStateAction<string>>,
   updateUserSettings: (settingType: string, userUpdates: CoreSettings | ImageSettings | string[]) => void
   ) {
     // update user settings based on setting type
     try {
       if (settingType === 'image') {
-        settings = settings as ImageSettings
-        await updateImageSettings(settings); // Update the image settings in the database
-        await updateUserSettings(settingType, settings); // Update the user context with the new core settings
+        const imageSettings = settings as ImageSettings
+        await updateImageSettings(imageSettings); // Update the image settings in the database
+        await updateUserSettings(settingType, imageSettings); // Update the user context with the new core settings
         saveState("saved");
         return true;
     } else if (settingType === 'core') {
-        settings = settings as CoreSettings
-        await updateCoreSettings(settings); // Update the core settings in the database
-        await updateUserSettings(settingType, settings); // Update the user context with the new core settings
+        const coreSettings = settings as CoreSettings
+        await updateCoreSettings(coreSettings); // Update the core settings in the database
+        await updateUserSettings(settingType, coreSettings); // Update the user context with the new core settings
         saveState("saved");
         return true;
     } else if (settingType === 'file') {
@@ -39,7 +39,7 @@ export default async function updateUser (
         await updateUserSettings(settingType, [imageName, imageUrl]); // Update the user context with the new core settings
     } else if (settingType === "deleteImage") {
         deleteImage(settings as string[]);
-        await updateUserSettings(settingType, settings); // Update the user context with the new core settings
+        await updateUserSettings(settingType, settings as string[]); // Update the user context with the new core settings
     }
     } catch (error) {
       console.error('Error updating user settings:', error);

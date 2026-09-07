@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 export default function Settings() {
   const userContext = useUser();
   const user = userContext?.user;
-  const [allSettings, setAllSettings] = useState<AllSettings | any>(
+  const [allSettings, setAllSettings] = useState<AllSettings | undefined>(
     user?.settings
   );
   const [displaySettingsPage, setDisplaySettingsPage] =

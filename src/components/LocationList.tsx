@@ -8,9 +8,10 @@ export default function LocationList(
   locationListProps: LocationListProp
 ): JSX.Element {
   // on list element clicked get geolocation details and search
-  const selectLocation = (e: any): void => {
-    const location: string = e.target.textContent;
-    const latLon: string = e.target.attributes.value.value;
+  const selectLocation = (e: React.MouseEvent<HTMLLIElement>): void => {
+    const li = e.currentTarget;
+    const location: string = li.textContent ?? '';
+    const latLon: string = li.getAttribute('value') ?? '';
     const [lat, lon]: string[] = latLon.split(' ');
     displayLocationData(location, Number(lat), Number(lon))
   };

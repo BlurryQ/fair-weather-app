@@ -111,7 +111,7 @@ export default function SettingsCard({
     setNewImageSettings(imageSettings);
   };
 
-  const resetImageHandler = (e: any) => {
+  const resetImageHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setImage(defaultImage);
     setDeleteImageData([imageSettings.id, setting.name]);

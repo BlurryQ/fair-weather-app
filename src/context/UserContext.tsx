@@ -48,7 +48,7 @@ type UserContextType = {
   logout: () => void;
   updateUserSettings: (
     settingType: string,
-    userUpdates: AllSettings | CoreSettings | ImageSettings | string[]
+    userUpdates: AllSettings | CoreSettings | ImageSettings | string[] | ImageUrls[]
   ) => void;
   updateImageUrls: (id: string) => Promise<void>;
   refreshAllSettings: (id: string) => Promise<void>;
@@ -141,10 +141,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateUserSettings = async (
     settingsType: string,
-    settings: CoreSettings | ImageSettings | AllSettings | string[] | ImageUrls
+    settings: CoreSettings | ImageSettings | AllSettings | string[] | ImageUrls[]
   ) => {
-    setUser((prevUser: any) => {
-      const updatedUser = { ...prevUser };
+    setUser((prevUser) => {
+      const updatedUser = { ...prevUser } as UserType & { settings: AllSettings };
 
       if (settingsType === 'image') {
         updatedUser.settings.imageSettings = settings as ImageSettings;
@@ -163,19 +163,19 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         previous.forEach((entry: ImageUrls) => {
           if (entry.url?.startsWith('blob:')) URL.revokeObjectURL(entry.url);
         });
-        updatedUser.settings.imageUrls = settings as ImageUrls;
+        updatedUser.settings.imageUrls = settings as ImageUrls[];
         updatedUser.settings.timestamp = new Date().getTime();
       } else if (settingsType === 'file') {
         const [imageName, newImageUrl] = settings as [string, string];
         updatedUser.settings.imageUrls = upsertImageUrl(
-          updatedUser.settings.imageUrls,
+          updatedUser.settings.imageUrls || [],
           imageName,
           newImageUrl
         );
       } else if (settingsType === 'deleteImage') {
         const [, imageName] = settings as string[];
         updatedUser.settings.imageUrls = removeImageUrl(
-          updatedUser.settings.imageUrls,
+          updatedUser.settings.imageUrls || [],
           imageName
         );
       }
@@ -187,7 +187,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const updateImageUrls = async (id: string) => {
     const images = await getAllImageUrls(id);
-    updateUserSettings('imageUrls', images as ImageUrls);
+    updateUserSettings('imageUrls', (images ?? []) as ImageUrls[]);
   };
 
   // Pull core settings, image settings and image URLs in one go. Guarded so
