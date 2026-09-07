@@ -6,7 +6,7 @@ import { HourProp } from '../types/HourProp';
 
 // utils
 import getImages, { IMAGE_DEFAULTS, WeatherImage } from '../utils/getImages';
-import Loader from './Loader';
+import ImageLoader from './ImageLoader';
 
 export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
   const userContext = useUser();
@@ -17,7 +17,7 @@ export default function DogGrid({ hour }: { hour: HourProp }): JSX.Element {
   // it refreshes the whole settings payload and flips settingsRefreshing. While
   // that is in flight the bundled defaults still render fine, so only fall back
   // to the full loader when there are no settings to draw from at all.
-  if (settingsRefreshing && !user.settings) return <Loader />;
+  if (settingsRefreshing && !user.settings) return <ImageLoader />;
 
   const images: WeatherImage[] = getImages(hour);
 

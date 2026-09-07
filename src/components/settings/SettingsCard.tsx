@@ -6,7 +6,7 @@ import Toggle from '../Toggle';
 import '../../styles/toggle.css';
 
 // component
-import Loader from '../Loader';
+import ImageLoader from '../ImageLoader';
 import SaveButton from '../common/SaveButton';
 
 // storage
@@ -130,7 +130,7 @@ export default function SettingsCard({
       />
 
       {imageLoading ? (
-        <Loader />
+        <ImageLoader />
       ) : (
         <div>
           {image !== defaultImage && (
