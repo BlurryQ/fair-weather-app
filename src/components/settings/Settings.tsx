@@ -17,10 +17,9 @@ import { Link } from 'react-router-dom';
 
 export default function Settings() {
   const userContext = useUser();
-  if (!userContext) return;
-  const { user } = userContext;
+  const user = userContext?.user;
   const [allSettings, setAllSettings] = useState<AllSettings | any>(
-    user.settings
+    user?.settings
   );
   const [displaySettingsPage, setDisplaySettingsPage] =
     useState<string>('images');
@@ -30,6 +29,8 @@ export default function Settings() {
       setAllSettings(user.settings);
     }
   }, [user, allSettings]);
+
+  if (!userContext) return;
 
   const changeSettingsPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

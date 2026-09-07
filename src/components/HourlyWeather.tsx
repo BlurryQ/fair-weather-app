@@ -24,14 +24,13 @@ export default function HourlyWeather({
   setChosenDay: React.Dispatch<SetStateAction<number>>;
 }): JSX.Element | null {
   const userContext = useUser();
-  if (!userContext) return null;
-  const { user } = userContext;
-  const coreSettings: CoreSettings | number = user.settings?.coreSettings ?? 0;
-
   const [chosenHour, setChosenHour] = useState<number>(1);
   const [weatherArray, setWeatherArray] = useState<HourProp[]>([]);
   // dateEpoch needed here to keep dateSelectors dates synchronised
   const [dateEpoch, setDateEpoch] = useState<number>(Date.now());
+
+  const coreSettings: CoreSettings | number =
+    userContext?.user?.settings?.coreSettings ?? 0;
 
   useEffect(() => {
     if (!weatherData) return;
@@ -43,6 +42,8 @@ export default function HourlyWeather({
     );
     setWeatherArray(validHours);
   }, [weatherData, chosenDay]);
+
+  if (!userContext) return null;
 
   const dateSelectorProp: DateSelectorProp = {
     chosenDay,

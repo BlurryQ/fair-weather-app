@@ -18,7 +18,6 @@ export default function Forecast(
   forecastProp: ForecastProp
 ): JSX.Element | null {
   const { hour, index, setChosenHour, displayNavButton } = forecastProp;
-  if (!hour) return null;
   const [condition, setCondition] = useState<string>('');
   const [conditionIcon, setConditionIcon] = useState<string>('');
 
@@ -34,6 +33,8 @@ export default function Forecast(
     if (!hour) return;
     setWeatherData(hour);
   }, [hour]);
+
+  if (!hour) return null;
 
   const timeStamp: string = hour.time;
   const [, hourString]: string[] = timeStamp.split(' ');

@@ -15,19 +15,16 @@ export default function CurrentCondition({
 }): JSX.Element {
   const [overviewData, setOverviewData] = useState<DayOverview | null>(null);
   const userContext = useUser();
-  if (!userContext) return <></>;
-  const { user } = userContext;
-  let useCelcius: boolean = true;
-  let useMiles: boolean = true;
-  if (Object.prototype.hasOwnProperty.call(user, 'settings')) {
-    useCelcius = user.settings?.coreSettings?.is_celsius ?? true;
-    useMiles = user.settings?.coreSettings?.is_miles ?? true;
-  }
+  const user = userContext?.user;
+  const useCelcius: boolean = user?.settings?.coreSettings?.is_celsius ?? true;
+  const useMiles: boolean = user?.settings?.coreSettings?.is_miles ?? true;
 
   useEffect(() => {
     if (!weatherData) return;
     setWeatherData(weatherData);
   }, [weatherData, chosenDay]);
+
+  if (!userContext) return <></>;
 
   // sets all weather data from restAPI
   const setWeatherData = (weatherData: WeatherDataProp) => {

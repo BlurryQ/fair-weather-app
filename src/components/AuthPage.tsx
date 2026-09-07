@@ -30,8 +30,6 @@ export default function AuthPage() {
     };
   });
   const userContext = useUser();
-  if (!userContext) return <></>;
-  const { login } = userContext;
 
   const resetInputs = (): void => {
     setError('');
@@ -40,6 +38,13 @@ export default function AuthPage() {
     setPassword('');
     setConfirmPassword('');
   };
+
+  useEffect(() => {
+    resetInputs();
+  }, [pageName]);
+
+  if (!userContext) return <></>;
+  const { login } = userContext;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,10 +56,6 @@ export default function AuthPage() {
       setConfirmPassword(value);
     }
   };
-
-  useEffect(() => {
-    resetInputs();
-  }, [pageName]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -24,10 +24,10 @@ export default function SaveButton({
   deleteImageData?: string[] | null;
 }): JSX.Element {
   const userContext = useUser();
+  const [saveState, setSaveState] = useState<string>('save');
+
   if (!userContext) return <></>;
   const { updateUserSettings } = userContext;
-
-  const [saveState, setSaveState] = useState<string>('save');
 
   const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

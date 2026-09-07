@@ -12,14 +12,9 @@ export default function WeatherTable({
 }): JSX.Element | null {
   const [weatherData, setWeatherData] = useState<HourProp | null>(null);
   const userContext = useUser();
-  if (!userContext || !hour) return null;
-  const { user } = userContext;
-  let useCelcius: boolean = true;
-  let useMiles: boolean = true;
-  if (Object.prototype.hasOwnProperty.call(user, 'settings')) {
-    useCelcius = user.settings?.coreSettings?.is_celsius ?? true;
-    useMiles = user.settings?.coreSettings?.is_miles ?? true;
-  }
+  const user = userContext?.user;
+  const useCelcius: boolean = user?.settings?.coreSettings?.is_celsius ?? true;
+  const useMiles: boolean = user?.settings?.coreSettings?.is_miles ?? true;
 
   const getWeatherDataMetrics = (hour: HourProp) => {
     const {
@@ -54,6 +49,8 @@ export default function WeatherTable({
     if (!hour) return;
     getWeatherDataMetrics(hour);
   }, [hour]);
+
+  if (!userContext || !hour) return null;
 
   return weatherData ? (
     <table id="weather-details-desktop">
