@@ -6,8 +6,9 @@ name: Appwrite Keepalive
 # not count - it has to hit an actual service (auth / db / storage).
 #
 # Needs two repo secrets: APPWRITE_PROJECT_ID and APPWRITE_API_KEY (a
-# server key with the databases.read scope). The step fails loudly if
-# either is missing or the request is not a 2xx.
+# server key with the documents.read scope - "databases.read" alone does
+# NOT cover reading documents). The step fails loudly if either is missing
+# or the request is not a 2xx.
 #
 # GitHub also disables scheduled workflows after 60 days with no repository
 # activity, which would silently stop the ping above. The keepalive job
@@ -30,8 +31,12 @@ jobs:
           : "${APPWRITE_PROJECT_ID:?APPWRITE_PROJECT_ID secret is not set}"
           : "${APPWRITE_API_KEY:?APPWRITE_API_KEY secret is not set}"
           body=$(mktemp)
-          code=$(curl -s -o "$body" -w "%{http_code}" \
-            "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections/core_settings/documents?queries[]=limit(1)" \
+          # Appwrite's REST API (response "version":"2.0.0") wants each query as
+          # a URL-encoded JSON object, not the old "limit(1)" string DSL. curl
+          # -G + --data-urlencode builds "?queries[]=%7B...%7D" for us.
+          code=$(curl -s -o "$body" -w "%{http_code}" -G \
+            "${APPWRITE_ENDPOINT}/databases/${APPWRITE_DATABASE_ID}/collections/core_settings/documents" \
+            --data-urlencode 'queries[]={"method":"limit","values":[1]}' \
             -H "X-Appwrite-Project: ${APPWRITE_PROJECT_ID}" \
             -H "X-Appwrite-Key: ${APPWRITE_API_KEY}")
           echo "HTTP $code"
